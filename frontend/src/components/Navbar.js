@@ -25,7 +25,7 @@ const Navbar = ({ setProducts }) => {
   return (
     <nav className="navbar">
       <div className="navbar-top">
-        <div className="navbar-brand">Trueque<span className='sub-brand'>cito</span></div>
+        <div className="navbar-brand">True<span className='sub-brand'>quecito</span></div>
         <form onSubmit={handleSearch} className="navbar-search">
           <input
             type="text"
