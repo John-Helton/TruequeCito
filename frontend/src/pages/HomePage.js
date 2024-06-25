@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import CallToAction from '../components/welcome/calltoAction';
 
 const HomePage = ({ products, setProducts }) => {
   const [loading, setLoading] = useState(true);
@@ -25,6 +26,7 @@ const HomePage = ({ products, setProducts }) => {
 
   return (
     <div>
+      <CallToAction />
       <h1>Productos Disponibles</h1>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
         {products.map((product) => (
