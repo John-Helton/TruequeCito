@@ -37,8 +37,8 @@ export class AuthService {
     );
   }
 
-  register(username: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(URL_REGISTER, { username, password }).pipe(
+  register(email: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(URL_REGISTER, { email, password }).pipe(
       tap({
         next: (response) => {
           if (isPlatformBrowser(this.platformId)) { // Verifica que estés en el navegador

@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   styleUrl: './register-pages.component.css'
 })
 export class RegisterPagesComponent {
-  username: string = '';
+  email: string = '';
   password: string = '';
   confirmPassword: string = '';
   message: string = '';
@@ -25,7 +25,7 @@ export class RegisterPagesComponent {
         return;
       }
 
-      this.authService.register(this.username, this.password).subscribe({
+      this.authService.register(this.email, this.password).subscribe({
         next: (response) => {
           this.message = 'Registro exitoso';
           this.router.navigate(['/']); // Redirige a la página de login después del registro
