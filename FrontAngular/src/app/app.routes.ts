@@ -6,6 +6,7 @@ import { LoginPagesComponent } from './pages/client/login-pages/login-pages.comp
 import { NotFound404Component } from './components/not-found-404/not-found-404.component';
 import { HomePageComponent } from './pages/client/home-page/home-page.component';
 import { RegisterPagesComponent } from './pages/client/register-pages/register-pages.component';
+import { ProfilePageComponent } from './pages/client/profile-page/profile-page.component';
 
 const titleGlobal = 'Trueques |';
 export const routes: Routes = [
@@ -15,7 +16,8 @@ export const routes: Routes = [
         children: [
             {path: '', component: HomePageComponent, pathMatch: 'full', data: { animation: 'HomePage' }},
             {path: 'login', component: LoginPagesComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Login` },
-            {path: 'register', component: RegisterPagesComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Register`}
+            {path: 'register', component: RegisterPagesComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Register`},
+            {path: 'profile', component: ProfilePageComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Profile`}
         ]
     },
     {
