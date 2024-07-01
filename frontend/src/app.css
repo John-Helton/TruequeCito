@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 :root {
     --background-tag: #ffeedd;
     --primary-text: #ff4081;
@@ -13,6 +16,7 @@
     background-color: var(--container-bg);
     color: var(--secondary-text);
     font-family: 'Arial', sans-serif;
+    padding: auto;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -43,4 +47,8 @@
   
   .cta-tag {
     background-color: var(--background-tag);
+  }
+  .cta-button.primary {
+    background-color: #6200ea;
+    color: #fff;
   }

@@ -64,7 +64,7 @@ const ProposeExchangePage = () => {
             ))}
           </select>
         </label>
-        <button type="submit">Proponer</button>
+        <button className="cta-button primary" type="submit">Proponer</button>
       </form>
       {message && <p>{message}</p>}
     </div>

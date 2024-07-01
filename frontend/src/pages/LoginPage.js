@@ -35,7 +35,7 @@ const LoginPage = () => {
           placeholder="Contraseña"
           required
         />
-        <button type="submit">Ingresar</button>
+        <button  type="submit">Ingresar</button>
       </form>
       {message && <p>{message}</p>}
     </div>

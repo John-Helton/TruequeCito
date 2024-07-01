@@ -34,7 +34,7 @@ const RegisterPage = () => {
           placeholder="Contraseña"
           required
         />
-        <button type="submit">Registrar</button>
+        <button className='cta-button primary' type="submit">Registrar</button>
       </form>
       {message && <p>{message}</p>}
     </div>

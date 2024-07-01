@@ -2,13 +2,13 @@ import React, { useState, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faPlus, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faPlus, faUser, faBell } from '@fortawesome/free-solid-svg-icons';
 import { AuthContext } from '../context/AuthContext';
 import './Navbar.css';
 
 const Navbar = ({ setProducts }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const { isAuthenticated, logout, user } = useContext(AuthContext);
   const history = useHistory();
 
   const handleSearch = async (e) => {
@@ -24,8 +24,12 @@ const Navbar = ({ setProducts }) => {
 
   return (
     <nav className="navbar">
-      <div className="navbar-top">
-        <div className="navbar-brand">True<span className='sub-brand'>quecito</span></div>
+      <div className="navbar-left">
+        <Link to="/" className="navbar-brand">
+          True<span className="sub-brand">quecito</span>
+        </Link>
+      </div>
+      <div className="navbar-center">
         <form onSubmit={handleSearch} className="navbar-search">
           <input
             type="text"
@@ -33,35 +37,41 @@ const Navbar = ({ setProducts }) => {
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Buscar productos..."
           />
-          <button type="submit">Buscar</button>
+          <button type="submit">
+            <FontAwesomeIcon icon={faSearch} />
+          </button>
         </form>
-        <div className="navbar-user">
-          <FontAwesomeIcon icon={faUser} />
-          <div className="dropdown-content">
-            {isAuthenticated ? (
-              <>
-                <Link to="/profile">Perfil</Link>
-                <button onClick={logout}>Cerrar Sesión</button>
-              </>
+      </div>
+      <div className="navbar-right">
+        <div className="navbar-icons">
+          {isAuthenticated && (
+            <Link to="/create-product">
+              <FontAwesomeIcon icon={faPlus} />
+            </Link>
+          )}
+          <FontAwesomeIcon icon={faBell} />
+          <div className="navbar-user">
+            <FontAwesomeIcon icon={faUser} />
+            {isAuthenticated && user ? (
+              <span className="navbar-user-name">{user.name}</span>
             ) : (
-              <>
-                <Link to="/login">Iniciar Sesión</Link>
-                <Link to="/register">Registrarse</Link>
-              </>
+              <Link to="/login" className="navbar-user-name">Perfil</Link>
             )}
+            <div className="dropdown-content">
+              {isAuthenticated ? (
+                <>
+                  <Link to="/profile">Perfil</Link>
+                  <button onClick={logout}>Cerrar Sesión</button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login">Iniciar Sesión</Link>
+                  <Link to="/register">Registrarse</Link>
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="navbar-divider"></div>
-      <div className="navbar-bottom">
-        <Link to="/" className="navbar-link">
-          <FontAwesomeIcon icon={faHome} /> Inicio
-        </Link>
-        {isAuthenticated && (
-          <Link to="/create-product" className="navbar-link">
-            <FontAwesomeIcon icon={faPlus} /> Publicar Producto
-          </Link>
-        )}
       </div>
     </nav>
   );

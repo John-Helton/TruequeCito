@@ -25,16 +25,16 @@ const HomePage = ({ products, setProducts }) => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
+    <div class='bg-slate-100 rounded-xl p-8 dark:bg-slate-800'>
       <CallToAction />
-      <h1>Productos Disponibles</h1>
+      <h1 className='bg-color-red'>Productos Disponibles</h1>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
         {products.map((product) => (
           <div key={product._id} style={{ border: '1px solid #ccc', padding: '20px', borderRadius: '10px', width: '200px' }}>
             <img src={product.images[0]} alt={product.title} style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
             <h3>{product.title}</h3>
             <p>{product.description}</p>
-            <button onClick={() => window.location.href = `/propose-exchange?productRequested=${product._id}`}>Proponer Intercambio</button>
+            <button className='cta-button primary' onClick={() => window.location.href = `/propose-exchange?productRequested=${product._id}`}>Proponer Intercambio</button>
           </div>
         ))}
       </div>

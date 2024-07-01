@@ -45,7 +45,7 @@ const CreateProductPage = () => {
           onChange={(e) => setImages(e.target.value)}
           placeholder="URLs de Imágenes (separadas por comas)"
         />
-        <button type="submit">Publicar</button>
+        <button type="submit" className='cta-button primary'>Publicar</button>
       </form>
       {message && <p>{message}</p>}
     </div>

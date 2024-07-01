@@ -54,7 +54,7 @@ const ManageExchangesPage = () => {
             <p>Status: {exchange.status}</p>
             {exchange.status === 'pending' && (
               <div>
-                <button onClick={() => handleStatusChange(exchange._id, 'accepted')}>Aceptar</button>
+                <button className='cta-button primary' onClick={() => handleStatusChange(exchange._id, 'accepted')}>Aceptar</button>
                 <button onClick={() => handleStatusChange(exchange._id, 'rejected')}>Rechazar</button>
               </div>
             )}
