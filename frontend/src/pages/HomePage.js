@@ -26,7 +26,6 @@ const HomePage = ({ products, setProducts }) => {
 
   return (
     <div class='bg-slate-100 rounded-xl p-8 dark:bg-slate-800'>
-      <CallToAction />
       <h1 className='bg-color-red'>Productos Disponibles</h1>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
         {products.map((product) => (

@@ -11,7 +11,7 @@ exports.createProduct = async (req, res) => {
       approved: true // Aprobar automáticamente para pruebas
     });
     await product.save();
-    res.status(201).json({ message: 'Product created successfully' });
+    res.status(201).json({ message: 'Producto creado correctamente' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

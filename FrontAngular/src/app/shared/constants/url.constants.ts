@@ -7,6 +7,9 @@ export const URL_REGISTER = `${BASE_URL}/auth/register`;
 // PRODUCTS
 export const URL_PRODUCTS = `${BASE_URL}/products`;
 
+//search
+export const URL_SEARCH = `${BASE_URL}/products`;
+
 
 //PROFILE
-export const URL_PROFILE = `${BASE_URL}/profile`
+export const URL_PROFILE = `${BASE_URL}/auth/user`

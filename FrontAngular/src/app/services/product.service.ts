@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { URL_PRODUCTS } from '../shared/constants/url.constants'; // Importa la URL de constantes
-import { Product } from '../shared/interfaces/product.interface';
 
 
 @Injectable({
@@ -11,7 +10,12 @@ import { Product } from '../shared/interfaces/product.interface';
 export class ProductService {
   constructor(private http: HttpClient) {}
 
-  getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(URL_PRODUCTS);
+  getProducts(): Observable<any> {
+    return this.http.get<any>(URL_PRODUCTS).pipe(
+      catchError((error) => {
+        console.log('Error al obtener los productos', error);
+        return throwError(error.error.error || 'Servidor no disponible');
+      })
+    );
   }
 }
