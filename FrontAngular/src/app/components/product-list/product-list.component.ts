@@ -8,9 +8,9 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './product-list.component.html',
-  styleUrl: './product-list.component.css'
+  styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent implements OnInit{
+export class ProductListComponent implements OnInit {
   products: Product[] = [];
   loading: boolean = true;
   error: string = '';
@@ -29,13 +29,19 @@ export class ProductListComponent implements OnInit{
       }
     );
   }
-  proposeExchange(productId: string) {
+
+  proposeExchange(productId: string): void {
     window.location.href = `/propose-exchange?productRequested=${productId}`;
   }
 
   shouldAnimateTitle(title: string): boolean {
-    const wordCount = title.split(' ').length;
-    return wordCount > 15;
+    const maxLength = 19;  // Ajusta el número máximo de caracteres antes de activar la animación
+    const charCount = title.length; // Cuenta los caracteres en el título
+    return charCount > maxLength;
   }
 
+  onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = 'assets/default_image.jpg';  // Reemplaza con la ruta a tu imagen por defecto
+  }
 }
