@@ -98,3 +98,15 @@ exports.registerExchange = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.getProductById = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.productId).populate('user', 'email');
+    if (!product) {
+      return res.status(404).json({ message: 'Producto no encontrado' });
+    }
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
