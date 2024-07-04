@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const User = require('../models/User');
 
 exports.createProduct = async (req, res) => {
   const { title, description, images } = req.body;
@@ -11,6 +12,11 @@ exports.createProduct = async (req, res) => {
       approved: true // Aprobar automáticamente para pruebas
     });
     await product.save();
+
+    const user = await User.findById(req.user.id);
+    user.products.push(product._id);
+    await user.save();
+
     res.status(201).json({ message: 'Producto creado correctamente' });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -67,4 +73,28 @@ exports.getProductId = async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   };
+};
+
+// Nueva función para registrar un intercambio
+exports.registerExchange = async (req, res) => {
+  try {
+    const { productId } = req.body;
+
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: 'Producto no encontrado' });
+    }
+
+    const user = await User.findById(product.user);
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    user.exchanges += 1;
+    await user.save();
+
+    res.status(200).json({ message: 'Intercambio registrado correctamente' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };

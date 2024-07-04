@@ -1,0 +1,20 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    border-color: #ff4081;
+    margin-left: 100px;
+    margin-right: 100px;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+}
+.container>div{
+    margin-left: 400px;
+    justify-self: start;
+    align-self: start;
+    
+}
+.title{
+    color: #ff4081;
+    font: oblique bold 250% cursive;
+}
