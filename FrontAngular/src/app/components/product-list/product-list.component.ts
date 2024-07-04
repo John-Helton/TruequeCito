@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '../../shared/interfaces/product.interface';
 import { ProductService } from '../../services/product.service';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -15,7 +16,7 @@ export class ProductListComponent implements OnInit {
   loading: boolean = true;
   error: string = '';
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private router: Router) {}
 
   ngOnInit(): void {
     this.productService.getProducts().subscribe(
@@ -31,7 +32,8 @@ export class ProductListComponent implements OnInit {
   }
 
   proposeExchange(productId: string): void {
-    window.location.href = `/propose-exchange?productRequested=${productId}`;
+    // Redirige al usuario al componente de propuesta de intercambio con el ID del producto
+    this.router.navigate(['/propose-exchange', productId]);
   }
 
   shouldAnimateTitle(title: string): boolean {
