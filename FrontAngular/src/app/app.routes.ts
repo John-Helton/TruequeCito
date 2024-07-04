@@ -8,6 +8,7 @@ import { HomePageComponent } from './pages/client/home-page/home-page.component'
 import { RegisterPagesComponent } from './pages/client/register-pages/register-pages.component';
 import { ProfilePageComponent } from './pages/client/profile-page/profile-page.component';
 import { CreatProductPagesComponent } from './pages/client/creat-product-pages/creat-product-pages.component';
+import { ProposeExchangeComponent } from './pages/client/propose-exchange-pages/propose-exchange-pages.component';
 
 const titleGlobal = 'Trueques |';
 export const routes: Routes = [
@@ -18,8 +19,9 @@ export const routes: Routes = [
             {path: '', component: HomePageComponent, pathMatch: 'full', data: { animation: 'HomePage' }},
             {path: 'login', component: LoginPagesComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Login` },
             {path: 'register', component: RegisterPagesComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Register`},
-            {path: 'profile', component: ProfilePageComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Profile`},
-            {path: 'createProduct', component: CreatProductPagesComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} createProduct`}
+            {path: 'profile', component: ProfilePageComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Perfil`},
+            {path: 'createProduct', component: CreatProductPagesComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Crear Producto`},
+            {path: 'propose-exchange/:id', component: ProposeExchangeComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Postular Intercambio`}
         ]
     },
     {

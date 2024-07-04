@@ -1,0 +1,47 @@
+<div>
+  <h1>Proponer Intercambio</h1>
+  
+  @if(product) {
+    <div>
+      <h2>{{ product.title }}</h2>
+      <img [src]="product.images[0]" alt="{{ product.title }}" class="w-full h-36 object-cover rounded">
+      <p>{{ product.description }}</p>
+      
+      <form (ngSubmit)="handleSubmit()">
+        <label>
+          Producto Ofrecido:
+          @if(offeredProducts.length) {
+            <select [(ngModel)]="productOffered" name="productOffered" required>
+              @for(product of offeredProducts; track product) {
+                <option [value]="product._id">{{ product.title }}</option>
+              }
+            </select>
+          } @else {
+            <p>No hay productos ofrecidos disponibles.</p>
+          }
+        </label>
+        
+        <label>
+          Producto Solicitado:
+          @if(requestedProducts.length) {
+            <select [(ngModel)]="productRequested" name="productRequested" required>
+              @for(product of requestedProducts; track product) {
+                <option [value]="product._id">{{ product.title }}</option>
+              }
+            </select>
+          } @else {
+            <p>No hay productos solicitados disponibles.</p>
+          }
+        </label>
+        
+        <button type="submit">Proponer</button>
+      </form>
+      
+      @if(message) {
+        <p>{{ message }}</p>
+      }
+    </div>
+  } @else {
+    <p *ngIf="!message">Cargando producto...</p>
+  }
+</div>
