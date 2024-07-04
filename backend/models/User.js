@@ -4,11 +4,8 @@ const bcrypt = require('bcryptjs');
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  username: { type: String, required: true },
-  avatar: { type: String, default: 'default-avatar.png' },
-  exchanges: { type: Number, default: 0 },
-  reputation: { type: Number, default: 0 },
-  products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }]
+  products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+  exchanges: { type: Number, default: 0 }
 });
 
 userSchema.pre('save', async function(next) {

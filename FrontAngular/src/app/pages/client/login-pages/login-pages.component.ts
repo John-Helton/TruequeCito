@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './login-pages.component.html',
-  styleUrl: './login-pages.component.css'
+  styleUrls: ['./login-pages.component.css']
 })
 export class LoginPagesComponent {
   email: string = '';
@@ -21,8 +21,9 @@ export class LoginPagesComponent {
   handleSubmit(form: NgForm): void {
     if (form.valid) {
       this.authService.login(this.email, this.password).subscribe({
-        next: (response) => {
+        next: (response: any) => {
           this.message = 'Inicio de sesión exitoso';
+          localStorage.setItem('token', response.token); // Almacenar el token
           this.router.navigate(['/']); // Redirige a la página principal después del login
         },
         error: (error) => {
@@ -33,5 +34,4 @@ export class LoginPagesComponent {
       this.message = 'Por favor, completa todos los campos.';
     }
   }
-
 }
