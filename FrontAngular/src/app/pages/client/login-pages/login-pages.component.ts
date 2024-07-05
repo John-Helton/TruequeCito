@@ -21,10 +21,9 @@ export class LoginPagesComponent {
   handleSubmit(form: NgForm): void {
     if (form.valid) {
       this.authService.login(this.email, this.password).subscribe({
-        next: (response: any) => {
+        next: (response) => {
           this.message = 'Inicio de sesión exitoso';
-          localStorage.setItem('token', response.token); // Almacenar el token
-          this.router.navigate(['/']); // Redirige a la página principal después del login
+          this.router.navigate(['/profile']); // Asegúrate de que esta redirección es la esperada
         },
         error: (error) => {
           this.message = error.error?.message || 'Error en el inicio de sesión';

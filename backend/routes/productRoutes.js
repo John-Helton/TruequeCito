@@ -5,13 +5,15 @@ const {
   getProductById,
   registerExchange,
   editProduct,
-  deleteProduct
+  deleteProduct,
+  getUserProducts
 } = require('../controllers/productController');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/', authMiddleware, createProduct);
 router.get('/', getProducts);
+router.get('/user-products', authMiddleware, getUserProducts);
 router.get('/:productId', getProductById);
 router.post('/exchange', authMiddleware, registerExchange);
 router.put('/:id', authMiddleware, editProduct);

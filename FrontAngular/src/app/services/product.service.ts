@@ -1,63 +1,54 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
-import { URL_PRODUCTS } from '../shared/constants/url.constants'; // Importa la URL de constantes
-import { ExchangeProposal, Product } from '../shared/interfaces/product.interface';
-
+import { isPlatformBrowser } from '@angular/common';
+import { Observable } from 'rxjs';
+import { Product } from '../shared/interfaces/product.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-  });
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
-  constructor(private http: HttpClient) {}
-
-  getProducts(): Observable<any> {
-    return this.http.get<any>(URL_PRODUCTS).pipe(
-      catchError((error) => {
-        console.log('Error al obtener los productos', error);
-        return throwError(error.error.error || 'Servidor no disponible');
-      })
-    );
+  getUserProducts(): Observable<Product[]> {
+    const token = this.getToken();
+    const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
+    return this.http.get<Product[]>('/api/products/user-products', { headers });
   }
+
+  getProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>('/api/products');
+  }
+
   getProductById(productId: string): Observable<Product> {
-    return this.http.get<Product>(`${URL_PRODUCTS}/${productId}`).pipe(
-      catchError((error) => {
-        console.error('Error al obtener el producto', error);
-        return throwError(error.error.error || 'Servidor no disponible');
-      })
-    );
+    return this.http.get<Product>(`/api/products/${productId}`);
   }
 
-  proposeExchange(proposal: ExchangeProposal): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  createProduct(product: Product): Observable<Product> {
+    const token = this.getToken();
+    const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
+    return this.http.post<Product>('/api/products', product, { headers });
+  }
 
-    return this.http.post<any>(`${URL_PRODUCTS}/exchange`, { proposal }, { headers }).pipe(
-      catchError((error) => {
-        console.error('Error al proponer el cambio', error);
-        return throwError(error.error.error || 'Servidor no disponible');
-      })
-    );
+  editProduct(productId: string, product: Product): Observable<Product> {
+    const token = this.getToken();
+    const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
+    return this.http.put<Product>(`/api/products/${productId}`, product, { headers });
   }
-  editProduct(productId: string, product: Partial<Product>): Observable<Product> {
-    return this.http.put<Product>(`${URL_PRODUCTS}/${productId}`, product, { headers: this.headers }).pipe(
-      catchError((error) => {
-        console.log('Error al editar el producto', error);
-        return throwError(error.error.error || 'Servidor no disponible');
-      })
-    );
-  }
+
   deleteProduct(productId: string): Observable<void> {
-    return this.http.delete<void>(`${URL_PRODUCTS}/${productId}`, { headers: this.headers }).pipe(
-      catchError((error) => {
-        console.log('Error al eliminar el producto', error);
-        return throwError(error.error.error || 'Servidor no disponible');
-      })
-    );
+    const token = this.getToken();
+    const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
+    return this.http.delete<void>(`/api/products/${productId}`, { headers });
+  }
+
+  private getToken(): string | null {
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('token');
+    }
+    return null;
   }
 }

@@ -102,3 +102,13 @@ exports.registerExchange = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// Nueva función para obtener productos del usuario autenticado
+exports.getUserProducts = async (req, res) => {
+  try {
+    const products = await Product.find({ user: req.user.id });
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

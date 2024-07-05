@@ -18,14 +18,14 @@ export class AuthService {
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
-  
 
   login(email: string, password: string): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(URL_LOGIN, { email, password }).pipe(
       tap({
         next: (response) => {
-          if (isPlatformBrowser(this.platformId)) { // Verifica que estés en el navegador
+          if (isPlatformBrowser(this.platformId)) {
             localStorage.setItem('token', response.token);
+            localStorage.setItem('user', JSON.stringify(response.user));
             this.authSubject.next(response);
             this.router.navigate(['/']);
           }
@@ -41,8 +41,9 @@ export class AuthService {
     return this.http.post<AuthResponse>(URL_REGISTER, { email, password }).pipe(
       tap({
         next: (response) => {
-          if (isPlatformBrowser(this.platformId)) { // Verifica que estés en el navegador
+          if (isPlatformBrowser(this.platformId)) {
             localStorage.setItem('token', response.token);
+            localStorage.setItem('user', JSON.stringify(response.user));
             this.authSubject.next(response);
             this.router.navigate(['/']);
           }
@@ -55,34 +56,53 @@ export class AuthService {
   }
 
   logout(): void {
-    if (isPlatformBrowser(this.platformId)) { // Verifica que estés en el navegador
+    if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
       this.authSubject.next(null);
       this.router.navigate(['/login']);
     }
   }
 
   getToken(): string | null {
-    if (isPlatformBrowser(this.platformId)) { // Verifica que estés en el navegador
+    if (isPlatformBrowser(this.platformId)) {
       return localStorage.getItem('token');
     }
     return null;
   }
 
+  getUser(): AuthResponse | null {
+    if (isPlatformBrowser(this.platformId)) {
+      const user = localStorage.getItem('user');
+      if (user) {
+        try {
+          return JSON.parse(user);
+        } catch (e) {
+          console.error('Error parsing user from localStorage:', e);
+          return null;
+        }
+      }
+    }
+    return null;
+  }
+  
+
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
 
-  private setUserToLocalStorage(user: AuthResponse): void {
-    if (isPlatformBrowser(this.platformId)) { // Verifica que estés en el navegador
-      localStorage.setItem('token', user.token);
-    }
-  }
-
   private getUserFromLocalStorage(): AuthResponse | null {
-    if (isPlatformBrowser(this.platformId)) { // Verifica que estés en el navegador
-      const token = localStorage.getItem('token');
-      return token ? { token } : null;
+    if (isPlatformBrowser(this.platformId)) {
+      const user = localStorage.getItem('user');
+      if (user) {
+        try {
+          return JSON.parse(user);
+        } catch (error) {
+          console.error('Error parsing user from localStorage:', error);
+          localStorage.removeItem('user');
+          return null;
+        }
+      }
     }
     return null;
   }

@@ -1,47 +1,31 @@
-<div>
-  <h1>Proponer Intercambio</h1>
-  
-  @if(product) {
-    <div>
-      <h2>{{ product.title }}</h2>
-      <img [src]="product.images[0]" alt="{{ product.title }}" class="w-full h-36 object-cover rounded">
-      <p>{{ product.description }}</p>
-      
-      <form (ngSubmit)="handleSubmit()">
-        <label>
-          Producto Ofrecido:
-          @if(offeredProducts.length) {
-            <select [(ngModel)]="productOffered" name="productOffered" required>
-              @for(product of offeredProducts; track product) {
-                <option [value]="product._id">{{ product.title }}</option>
-              }
-            </select>
-          } @else {
-            <p>No hay productos ofrecidos disponibles.</p>
-          }
-        </label>
-        
-        <label>
-          Producto Solicitado:
-          @if(requestedProducts.length) {
-            <select [(ngModel)]="productRequested" name="productRequested" required>
-              @for(product of requestedProducts; track product) {
-                <option [value]="product._id">{{ product.title }}</option>
-              }
-            </select>
-          } @else {
-            <p>No hay productos solicitados disponibles.</p>
-          }
-        </label>
-        
-        <button type="submit">Proponer</button>
-      </form>
-      
-      @if(message) {
-        <p>{{ message }}</p>
-      }
+<div class="container mx-auto p-6">
+  <div class="flex flex-wrap lg:flex-nowrap">
+    <div class="flex-1 lg:max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
+      <div class="container mx-auto p-6">
+        <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
+          <h1 class="text-2xl font-bold mb-4 text-center">Proponer Intercambio</h1>
+          <form class="space-y-4" #exchangeForm="ngForm" (ngSubmit)="handleSubmit(exchangeForm)">
+            <div *ngIf="product">
+              <h2>{{ product.title }}</h2>
+              <p>{{ product.description }}</p>
+            </div>
+            <div>
+              <label for="details" class="block text-sm font-medium text-gray-700">Detalles del Intercambio</label>
+              <textarea id="details" name="details" ngModel class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Describe tu oferta de intercambio" required></textarea>
+            </div>
+            <div>
+              <label for="proposedProduct" class="block text-sm font-medium text-gray-700">Selecciona tu Producto para el Intercambio</label>
+              <select id="proposedProduct" name="proposedProduct" [(ngModel)]="proposedExchangeProduct" required>
+                <option *ngFor="let p of userProducts" [ngValue]="p">{{ p.title }}</option>
+              </select>
+            </div>
+            <div class="flex justify-center">
+              <button type="submit" class="w-full py-2 px-4 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Proponer Intercambio</button>
+            </div>
+          </form>
+          <p *ngIf="message" class="mt-4 text-center text-red-600">{{ message }}</p>
+        </div>
+      </div>
     </div>
-  } @else {
-    <p *ngIf="!message">Cargando producto...</p>
-  }
+  </div>
 </div>

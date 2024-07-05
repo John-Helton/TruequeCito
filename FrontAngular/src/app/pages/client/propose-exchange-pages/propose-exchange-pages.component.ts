@@ -1,83 +1,91 @@
 import { Component, OnInit } from '@angular/core';
-import { ExchangeProposal, Product } from '../../../shared/interfaces/product.interface';
-import { ProductService } from '../../../services/product.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule, NgForm } from '@angular/forms';
+import { ProductService } from '../../../services/product.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-propose-exchange-pages',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './propose-exchange-pages.component.html',
-  styleUrl: './propose-exchange-pages.component.css'
+  styleUrls: ['./propose-exchange-pages.component.css']
 })
-export class ProposeExchangeComponent implements OnInit {
-  product: Product | null = null;
-  offeredProducts: Product[] = [];
-  requestedProducts: Product[] = [];
-  productOffered: string = '';
-  productRequested: string = '';
+export class ProposeExchangePagesComponent implements OnInit {
+  product: any;
+  proposedExchangeProduct: any;
+  userProducts: any[] = [];
   message: string = '';
 
   constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router,
     private productService: ProductService,
-    private route: ActivatedRoute
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.loadProduct();
-    this.loadProducts();
-  }
-
-  private loadProduct(): void {
     const productId = this.route.snapshot.paramMap.get('id');
     if (productId) {
-      this.productService.getProductById(productId).subscribe(
-        (data) => {
-          this.product = data;
-        },
-        (error) => {
-          console.error('Error loading product', error);
-        }
-      );
+      this.loadProduct(productId);
     }
+    this.loadUserProducts();
   }
 
-  private loadProducts(): void {
-    this.productService.getProducts().subscribe(
-      (data) => {
-        this.offeredProducts = data;
-        this.requestedProducts = data;
+  loadProduct(productId: string): void {
+    this.productService.getProductById(productId).subscribe({
+      next: (product) => {
+        this.product = product;
       },
-      (error) => {
-        console.error('Error loading products', error);
+      error: (error: any) => {
+        console.error('Error al cargar el producto:', error);
+        this.message = 'Error al cargar el producto.';
       }
-    );
+    });
   }
 
-  handleSubmit(): void {
-    const token = localStorage.getItem('token');
-    const userRequested = this.product?.user._id;  // Asume que el producto tiene una propiedad `user`
+  loadUserProducts(): void {
+    this.productService.getUserProducts().subscribe({
+      next: (products) => {
+        this.userProducts = products;
+      },
+      error: (error: any) => {
+        console.error('Error al cargar los productos del usuario:', error);
+        this.message = 'Error al cargar los productos del usuario.';
+      }
+    });
+  }
 
-    if (!userRequested) {
-      this.message = 'Error: Usuario no encontrado.';
+  handleSubmit(form: NgForm): void {
+    if (!this.proposedExchangeProduct || !this.product) {
+      this.message = 'Selecciona los productos correctamente.';
       return;
     }
 
-    const proposal: ExchangeProposal = {
-      productOffered: this.productOffered,
-      productRequested: this.productRequested,
-      userRequested: userRequested
-    };
+    if (form.valid) {
+      const userRequested = this.product.user;
 
-    this.productService.proposeExchange(proposal).subscribe(
-      (response) => {
-        this.message = response.message;
-      },
-      (error) => {
-        this.message = error.error || 'Error al proponer el intercambio';
-      }
-    );
+      const exchangeData = {
+        productOffered: this.proposedExchangeProduct._id,
+        productRequested: this.product._id,
+        userRequested: userRequested
+      };
+
+      const token = this.authService.getToken();
+      const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
+
+      this.http.post('/api/exchanges', exchangeData, { headers }).subscribe({
+        next: () => {
+          this.message = 'Propuesta de intercambio enviada correctamente.';
+        },
+        error: (error: any) => {
+          console.error('Error al enviar la propuesta de intercambio:', error);
+          this.message = 'Error al enviar la propuesta de intercambio.';
+        }
+      });
+    }
   }
 }

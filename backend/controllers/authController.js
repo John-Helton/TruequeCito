@@ -1,51 +1,61 @@
-const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const User = require('../models/User');
 
-// Registro de usuario
-exports.registerUser = async (req, res) => {
-  const { email, password, username } = req.body;
-
-  try {
-    const user = new User({ email, password, username });
-    await user.save();
-    res.status(201).json({ message: 'Usuario registrado correctamente' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: '30d',
+  });
 };
 
-// Inicio de sesión de usuario
-exports.loginUser = async (req, res) => {
+exports.registerUser = async (req, res) => {
   const { email, password } = req.body;
-
   try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: 'Usuario no encontrado' });
+    const userExists = await User.findOne({ email });
+
+    if (userExists) {
+      return res.status(400).json({ message: 'El usuario ya existe' });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Contraseña incorrecta' });
-    }
-
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
+    const user = await User.create({
+      email,
+      password: bcrypt.hashSync(password, 10),
     });
 
-    res.json({ token });
+    res.status(201).json({
+      _id: user._id,
+      email: user.email,
+      token: generateToken(user._id),
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// Perfil de usuario
-exports.getUserProfile = async (req, res) => {
+exports.loginUser = async (req, res) => {
+  const { email, password } = req.body;
   try {
-    const user = await User.findById(req.user.id).select('-password');
-    res.json(user);
+    const user = await User.findOne({ email });
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      res.json({
+        _id: user._id,
+        email: user.email,
+        token: generateToken(user._id),
+      });
+    } else {
+      res.status(401).json({ message: 'Credenciales no válidas' });
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getUserProfile = async (req, res) => {
+  const user = await User.findById(req.user._id).select('-password');
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404).json({ message: 'Usuario no encontrado' });
   }
 };
