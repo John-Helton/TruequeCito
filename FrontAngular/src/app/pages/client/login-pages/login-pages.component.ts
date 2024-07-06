@@ -23,7 +23,7 @@ export class LoginPagesComponent {
       this.authService.login(this.email, this.password).subscribe({
         next: (response) => {
           this.message = 'Inicio de sesión exitoso';
-          this.router.navigate(['/profile']); // Asegúrate de que esta redirección es la esperada
+          this.router.navigate(['/']); // Asegúrate de que esta redirección es la esperada
         },
         error: (error) => {
           this.message = error.error?.message || 'Error en el inicio de sesión';
