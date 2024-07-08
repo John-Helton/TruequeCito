@@ -20,7 +20,8 @@ export class ProductListComponent implements OnInit {
   constructor(private productService: ProductService, private router: Router) {}
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe(
+    // Subscribirse al observable de productos del servicio
+    this.productService.products$.subscribe(
       (data) => {
         this.products = data;
         this.loading = false;
@@ -33,18 +34,17 @@ export class ProductListComponent implements OnInit {
   }
 
   proposeExchange(productId: string): void {
-    // Redirige al usuario al componente de propuesta de intercambio con el ID del producto
     this.router.navigate(['/propose-exchange', productId]);
   }
 
   shouldAnimateTitle(title: string): boolean {
-    const maxLength = 19;  // Ajusta el número máximo de caracteres antes de activar la animación
-    const charCount = title.length; // Cuenta los caracteres en el título
+    const maxLength = 19;
+    const charCount = title.length;
     return charCount > maxLength;
   }
 
   onImageError(event: Event) {
     const imgElement = event.target as HTMLImageElement;
-    imgElement.src = 'assets/default_image.jpg';  // Reemplaza con la ruta a tu imagen por defecto
+    imgElement.src = 'assets/default_image.jpg';  // Ruta a la imagen por defecto
   }
 }

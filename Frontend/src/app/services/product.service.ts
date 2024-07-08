@@ -1,22 +1,33 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, throwError } from 'rxjs';
 import { Product } from '../shared/interfaces/product.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
+  private productsSubject = new BehaviorSubject<Product[]>([]);
+  products$ = this.productsSubject.asObservable();
+
   constructor(
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
-  private productsSubject = new BehaviorSubject<any[]>([]);
-  products$ = this.productsSubject.asObservable();
 
-  setProducts(products: any[]) {
+  setProducts(products: Product[]) {
     this.productsSubject.next(products);
+  }
+
+  getAllProductsBySearch(searchTerm: string): Observable<Product[]> {
+    const encodedSearchTerm = encodeURIComponent(searchTerm);
+    return this.http.get<Product[]>(`/api/products/search/${encodedSearchTerm}`).pipe(
+      catchError(error => {
+        console.error('Error en búsqueda de productos:', error);
+        return throwError(() => new Error('Error en la búsqueda de productos. Inténtalo de nuevo más tarde.'));
+      })
+    );
   }
 
   getUserProducts(): Observable<Product[]> {
