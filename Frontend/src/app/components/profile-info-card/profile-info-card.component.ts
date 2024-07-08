@@ -24,4 +24,7 @@ export class ProfileInfoCardComponent implements OnInit {
     // Asegúrate de que router es inyectado correctamente si no lo es actualmente
     this.router.navigate(['/profile']);
   }
+  goToLogin(): void {
+    this.router.navigate(['/login']);
+  }
 }
