@@ -11,8 +11,8 @@ import { FooterComponent } from '../../components/footer/footer.component';
   imports: [RouterModule, HttpClientModule, NavbarComponent, FooterComponent],
   exportAs: 'app-login-pages',
   template: `
+    <app-navbar></app-navbar>
     <div class="flex flex-col min-h-screen">
-      <app-navbar></app-navbar>
       <div class="flex-grow">
         <router-outlet></router-outlet>
       </div>
