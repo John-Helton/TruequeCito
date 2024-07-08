@@ -10,19 +10,21 @@
 <div class="container mx-auto mt-8">
   <h2 class="text-2xl font-semibold mb-6">Mis Productos</h2>
   <div *ngIf="userProducts.length > 0; else noProducts">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div *ngFor="let product of userProducts" class="bg-white shadow-md rounded-lg overflow-hidden">
-        <img class="w-full h-48 object-cover" [src]="product.images[0]" alt="Product Image">
-        <div class="p-4">
+    <ul class="space-y-4">
+      <li *ngFor="let product of userProducts" class="bg-white shadow-md rounded-lg overflow-hidden flex">
+        <img class="w-40 h-40 object-cover" [src]="product.images[0]" alt="Product Image">
+        <div class="p-4 flex-1 flex flex-col">
           <h5 class="text-xl font-bold mb-2">{{ product.title }}</h5>
-          <p class="text-gray-700 mb-4">{{ product.description }}</p>
-          <div class="flex justify-between items-center">
+          <p class="text-gray-700 overflow-hidden overflow-ellipsis" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
+            {{ product.description }}
+          </p>
+          <div class="flex space-x-2 mt-auto ml-auto">
             <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="editProduct(product._id)">Editar</button>
             <button class="bg-red-500 text-white px-4 py-2 rounded" (click)="deleteProduct(product._id)">Eliminar</button>
           </div>
         </div>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
   <ng-template #noProducts>
     <p>No hay productos para mostrar</p>

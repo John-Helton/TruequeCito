@@ -1,25 +1,25 @@
 <div class="bg-slate-100 rounded-xl p-8 mt-4">
-  <h1 class="text-2xl font-bold mb-4">Productos Disponibles</h1>
-  @if(loading == true) {
-  <div class="text-center">
-    <p>Cargando productos...</p>
-  </div>
-  }@if(error) {
-  <p>Error: {{ error }}</p>
+  <h1 class="text-2xl font-bold mb-4 text-pink-500">Productos Disponibles</h1>
+  @if (loading == true) {
+    <div class="text-center">
+      <p>Cargando productos...</p>
+    </div>
+  } @if (error) {
+    <p>Error: {{ error }}</p>
   }
 
-  <div class="flex flex-wrap gap-5 justify-center">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
     @if (!loading && !error) {
-      @for(product of products; track product) {
-        <div class="border border-gray-300 p-4 rounded-lg w-48 flex flex-col justify-between">
+      @for (product of products; track product) {
+        <div class="border border-gray-300 p-6 rounded-lg flex flex-col justify-between bg-white shadow-md hover:shadow-lg transition-shadow duration-300">
           <div>
-            <img src="{{ product.images[0] }}" alt="{{ product.title }}" class="w-full h-36 object-cover rounded" (error)="onImageError($event)">
+            <img src="{{ product.images[0] }}" alt="{{ product.title }}" class="w-full h-48 object-cover rounded" (error)="onImageError($event)">
             <div class="mt-2 h-6 overflow-hidden relative">
-              <h3 [ngClass]="shouldAnimateTitle(product.title) ? 'animate-marquee' : ''" class="font-semibold whitespace-nowrap overflow-hidden uppercase">{{ product.title }}</h3>
+              <h3 [ngClass]="shouldAnimateTitle(product.title) ? 'animate-marquee' : ''" class="font-semibold whitespace-nowrap overflow-hidden uppercase text-center">{{ product.title }}</h3>
             </div>
-            <p class="text-sm text-gray-600 line-clamp-3">{{ product.description }}</p>
+            <p class="text-sm text-gray-600 line-clamp-3 text-center">{{ product.description }}</p>
           </div>
-          <button class="mt-2 bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-600" (click)="proposeExchange(product._id)">
+          <button class="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600" (click)="proposeExchange(product._id)">
             Proponer Intercambio
           </button>
         </div>
