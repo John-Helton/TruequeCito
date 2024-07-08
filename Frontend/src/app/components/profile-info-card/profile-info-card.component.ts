@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common'; // Importa CommonModule
   templateUrl: './profile-info-card.component.html',
   styleUrls: ['./profile-info-card.component.css'],
   standalone: true,
-  imports: [CommonModule] // Añade CommonModule aquí
+  imports: [CommonModule]
 })
 export class ProfileInfoCardComponent implements OnInit {
   user: User | null = null;
