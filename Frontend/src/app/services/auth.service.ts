@@ -2,7 +2,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { AuthResponse } from '../shared/interfaces/auth.interfaces';
+import { AuthResponse, User } from '../shared/interfaces/auth.interfaces';
 import { URL_LOGIN, URL_REGISTER } from '../shared/constants/url.constants';
 import { isPlatformBrowser } from '@angular/common';
 
@@ -10,8 +10,8 @@ import { isPlatformBrowser } from '@angular/common';
   providedIn: 'root'
 })
 export class AuthService {
-  private authSubject = new BehaviorSubject<AuthResponse | null>(this.getUserFromLocalStorage());
-  public authObservable: Observable<AuthResponse | null> = this.authSubject.asObservable();
+  private authSubject = new BehaviorSubject<User | null>(this.getUserFromLocalStorage());
+  public authObservable: Observable<User | null> = this.authSubject.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -24,9 +24,17 @@ export class AuthService {
       tap({
         next: (response) => {
           if (isPlatformBrowser(this.platformId)) {
+            const user: User = {
+              id: response.user.id,
+              email: response.user.email,
+              username: response.user.username || '', // Asignar valor predeterminado si es undefined
+              avatar: response.user.avatar || '', // Asignar valor predeterminado si es undefined
+              token: response.token,
+              role: response.user.role || 'user' // Asignar un valor por defecto
+            };
             localStorage.setItem('token', response.token);
-            localStorage.setItem('user', JSON.stringify(response.user));
-            this.authSubject.next(response);
+            localStorage.setItem('user', JSON.stringify(user));
+            this.authSubject.next(user);
             this.router.navigate(['/']);
           }
         },
@@ -38,13 +46,26 @@ export class AuthService {
   }
 
   register(email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(URL_REGISTER, { email, password }).pipe(
+    return this.http.post<AuthResponse>(URL_REGISTER, {
+      email,
+      password,
+      username: `user_${Math.floor(Math.random() * 10000)}`, // Nombre de usuario predeterminado
+      avatar: 'default_avatar_url' // URL del avatar predeterminado
+    }).pipe(
       tap({
         next: (response) => {
           if (isPlatformBrowser(this.platformId)) {
+            const user: User = {
+              id: response.user.id,
+              email: response.user.email,
+              username: response.user.username || '', // Asignar valor predeterminado si es undefined
+              avatar: response.user.avatar || '', // Asignar valor predeterminado si es undefined
+              token: response.token,
+              role: response.user.role || 'user' // Asignar un valor por defecto
+            };
             localStorage.setItem('token', response.token);
-            localStorage.setItem('user', JSON.stringify(response.user));
-            this.authSubject.next(response);
+            localStorage.setItem('user', JSON.stringify(user));
+            this.authSubject.next(user);
             this.router.navigate(['/']);
           }
         },
@@ -71,12 +92,12 @@ export class AuthService {
     return null;
   }
 
-  getUser(): AuthResponse | null {
+  getUser(): User | null {
     if (isPlatformBrowser(this.platformId)) {
       const user = localStorage.getItem('user');
       if (user) {
         try {
-          return JSON.parse(user);
+          return JSON.parse(user) as User;
         } catch (e) {
           console.error('Error parsing user from localStorage:', e);
           return null;
@@ -85,18 +106,17 @@ export class AuthService {
     }
     return null;
   }
-  
 
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
 
-  private getUserFromLocalStorage(): AuthResponse | null {
+  private getUserFromLocalStorage(): User | null {
     if (isPlatformBrowser(this.platformId)) {
       const user = localStorage.getItem('user');
       if (user) {
         try {
-          return JSON.parse(user);
+          return JSON.parse(user) as User;
         } catch (error) {
           console.error('Error parsing user from localStorage:', error);
           localStorage.removeItem('user');

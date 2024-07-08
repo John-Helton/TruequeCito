@@ -9,7 +9,7 @@ const generateToken = (id) => {
 };
 
 exports.registerUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, username, avatar } = req.body;
   try {
     const userExists = await User.findOne({ email });
 
@@ -20,17 +20,22 @@ exports.registerUser = async (req, res) => {
     const user = await User.create({
       email,
       password: bcrypt.hashSync(password, 10),
+      username,  // Asegúrate de guardar el username
+      avatar     // Asegúrate de guardar el avatar
     });
 
     res.status(201).json({
       _id: user._id,
       email: user.email,
+      username: user.username,  // Incluye el username en la respuesta
+      avatar: user.avatar,      // Incluye el avatar en la respuesta
       token: generateToken(user._id),
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -39,8 +44,12 @@ exports.loginUser = async (req, res) => {
 
     if (user && (await bcrypt.compare(password, user.password))) {
       res.json({
-        _id: user._id,
-        email: user.email,
+        user: {
+          _id: user._id,
+          email: user.email,
+          username: user.username,
+          avatar: user.avatar
+        },
         token: generateToken(user._id),
       });
     } else {

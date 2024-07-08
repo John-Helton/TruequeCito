@@ -20,25 +20,25 @@ import { User } from '../../../shared/interfaces/auth.interfaces';
   ]
 })
 export class ProfilePageComponent implements OnInit {
-  user: User = new User();
+  user: User = { id: '', email: '', username: '', avatar: '', token: '', role: '' };
   userProducts: Product[] = [];
   message: string = '';
 
   constructor(
     private productService: ProductService,
-    public authService: AuthService, // Cambiado a público
+    public authService: AuthService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    const currentUser = this.authService.getUser();
-    if (currentUser && currentUser.user) {
-      this.user.email = currentUser.user.email;
-      this.user.avatar = currentUser.user.avatar || 'default-avatar.png'; // Reemplazar con el avatar real si está disponible
+    const authResponse = this.authService.getUser();
+    if (authResponse) {
+      this.user = authResponse;
+      this.loadUserProducts();
     } else {
-      console.error('Usuario no autenticado');
+      console.log('Usuario no autenticado');
+      this.router.navigate(['/login']);
     }
-    this.loadUserProducts();
   }
 
   loadUserProducts(): void {
@@ -70,8 +70,6 @@ export class ProfilePageComponent implements OnInit {
   }
 
   updateProfile(): void {
-    // Implementa la lógica para actualizar el perfil del usuario
-    console.log('Updated User:', this.user);
-    this.message = 'Perfil actualizado con éxito.';
+    // Implementar la lógica para actualizar el perfil del usuario
   }
 }

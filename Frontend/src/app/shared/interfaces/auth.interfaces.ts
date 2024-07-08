@@ -18,6 +18,8 @@ export class User {
   avatar?: string;
   token!: string;
   role!: string;
+  exchanges?: number; // Add exchanges property
+  reputation?: number; // Add reputation property
 }
 
 export interface AuthResponse {
@@ -27,6 +29,9 @@ export interface AuthResponse {
     email: string;
     username?: string;
     avatar?: string;
-    // Add any other properties here if needed
+    password?: string;
+    role: string;
+    exchanges?: number;
+    reputation?: number;
   };
 }
