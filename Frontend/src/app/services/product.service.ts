@@ -1,7 +1,7 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Product } from '../shared/interfaces/product.interface';
 
 @Injectable({
@@ -12,6 +12,12 @@ export class ProductService {
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
+  private productsSubject = new BehaviorSubject<any[]>([]);
+  products$ = this.productsSubject.asObservable();
+
+  setProducts(products: any[]) {
+    this.productsSubject.next(products);
+  }
 
   getUserProducts(): Observable<Product[]> {
     const token = this.getToken();
