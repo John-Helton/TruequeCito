@@ -55,18 +55,23 @@ export class AuthService {
       tap({
         next: (response) => {
           if (isPlatformBrowser(this.platformId)) {
-            const user: User = {
-              id: response.user.id,
-              email: response.user.email,
-              username: response.user.username || '', // Asignar valor predeterminado si es undefined
-              avatar: response.user.avatar || '', // Asignar valor predeterminado si es undefined
-              token: response.token,
-              role: response.user.role || 'user' // Asignar un valor por defecto
-            };
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('user', JSON.stringify(user));
-            this.authSubject.next(user);
-            this.router.navigate(['/']);
+            if (response && response.user) {
+              console.log('Registro exitoso:', response);
+              const user: User = {
+                id: response.user.id,
+                email: response.user.email,
+                username: response.user.username || '', // Valor predeterminado
+                avatar: response.user.avatar || '', // Valor predeterminado
+                token: response.token,
+                role: response.user.role || 'user' // Valor por defecto
+              };
+              localStorage.setItem('token', response.token);
+              localStorage.setItem('user', JSON.stringify(user));
+              this.authSubject.next(user);
+              this.router.navigate(['/']);
+            } else {
+              console.error('Respuesta de registro inválida:', response);
+            }
           }
         },
         error: (errorResponse) => {

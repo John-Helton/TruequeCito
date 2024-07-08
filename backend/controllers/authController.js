@@ -11,24 +11,34 @@ const generateToken = (id) => {
 exports.registerUser = async (req, res) => {
   const { email, password, username, avatar } = req.body;
   try {
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Por favor, proporciona todos los campos necesarios' });
+    }
+
     const userExists = await User.findOne({ email });
 
     if (userExists) {
       return res.status(400).json({ message: 'El usuario ya existe' });
     }
 
+    // Encriptar la contraseña aquí
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     const user = await User.create({
       email,
-      password: bcrypt.hashSync(password, 10),
-      username,  // Asegúrate de guardar el username
-      avatar     // Asegúrate de guardar el avatar
+      password: hashedPassword,
+      username,
+      avatar
     });
 
     res.status(201).json({
-      _id: user._id,
-      email: user.email,
-      username: user.username,  // Incluye el username en la respuesta
-      avatar: user.avatar,      // Incluye el avatar en la respuesta
+      user: {
+        id: user._id,
+        email: user.email,
+        username: user.username,
+        avatar: user.avatar
+      },
       token: generateToken(user._id),
     });
   } catch (error) {
@@ -36,10 +46,13 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Por favor, proporciona todos los campos necesarios' });
+    }
+
     const user = await User.findOne({ email });
 
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -61,10 +74,14 @@ exports.loginUser = async (req, res) => {
 };
 
 exports.getUserProfile = async (req, res) => {
-  const user = await User.findById(req.user._id).select('-password');
-  if (user) {
-    res.json(user);
-  } else {
-    res.status(404).json({ message: 'Usuario no encontrado' });
+  try {
+    const user = await User.findById(req.user._id).select('-password');
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { SearchComponent } from '../search/search.component';
 
 @Component({
   selector: 'app-navbar',

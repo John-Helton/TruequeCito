@@ -1,18 +1,19 @@
-<div class="flex justify-center items-center">
-    <form (ngSubmit)="handleSearch()" class="flex items-center space-x-2">
-      <input
-        type="text"
-        [(ngModel)]="searchTerm"
-        name="searchTerm"
-        placeholder="Buscar productos..."
-        class="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-jinson-600"
-        required
-      />
-      <button type="submit" class="px-4 py-2 bg-jinson-600 text-white rounded-md hover:bg-jinson-700 focus:outline-none">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 10l4 4m0-4l-4 4m-1 1a7 7 0 1 0-14 0 7 7 0 0 0 14 0zm-1 1H5" />
-        </svg>
-      </button>
-    </form>
+<div class="flex items-center p-4">
+  <div class="flex-grow">
+    <input
+      [(ngModel)]="searchQuery"
+      (ngModelChange)="onSearchQueryChange()"
+      type="text"
+      class="w-full p-2 rounded-l-md border text-pink focus:outline-none focus:ring focus:ring-blue-500"
+      placeholder="Buscar"
+    />
   </div>
-  
+  <button
+    (click)="search()"
+    class="p-2 bg-blue-600 text-white rounded-r-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-500"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M12.9 14.32a8 8 0 111.42-1.42l4.28 4.28a1 1 0 01-1.42 1.42l-4.28-4.28zM8 14A6 6 0 108 2a6 6 0 000 12z" clip-rule="evenodd" />
+    </svg>
+  </button>
+</div>

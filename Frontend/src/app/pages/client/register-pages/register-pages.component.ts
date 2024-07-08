@@ -27,10 +27,12 @@ export class RegisterPagesComponent {
 
       this.authService.register(this.email, this.password).subscribe({
         next: (response) => {
+          console.log('Respuesta de registro:', response);
           this.message = 'Registro exitoso';
           this.router.navigate(['/']); // Redirige a la página de login después del registro
         },
         error: (error) => {
+          console.error('Error en el registro:', error);
           this.message = error.error?.message || 'Error en el registro';
         }
       });

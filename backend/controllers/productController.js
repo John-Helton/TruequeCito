@@ -112,3 +112,35 @@ exports.getUserProducts = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.searchProducts = async (req, res) => {
+  const { searchTerm } = req.params; // Cambiado de req.body a req.params
+
+  // Validación simple
+  if (!searchTerm || typeof searchTerm !== 'string') {
+    return res.status(400).json({ message: 'El término de búsqueda es requerido y debe ser una cadena de texto' });
+  }
+
+  try {
+    // Búsqueda con normalización
+    const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+
+    // Consulta con paginación opcional
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const skip = (page - 1) * limit;
+
+    const products = await Product.find({
+      approved: true,
+      title: { $regex: normalizedSearchTerm, $options: 'i' },
+      description: { $regex: normalizedSearchTerm, $options: 'i' }
+    })
+    .skip(skip)
+    .limit(limit);
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error('Error en búsqueda de productos:', error);
+    res.status(500).json({ error: 'Error al realizar la búsqueda' });
+  }
+};
