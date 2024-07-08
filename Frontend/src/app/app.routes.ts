@@ -24,7 +24,7 @@ export const routes: Routes = [
             { path: 'register', component: RegisterPagesComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Register`},
             { path: 'profile', component: ProfilePageComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Perfil`},
             { path: 'profile/products', component: UserProductsComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Mis Productos`},
-            { path: 'profile/edit-product-page/:id', component: EditProductPageComponent, canActivate: [AuthGuard] },
+            { path: 'profile/edit-product/:id', component: EditProductPageComponent, canActivate: [AuthGuard] },
             { path: 'createProduct', component: CreatProductPagesComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Crear Producto`},
             { path: 'propose-exchange/:id', component: ProposeExchangePagesComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Postular Intercambio`}
         ]
