@@ -16,9 +16,18 @@ exports.proposeExchange = async (req, res) => {
   }
 };
 
-exports.getExchanges = async (req, res) => {
+exports.getReceivedExchanges = async (req, res) => {
   try {
     const exchanges = await Exchange.find({ userRequested: req.user.id }).populate('productOffered productRequested userOffered userRequested', 'title email');
+    res.status(200).json(exchanges);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getSentExchanges = async (req, res) => {
+  try {
+    const exchanges = await Exchange.find({ userOffered: req.user.id }).populate('productOffered productRequested userOffered userRequested', 'title email');
     res.status(200).json(exchanges);
   } catch (error) {
     res.status(500).json({ error: error.message });

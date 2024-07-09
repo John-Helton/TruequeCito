@@ -1,5 +1,5 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AuthResponse, User } from '../shared/interfaces/auth.interfaces';
@@ -27,10 +27,10 @@ export class AuthService {
             const user: User = {
               id: response.user.id,
               email: response.user.email,
-              username: response.user.username || '', // Asignar valor predeterminado si es undefined
-              avatar: response.user.avatar || '', // Asignar valor predeterminado si es undefined
+              username: response.user.username || '',
+              avatar: response.user.avatar || '',
               token: response.token,
-              role: response.user.role || 'user' // Asignar un valor por defecto
+              role: response.user.role || 'user'
             };
             localStorage.setItem('token', response.token);
             localStorage.setItem('user', JSON.stringify(user));
@@ -49,8 +49,8 @@ export class AuthService {
     return this.http.post<AuthResponse>(URL_REGISTER, {
       email,
       password,
-      username: `user_${Math.floor(Math.random() * 10000)}`, // Nombre de usuario predeterminado
-      avatar: 'default_avatar_url' // URL del avatar predeterminado
+      username: `user_${Math.floor(Math.random() * 10000)}`,
+      avatar: 'https://cdn-icons-png.flaticon.com/512/3607/3607444.png'
     }).pipe(
       tap({
         next: (response) => {
@@ -60,10 +60,10 @@ export class AuthService {
               const user: User = {
                 id: response.user.id,
                 email: response.user.email,
-                username: response.user.username || '', // Valor predeterminado
-                avatar: response.user.avatar || '', // Valor predeterminado
+                username: response.user.username || '',
+                avatar: response.user.avatar || '',
                 token: response.token,
-                role: response.user.role || 'user' // Valor por defecto
+                role: response.user.role || 'user'
               };
               localStorage.setItem('token', response.token);
               localStorage.setItem('user', JSON.stringify(user));

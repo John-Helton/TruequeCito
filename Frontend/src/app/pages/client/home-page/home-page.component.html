@@ -1,3 +1,4 @@
+<!-- home-page.component.html -->
 <div class="container mx-auto p-6">
   <div class="flex flex-wrap lg:flex-nowrap">
     <!-- Main content -->
@@ -11,51 +12,56 @@
       <p class="text-gray-600 text-center mb-8">
         Hacemos felices a nuestros usuarios ofreciéndoles tantas opciones como sea posible para intercambiar
       </p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        <div class="relative">
-          <img src="https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c08504972.png" alt="Destination 1" class="w-full h-auto rounded-lg">
-        </div>
-        <div>
-          <img src="https://nanotroniconline.com/wp-content/uploads/2020/09/mouse-gamer-gaming-logitech-g903-nanotroniconline.png" alt="Destination 2" class="w-full h-auto rounded-lg">
-        </div>
-        <div class="relative">
-          <img src="https://pycca.vteximg.com.br/arquivos/ids/259657-600-600/U00796.png?v=638501822662500000" alt="Destination 3" class="w-full h-auto rounded-lg">
-        </div>
-      </div>
-      <div class="mt-8 flex space-x-4">
-        <button class="bg-blue-500 text-white px-4 py-2 rounded-full">Comenzar Trueque</button>
-        <button class="bg-gray-300 text-black px-4 py-2 rounded-full">Top Productos</button>
-      </div>
-
-      <!-- Product list -->
       <app-product-list></app-product-list>
-
     </div>
 
     <!-- Profile info card -->
-
     <div class="w-full lg:w-1/4 lg:ml-6 mt-6 lg:mt-0 space-y-6">
       <app-profile-info-card class="w-full mb-6 lg:mb-0 lg:w-1/2 lg:mr-6"></app-profile-info-card>
 
-      <!-- Product cards -->
-      <div class="bg-white p-6 rounded-lg shadow-lg">
-        <div class="flex justify-between">
-          <div class="w-full lg:w-1/2 mb-6">
-            <h2 class="text-lg font-bold mb-2">Laptop HP</h2>
-            <p class="text-gray-700 mb-4">Laptop HP usada en buen estado</p>
-            <img src="https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c08504972.png" alt="Producto 1" class="w-full h-auto rounded-lg object-cover">
+      <!-- Received Exchanges -->
+      <div *ngIf="exchangesReceived.length > 0" class="sticky top-0 bg-white p-6 rounded-lg shadow-lg w-full z-50">
+        <h2 class="text-lg font-bold mb-4 text-pink-500">Intercambio Propuesto</h2>
+        <div class="mb-4">
+          <p class="text-sm text-gray-600">{{ currentUser.username }} propone un intercambio con otro usuario</p>
+        </div>
+        <div class="flex justify-between items-center mb-4 space-x-4 group relative exchange-container">
+          <div class="w-1/2 p-2 bg-gray-100 rounded-lg transform transition-transform duration-500 ease-in-out cursor-pointer product-card-1" *ngIf="exchangesReceived[0]?.productOffered" (click)="navigateToProduct(exchangesReceived[0].productOffered._id)">
+            <h3 class="text-base font-semibold text-pink-500 mb-2">{{ exchangesReceived[0].productOffered.title }}</h3>
+            <p class="text-gray-700 text-sm mb-2">{{ exchangesReceived[0].productOffered.description }}</p>
+            <img [src]="exchangesReceived[0].productOffered.image" alt="Producto 1" class="w-full h-auto rounded-lg object-cover" (error)="onImageError($event)">
           </div>
-          <div class="w-full lg:w-1/2 mb-6">
-            <h2 class="text-lg font-bold mb-2">Ratón Gamer</h2>
-            <p class="text-gray-700 mb-4">Ratón de juego de alta precisión</p>
-            <img src="https://nanotroniconline.com/wp-content/uploads/2020/09/mouse-gamer-gaming-logitech-g903-nanotroniconline.png" alt="Producto 1" class="w-full h-auto rounded-lg object-cover">
+          <div class="w-1/2 p-2 bg-gray-100 rounded-lg transform transition-transform duration-500 ease-in-out cursor-pointer product-card-2" *ngIf="exchangesReceived[0]?.productRequested" (click)="navigateToProduct(exchangesReceived[0].productRequested._id)">
+            <h3 class="text-base font-semibold text-pink-500 mb-2">{{ exchangesReceived[0].productRequested.title }}</h3>
+            <p class="text-gray-700 text-sm mb-2">{{ exchangesReceived[0].productRequested.description }}</p>
+            <img [src]="exchangesReceived[0].productRequested.image" alt="Producto 2" class="w-full h-auto rounded-lg object-cover" (error)="onImageError($event)">
           </div>
         </div>
-        <div class="flex justify-center mt-0">
-          <button class="bg-blue-500 text-white px-4 py-2 rounded-full">Intercambio</button>
+        <div class="flex justify-around mt-4">
+          <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full">Intercambiar</button>
+          <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">Rechazar</button>
         </div>
       </div>
+
+      <!-- Sent Exchanges -->
+      <div *ngIf="exchangesSent.length > 0" class="sticky top-0 bg-white p-6 rounded-lg shadow-lg w-full z-50 mt-6">
+        <h2 class="text-lg font-bold mb-4 text-pink-500">Esperando Respuesta</h2>
+        <div class="mb-4">
+          <p class="text-sm text-gray-600">Tu propuesta de intercambio está pendiente de respuesta.</p>
+        </div>
+        <div class="flex justify-between items-center mb-4 space-x-4 group relative exchange-container">
+          <div class="w-1/2 p-2 bg-gray-100 rounded-lg transform transition-transform duration-500 ease-in-out cursor-pointer product-card-1" *ngIf="exchangesSent[0]?.productOffered" (click)="navigateToProduct(exchangesSent[0].productOffered._id)">
+            <h3 class="text-base font-semibold text-pink-500 mb-2">{{ exchangesSent[0].productOffered.title }}</h3>
+            <p class="text-gray-700 text-sm mb-2">{{ exchangesSent[0].productOffered.description }}</p>
+            <img [src]="exchangesSent[0].productOffered.image" alt="Producto 1" class="w-full h-auto rounded-lg object-cover" (error)="onImageError($event)">
+          </div>
+          <div class="w-1/2 p-2 bg-gray-100 rounded-lg transform transition-transform duration-500 ease-in-out cursor-pointer product-card-2" *ngIf="exchangesSent[0]?.productRequested" (click)="navigateToProduct(exchangesSent[0].productRequested._id)">
+            <h3 class="text-base font-semibold text-pink-500 mb-2">{{ exchangesSent[0].productRequested.title }}</h3>
+            <p class="text-gray-700 text-sm mb-2">{{ exchangesSent[0].productRequested.description }}</p>
+            <img [src]="exchangesSent[0].productRequested.image" alt="Producto 2" class="w-full h-auto rounded-lg object-cover" (error)="onImageError($event)">
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
 </div>
-

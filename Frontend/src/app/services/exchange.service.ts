@@ -27,10 +27,16 @@ export class ExchangeService {
     return this.http.post(`${this.apiUrl}/propose`, { productOffered, productRequested, userRequested }, { headers });
   }
 
-  getExchanges(): Observable<any> {
+  getReceivedExchanges(): Observable<any> {
     const token = this.getToken();
     const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
-    return this.http.get(this.apiUrl, { headers });
+    return this.http.get(`${this.apiUrl}/received`, { headers });
+  }
+
+  getSentExchanges(): Observable<any> {
+    const token = this.getToken();
+    const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
+    return this.http.get(`${this.apiUrl}/sent`, { headers });
   }
 
   updateExchangeStatus(exchangeId: string, status: string): Observable<any> {

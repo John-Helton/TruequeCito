@@ -11,7 +11,7 @@
   <ng-container *ngIf="user; else noUserContent">
     <div class="flex items-center mb-4">
       <img
-        [src]="user.avatar || 'https://via.placeholder.com/50'"
+        [src]="user.avatar || 'https://cdn-icons-png.flaticon.com/512/6596/6596121.png'"
         alt="Avatar"
         class="w-12 h-12 rounded-full mr-4"
       />
@@ -22,7 +22,7 @@
     </div>
     <div class="text-gray-600 mb-4">
       <p>Intercambios realizados: <span class="font-bold">{{ user.exchanges || 0 }}</span></p>
-      <p>Reputación: <span class="font-bold">{{ user.reputation || 'N/A' }}</span> / 5</p>
+      <p>Reputación: <span class="font-bold">{{ user.reputation || '0' }}</span> / 5</p>
     </div>
     <button
       (click)="goToProfile()"
@@ -34,11 +34,6 @@
 
   <ng-template #noUserContent>
     <div class="flex items-center mb-4">
-      <img
-        src="https://via.placeholder.com/50"
-        alt="Placeholder Avatar"
-        class="w-12 h-12 rounded-full mr-4"
-      />
       <div>
         <p class="text-gray-600">Para acceder a esta información, debes iniciar sesión.</p>
       </div>

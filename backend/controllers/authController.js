@@ -11,7 +11,7 @@ const generateToken = (id) => {
 exports.registerUser = async (req, res) => {
   const { email, password, username, avatar } = req.body;
   try {
-    if (!email || !password) {
+    if (!email || !password || !username) {
       return res.status(400).json({ message: 'Por favor, proporciona todos los campos necesarios' });
     }
 
@@ -21,13 +21,9 @@ exports.registerUser = async (req, res) => {
       return res.status(400).json({ message: 'El usuario ya existe' });
     }
 
-    // Encriptar la contraseña aquí
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
     const user = await User.create({
       email,
-      password: hashedPassword,
+      password, // La contraseña se encriptará automáticamente en el esquema
       username,
       avatar
     });
@@ -55,16 +51,25 @@ exports.loginUser = async (req, res) => {
 
     const user = await User.findOne({ email });
 
-    if (user && (await bcrypt.compare(password, user.password))) {
-      res.json({
-        user: {
-          _id: user._id,
-          email: user.email,
-          username: user.username,
-          avatar: user.avatar
-        },
-        token: generateToken(user._id),
-      });
+    console.log('Usuario encontrado para el email:', user);
+
+    if (user) {
+      const isMatch = await bcrypt.compare(password, user.password);
+      console.log('Comparación de contraseñas:', isMatch, 'Ingresada:', password, 'Almacenada:', user.password);
+
+      if (isMatch) {
+        res.json({
+          user: {
+            _id: user._id,
+            email: user.email,
+            username: user.username,
+            avatar: user.avatar
+          },
+          token: generateToken(user._id),
+        });
+      } else {
+        res.status(401).json({ message: 'Credenciales no válidas' });
+      }
     } else {
       res.status(401).json({ message: 'Credenciales no válidas' });
     }

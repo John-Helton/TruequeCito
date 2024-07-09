@@ -20,10 +20,11 @@ export class LoginPagesComponent {
 
   handleSubmit(form: NgForm): void {
     if (form.valid) {
+      console.log('Datos del formulario:', this.email, this.password);
       this.authService.login(this.email, this.password).subscribe({
         next: (response) => {
           this.message = 'Inicio de sesión exitoso';
-          this.router.navigate(['/']); // Asegúrate de que esta redirección es la esperada
+          this.router.navigate(['/']);
         },
         error: (error) => {
           this.message = error.error?.message || 'Error en el inicio de sesión';
@@ -33,4 +34,5 @@ export class LoginPagesComponent {
       this.message = 'Por favor, completa todos los campos.';
     }
   }
+  
 }
