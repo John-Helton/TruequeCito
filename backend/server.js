@@ -3,17 +3,13 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const cors = require('cors');
 
-// Configura dotenv para leer las variables de entorno desde .env
 dotenv.config();
 
-// Conecta a la base de datos
 connectDB();
 
 const app = express();
 
-// Habilitar CORS
 app.use(cors());
-
 app.use(express.json());
 
 const authRoutes = require('./routes/authRoutes');

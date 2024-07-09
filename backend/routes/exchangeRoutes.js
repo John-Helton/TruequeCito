@@ -1,10 +1,11 @@
 const express = require('express');
-const { proposeExchange, getExchanges, updateExchangeStatus } = require('../controllers/exchangeController');
+const { proposeExchange, getReceivedExchanges, getSentExchanges, updateExchangeStatus } = require('../controllers/exchangeController');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/', authMiddleware, proposeExchange);
-router.get('/', authMiddleware, getExchanges);
+router.get('/received', authMiddleware, getReceivedExchanges);
+router.get('/sent', authMiddleware, getSentExchanges);
 router.put('/status', authMiddleware, updateExchangeStatus);
 
 module.exports = router;
