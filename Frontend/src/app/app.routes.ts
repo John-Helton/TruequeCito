@@ -11,6 +11,7 @@ import { ProposeExchangePagesComponent } from './pages/client/propose-exchange-p
 import { UserProductsComponent } from './pages/client/user-products/user-products.component';
 import { EditProductPageComponent } from './pages/client/edit-product-page/edit-product-page.component';
 import { AuthGuard } from './guards/auth.guard';
+import { ProposalsListComponent } from './components/proposals-list/proposals-list.component';
 
 const titleGlobal = 'Trueques |';
 
@@ -26,7 +27,8 @@ export const routes: Routes = [
             { path: 'profile/products', component: UserProductsComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Mis Productos`},
             { path: 'profile/edit-product/:id', component: EditProductPageComponent, canActivate: [AuthGuard] },
             { path: 'createProduct', component: CreatProductPagesComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Crear Producto`},
-            { path: 'propose-exchange/:id', component: ProposeExchangePagesComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Postular Intercambio`}
+            { path: 'propose-exchange/:id', component: ProposeExchangePagesComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Postular Intercambio`},
+            { path: 'request-for-proposals', component: ProposalsListComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Postular Intercambio`},
         ]
     },
     {

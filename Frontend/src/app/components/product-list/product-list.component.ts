@@ -16,6 +16,7 @@ export class ProductListComponent implements OnInit {
   products: Product[] = [];
   loading: boolean = true;
   error: string = '';
+  username: string = '';
 
   constructor(private productService: ProductService, private router: Router) {}
 
