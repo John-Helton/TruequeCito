@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
   styleUrl: './register-pages.component.css'
 })
 export class RegisterPagesComponent {
+  username: string = '';
   email: string = '';
   password: string = '';
   confirmPassword: string = '';
@@ -25,7 +26,7 @@ export class RegisterPagesComponent {
         return;
       }
 
-      this.authService.register(this.email, this.password).subscribe({
+      this.authService.register(this.email, this.password, this.username).subscribe({
         next: (response) => {
           console.log('Respuesta de registro:', response);
           this.message = 'Registro exitoso';
@@ -39,5 +40,7 @@ export class RegisterPagesComponent {
     } else {
       this.message = 'Por favor, completa todos los campos.';
     }
+  }
+  registerWithGoogle(): void {
   }
 }

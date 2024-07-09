@@ -45,11 +45,14 @@ export class AuthService {
     );
   }
 
-  register(email: string, password: string): Observable<AuthResponse> {
+  register(email: string, password: string, username: string): Observable<AuthResponse> {
+    // Si no se proporciona un nombre de usuario, se genera uno por defecto
+    const userNameToUse = username.trim() || `user_${Math.floor(Math.random() * 10000)}`;
+  
     return this.http.post<AuthResponse>(URL_REGISTER, {
       email,
       password,
-      username: `user_${Math.floor(Math.random() * 10000)}`,
+      username: userNameToUse,
       avatar: 'https://cdn-icons-png.flaticon.com/512/3607/3607444.png'
     }).pipe(
       tap({
@@ -80,6 +83,7 @@ export class AuthService {
       })
     );
   }
+  
 
   logout(): void {
     if (isPlatformBrowser(this.platformId)) {
