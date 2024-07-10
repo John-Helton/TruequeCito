@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AuthResponse, User } from '../shared/interfaces/auth.interfaces';
-import { URL_LOGIN, URL_REGISTER } from '../shared/constants/url.constants';
+import { URL_LOGIN, URL_PROFILE, URL_REGISTER } from '../shared/constants/url.constants';
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
@@ -134,5 +134,15 @@ export class AuthService {
       }
     }
     return null;
+  }
+  setUser(user: User | null): void {
+    if (isPlatformBrowser(this.platformId)) {
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(user));
+      } else {
+        localStorage.removeItem('user');
+      }
+      this.authSubject.next(user);
+    }
   }
 }

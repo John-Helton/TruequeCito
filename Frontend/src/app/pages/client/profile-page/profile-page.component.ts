@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { User } from '../../../shared/interfaces/auth.interfaces';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -27,6 +28,7 @@ export class ProfilePageComponent implements OnInit {
   constructor(
     private productService: ProductService,
     public authService: AuthService,
+    private userService: UserService,
     private router: Router
   ) {}
 
@@ -70,6 +72,16 @@ export class ProfilePageComponent implements OnInit {
   }
 
   updateProfile(): void {
-    // Implementar la lógica para actualizar el perfil del usuario
+    this.userService.updateUserProfile(this.user).subscribe(
+      (updatedUser) => {
+        this.user = updatedUser;
+        this.authService.setUser(updatedUser); // Actualizar usuario en AuthService si es necesario
+        this.message = 'Perfil actualizado exitosamente.';
+      },
+      (error) => {
+        console.error('Error actualizando perfil:', error);
+        this.message = 'Error al actualizar perfil.';
+      }
+    );
   }
 }
