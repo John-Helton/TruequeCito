@@ -10,7 +10,7 @@ import { ProposalsListComponent } from '../../../components/proposals-list/propo
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [CommonModule, ProductListComponent, ProfileInfoCardComponent, ProposalsListComponent],
+  imports: [CommonModule, ProductListComponent, ProfileInfoCardComponent],
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css']
 })

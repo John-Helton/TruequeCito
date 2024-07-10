@@ -19,6 +19,7 @@
               <h3 [ngClass]="shouldAnimateTitle(product.title) ? 'animate-marquee' : ''" class="font-semibold whitespace-nowrap overflow-hidden uppercase text-center">{{ product.title }}</h3>
             </div>
             <p class="text-sm text-gray-600 line-clamp-3 text-center">{{ product.description }}</p>
+            <p class="text-sm text-gray-600 line-clamp-3 text-center">Publicado por: {{ product.user.username}}</p>
           </div>
           <button class="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600" (click)="proposeExchange(product._id)">
             Proponer Intercambio
