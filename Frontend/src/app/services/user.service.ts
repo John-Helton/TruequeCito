@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, catchError, Observable, throwError } from 'rxjs';
 import { User } from '../shared/interfaces/auth.interfaces';
-import { Product } from '../shared/interfaces/product.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +10,8 @@ import { Product } from '../shared/interfaces/product.interface';
 export class UserService {
   private userSubject = new BehaviorSubject<User | null>(null);
   user$ = this.userSubject.asObservable();
+
+  private readonly apiUrl = 'http://localhost:5000/api/auth/user';
 
   constructor(
     private http: HttpClient,
@@ -24,14 +25,14 @@ export class UserService {
   updateUserProfile(user: User): Observable<User> {
     const token = this.getToken();
     const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
-    return this.http.put<User>('/api/user/profile', user, { headers }).pipe(
+    
+    return this.http.put<User>(`${this.apiUrl}/profile`, user, { headers }).pipe(
       catchError(error => {
         console.error('Error actualizando perfil:', error);
         return throwError(() => new Error('Error al actualizar perfil. Inténtalo de nuevo más tarde.'));
       })
     );
   }
-
 
   private getToken(): string | null {
     if (isPlatformBrowser(this.platformId)) {
