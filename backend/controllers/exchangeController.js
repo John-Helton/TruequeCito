@@ -7,7 +7,6 @@ exports.proposeExchange = async (req, res) => {
       productOffered,
       productRequested,
       userOffered: req.user.id,
-      userOffered: req.user.username,
       userRequested: req.body.userRequested
     });
     await exchange.save();
