@@ -29,7 +29,7 @@ exports.getProducts = async (req, res) => {
     const query = searchTerm
       ? { approved: true, title: { $regex: searchTerm, $options: 'i' } }
       : { approved: true };
-    const products = await Product.find(query).populate('user', 'email');
+    const products = await Product.find(query).populate('user', 'email username');
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ error: error.message });

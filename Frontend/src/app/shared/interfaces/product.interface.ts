@@ -9,13 +9,20 @@ export interface Product {
     };
   }
 
-export interface ExchangeProposal {
-    productOffered: string; // ID del producto ofrecido
+  export interface ExchangeProposal {
+    productOffered: {
+      _id: string;
+      images: string[]; // Imágenes del producto ofrecido
+      user: {
+        _id: string;
+        username: string; // El nombre de usuario del propietario del producto ofrecido
+      };
+    };
     productRequested: string; // ID del producto solicitado
     userRequested: {
       username: string;
-    }; // ID del usuario que solicitó el intercambio
-}
+    };
+  }
 
 export interface Proposal {
   _id: string;
