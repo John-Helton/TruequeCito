@@ -12,34 +12,38 @@ import { UserProductsComponent } from './pages/client/user-products/user-product
 import { EditProductPageComponent } from './pages/client/edit-product-page/edit-product-page.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ProposalsListComponent } from './components/proposals-list/proposals-list.component';
+import { ProductDetailComponent } from './components/product-detail/product-detail.component';
+import { PaymentComponent } from './components/payment/payment.component';
 
 const titleGlobal = 'Trueques |';
 
 export const routes: Routes = [
-    {
-        path: '', component: ClientComponent,
-        title: `${titleGlobal} Cliente`,
-        children: [
-            { path: '', component: HomePageComponent, pathMatch: 'full', data: { animation: 'HomePage' }},
-            { path: 'login', component: LoginPagesComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Login` },
-            { path: 'register', component: RegisterPagesComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Register`},
-            { path: 'profile', component: ProfilePageComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Perfil`},
-            { path: 'profile/products', component: UserProductsComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Mis Productos`},
-            { path: 'profile/edit-product/:id', component: EditProductPageComponent, canActivate: [AuthGuard] },
-            { path: 'createProduct', component: CreatProductPagesComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Crear Producto`},
-            { path: 'propose-exchange/:id', component: ProposeExchangePagesComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Postular Intercambio`},
-            { path: 'request-for-proposals', component: ProposalsListComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Postular Intercambio`},
-        ]
-    },
-    {
-        path: 'dashboard', component: AdminComponent,
-        title: `${titleGlobal} Dashboard`,
-        children: [
-            { path: '', component: AdminComponent, pathMatch: 'full' },
-        ]
-    },
-    {
-        path: '**', component: NotFound404Component,
-        title: `${titleGlobal} 404`,
-    }
+  {
+    path: '', component: ClientComponent,
+    title: `${titleGlobal} Cliente`,
+    children: [
+      { path: '', component: HomePageComponent, pathMatch: 'full', data: { animation: 'HomePage' } },
+      { path: 'login', component: LoginPagesComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Login` },
+      { path: 'register', component: RegisterPagesComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Register` },
+      { path: 'profile', component: ProfilePageComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Perfil` },
+      { path: 'profile/products', component: UserProductsComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Mis Productos` },
+      { path: 'profile/edit-product/:id', component: EditProductPageComponent, canActivate: [AuthGuard] },
+      { path: 'createProduct', component: CreatProductPagesComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Crear Producto` },
+      { path: 'propose-exchange/:id', component: ProposeExchangePagesComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Postular Intercambio` },
+      { path: 'request-for-proposals', component: ProposalsListComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Postular Intercambio` },
+      { path: 'product/:id/:exchangeId', component: ProductDetailComponent, canActivate: [AuthGuard], title: `${titleGlobal} Detalle del Producto` },
+      { path: 'payment/:exchangeId', component: PaymentComponent, canActivate: [AuthGuard], title: `${titleGlobal} Pago` } // Agrega esta ruta
+    ]
+  },
+  {
+    path: 'dashboard', component: AdminComponent,
+    title: `${titleGlobal} Dashboard`,
+    children: [
+      { path: '', component: AdminComponent, pathMatch: 'full' },
+    ]
+  },
+  {
+    path: '**', component: NotFound404Component,
+    title: `${titleGlobal} 404`,
+  }
 ];

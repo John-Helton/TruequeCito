@@ -36,50 +36,8 @@
       <app-profile-info-card></app-profile-info-card>
       
 
-      <!-- Received Exchanges <app-proposals-list></app-proposals-list>-->
-      <div *ngIf="exchangesReceived.length > 0" class=" bg-white p-6 rounded-lg shadow-lg w-full z-50">
-        <h2 class="text-lg font-bold mb-4 text-pink-500">Intercambio Propuesto</h2>
-        <div class="mb-4">
-          <p class="text-sm text-gray-600">{{ currentUser.username }} propone un intercambio con otro usuario</p>
-        </div>
-        <div class="flex justify-between items-center mb-4 space-x-4 group relative exchange-container">
-          <div class="w-1/2 p-2 bg-gray-100 rounded-lg transform transition-transform duration-500 ease-in-out cursor-pointer product-card-1" *ngIf="exchangesReceived[0]?.productOffered" (click)="navigateToProduct(exchangesReceived[0].productOffered._id)">
-            <h3 class="text-base font-semibold text-pink-500 mb-2">{{ exchangesReceived[0].productOffered.title }}</h3>
-            <p class="text-gray-700 text-sm mb-2">{{ exchangesReceived[0].productOffered.description }}</p>
-            <img [src]="exchangesReceived[0].productOffered.image" alt="Producto 1" class="w-full h-auto rounded-lg object-cover" (error)="onImageError($event)">
-          </div>
-          <div class="w-1/2 p-2 bg-gray-100 rounded-lg transform transition-transform duration-500 ease-in-out cursor-pointer product-card-2" *ngIf="exchangesReceived[0]?.productRequested" (click)="navigateToProduct(exchangesReceived[0].productRequested._id)">
-            <h3 class="text-base font-semibold text-pink-500 mb-2">{{ exchangesReceived[0].productRequested.title }}</h3>
-            <p class="text-gray-700 text-sm mb-2">{{ exchangesReceived[0].productRequested.description }}</p>
-            <img [src]="exchangesReceived[0].productRequested.image" alt="Producto 2" class="w-full h-auto rounded-lg object-cover" (error)="onImageError($event)">
-          </div>
-        </div>
-        <div class="flex justify-around mt-4">
-          <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full">Intercambiar</button>
-          <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">Rechazar</button>
-        </div>
-      </div>
-
-      <!-- Sent Exchanges -->
-      <div *ngIf="exchangesSent.length > 0" class=" bg-white p-6 rounded-lg shadow-lg w-full z-50 mt-6">
-        <h2 class="text-lg font-bold mb-4 text-pink-500">Esperando Respuesta</h2>
-        <div class="mb-4">
-          <p class="text-sm text-gray-600">Tu propuesta de intercambio está pendiente de respuesta.</p>
-        </div>
-        <div class="flex justify-between items-center mb-4 space-x-4 group relative exchange-container">
-          <div class="w-1/2 p-2 bg-gray-100 rounded-lg transform transition-transform duration-500 ease-in-out cursor-pointer product-card-1" *ngIf="exchangesSent[0]?.productOffered" (click)="navigateToProduct(exchangesSent[0].productOffered._id)">
-            <h3 class="text-base font-semibold text-pink-500 mb-2">{{ exchangesSent[0].productOffered.title }}</h3>
-            <p class="text-gray-700 text-sm mb-2">{{ exchangesSent[0].productOffered.description }}</p>
-            <img [src]="exchangesSent[0].productOffered.image" alt="Producto 1" class="w-full h-auto rounded-lg object-cover" (error)="onImageError($event)">
-          </div>
-          
-          <div class="w-1/2 p-2 bg-gray-100 rounded-lg transform transition-transform duration-500 ease-in-out cursor-pointer product-card-2" *ngIf="exchangesSent[0]?.productRequested" (click)="navigateToProduct(exchangesSent[0].productRequested._id)">
-            <h3 class="text-base font-semibold text-pink-500 mb-2">{{ exchangesSent[0].productRequested.title }}</h3>
-            <p class="text-gray-700 text-sm mb-2">{{ exchangesSent[0].productRequested.description }}</p>
-            <img [src]="exchangesSent[0].productRequested.image" alt="Producto 2" class="w-full h-auto rounded-lg object-cover" (error)="onImageError($event)">
-          </div>
-        </div>
-      </div>
+      <app-proposals-list></app-proposals-list>
+     
     </div>
   </div>
 </div>
