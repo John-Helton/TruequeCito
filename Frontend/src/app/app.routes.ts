@@ -32,8 +32,10 @@ export const routes: Routes = [
       { path: 'propose-exchange/:id', component: ProposeExchangePagesComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Postular Intercambio` },
       { path: 'request-for-proposals', component: ProposalsListComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Postular Intercambio` },
       { path: 'product/:id/:exchangeId', component: ProductDetailComponent, canActivate: [AuthGuard], title: `${titleGlobal} Detalle del Producto` },
-      { path: 'payment/:exchangeId', component: PaymentComponent, canActivate: [AuthGuard], title: `${titleGlobal} Pago` } // Agrega esta ruta
+      { path: 'payment', component: PaymentComponent, canActivate: [AuthGuard], title: `${titleGlobal} Pago` }, // Agrega esta ruta
+      // { path: 'payment/:exchangeId', component: PaymentComponent, canActivate: [AuthGuard], title: `${titleGlobal} Pago` } // Agrega esta ruta
     ]
+  
   },
   {
     path: 'dashboard', component: AdminComponent,
