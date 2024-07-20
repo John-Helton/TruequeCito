@@ -3,6 +3,9 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const cors = require('cors');
 
+const passport = require('passport');
+const configurePassport = require('./config/passport');
+
 dotenv.config();
 
 connectDB();
@@ -11,6 +14,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(passport.initialize());
+configurePassport(passport);
 
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');

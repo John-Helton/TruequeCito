@@ -41,6 +41,15 @@ export class RegisterPagesComponent {
       this.message = 'Por favor, completa todos los campos.';
     }
   }
-  registerWithGoogle(): void {
+  loginWithGoogle(): void {
+    this.authService.loginWithGoogle();
   }
+  loginWithInstagram(): void {
+    this.authService.loginWithGoogle();
+  }
+  loginWithDiscord(): void {
+    this.authService.loginWithGoogle();
+  }
+
+
 }

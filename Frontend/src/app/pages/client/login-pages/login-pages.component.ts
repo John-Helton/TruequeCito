@@ -34,5 +34,15 @@ export class LoginPagesComponent {
       this.message = 'Por favor, completa todos los campos.';
     }
   }
+
+  loginWithGoogle(): void {
+    this.authService.loginWithGoogle();
+  }
+  loginWithInstagram(): void {
+    this.authService.loginWithGoogle();
+  }
+  loginWithDiscord(): void {
+    this.authService.loginWithGoogle();
+  }
   
 }

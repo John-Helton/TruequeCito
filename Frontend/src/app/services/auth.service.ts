@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AuthResponse, User } from '../shared/interfaces/auth.interfaces';
-import { URL_LOGIN, URL_PROFILE, URL_REGISTER } from '../shared/constants/url.constants';
+import { URL_CALLBACK, URL_LOGIN, URL_PROFILE, URL_REGISTER } from '../shared/constants/url.constants';
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
@@ -83,7 +83,35 @@ export class AuthService {
       })
     );
   }
-  
+  loginWithGoogle(): void {
+    window.location.href = 'http://localhost:5000/api/auth/google';
+  }
+
+  handleGoogleCallback(): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(URL_CALLBACK, {}).pipe(
+      tap({
+        next: (response) => {
+          if (isPlatformBrowser(this.platformId)) {
+            const user: User = {
+              id: response.user.id,
+              email: response.user.email,
+              username: response.user.username || '',
+              avatar: response.user.avatar || '',
+              token: response.token,
+              role: response.user.role || 'user'
+            };
+            localStorage.setItem('token', response.token);
+            localStorage.setItem('user', JSON.stringify(user));
+            this.authSubject.next(user);
+            this.router.navigate(['/']);
+          }
+        },
+        error: (error) => {
+          console.error('Error en la autenticación con Google', error);
+        }
+      })
+    );
+  }
 
   logout(): void {
     if (isPlatformBrowser(this.platformId)) {
