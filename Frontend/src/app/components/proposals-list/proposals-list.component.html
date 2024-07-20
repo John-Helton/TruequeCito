@@ -6,7 +6,7 @@
   <h2 class="text-lg font-bold mb-4 text-pink-500">Intercambio Propuesto</h2>
   <div class="mb-4">
     <p class="text-sm text-gray-600">
-      {{ currentUser.username }} propone un intercambio con otro usuario
+      {{ exchangesReceived[0].userOffered.username }} te está proponiendo un intercambio
     </p>
   </div>
   <div
@@ -16,16 +16,13 @@
     <div
       class="w-1/2 p-2 bg-gray-100 rounded-lg transform transition-transform duration-500 ease-in-out cursor-pointer product-card-1"
       *ngIf="exchangesReceived[0]?.productOffered"
-      (click)="navigateToProduct(exchangesReceived[0].productOffered._id)"
+      (click)="navigateToProduct(exchangesReceived[0].productOffered._id, exchangesReceived[0]._id)"
     >
       <h3 class="text-base font-semibold text-pink-500 mb-2">
         {{ exchangesReceived[0].productOffered.title }}
       </h3>
-      <p class="text-gray-700 text-sm mb-2">
-        {{ exchangesReceived[0].productOffered.description }}
-      </p>
       <img
-        [src]="exchangesReceived[0].productOffered.image"
+        [src]="exchangesReceived[0].productOffered.images[0]"
         alt="Producto 1"
         class="w-full h-auto rounded-lg object-cover"
         (error)="onImageError($event)"
@@ -35,33 +32,25 @@
     <div
       class="w-1/2 p-2 bg-gray-100 rounded-lg transform transition-transform duration-500 ease-in-out cursor-pointer product-card-2"
       *ngIf="exchangesReceived[0]?.productRequested"
-      (click)="navigateToProduct(exchangesReceived[0].productRequested._id)"
+      (click)="navigateToProduct(exchangesReceived[0].productRequested._id, exchangesReceived[0]._id)"
     >
       <h3 class="text-base font-semibold text-pink-500 mb-2">
         {{ exchangesReceived[0].productRequested.title }}
       </h3>
-      <p class="text-gray-700 text-sm mb-2">
-        {{ exchangesReceived[0].productRequested.description }}
-      </p>
       <img
-        [src]="exchangesReceived[0].productRequested.image"
+        [src]="exchangesReceived[0].productRequested.images[0]"
         alt="Producto 2"
         class="w-full h-auto rounded-lg object-cover"
         (error)="onImageError($event)"
       />
     </div>
   </div>
-  <div class="mb-4">
-    <p class="text-sm text-gray-600">
-      Usuario solicitante: {{ exchangesReceived[0].userRequested.username }}
-    </p>
-  </div>
   <div class="flex justify-around mt-4">
     <button
       class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full"
-      (click)="acceptExchange(exchangesReceived[0]._id)"
+      (click)="acceptExchange(exchangesReceived[0]._id, exchangesReceived[0].productOffered._id)"
     >
-      Intercambiar
+      Revisar Oferta
     </button>
     <button
       class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full"
@@ -90,16 +79,13 @@
     <div
       class="w-1/2 p-2 bg-gray-100 rounded-lg transform transition-transform duration-500 ease-in-out cursor-pointer product-card-1"
       *ngIf="exchangesSent[0]?.productOffered"
-      (click)="navigateToProduct(exchangesSent[0].productOffered._id)"
+      (click)="navigateToProduct(exchangesSent[0].productOffered._id, exchangesSent[0]._id)"
     >
       <h3 class="text-base font-semibold text-pink-500 mb-2">
         {{ exchangesSent[0].productOffered.title }}
       </h3>
-      <p class="text-gray-700 text-sm mb-2">
-        {{ exchangesSent[0].productOffered.description }}
-      </p>
       <img
-        [src]="exchangesSent[0].productOffered.image"
+        [src]="exchangesSent[0].productOffered.images[0]"
         alt="Producto 1"
         class="w-full h-auto rounded-lg object-cover"
         (error)="onImageError($event)"
@@ -109,25 +95,17 @@
     <div
       class="w-1/2 p-2 bg-gray-100 rounded-lg transform transition-transform duration-500 ease-in-out cursor-pointer product-card-2"
       *ngIf="exchangesSent[0]?.productRequested"
-      (click)="navigateToProduct(exchangesSent[0].productRequested._id)"
+      (click)="navigateToProduct(exchangesSent[0].productRequested._id, exchangesSent[0]._id)"
     >
       <h3 class="text-base font-semibold text-pink-500 mb-2">
         {{ exchangesSent[0].productRequested.title }}
       </h3>
-      <p class="text-gray-700 text-sm mb-2">
-        {{ exchangesSent[0].productRequested.description }}
-      </p>
       <img
-        [src]="exchangesSent[0].productRequested.image"
+        [src]="exchangesSent[0].productRequested.images[0]"
         alt="Producto 2"
         class="w-full h-auto rounded-lg object-cover"
         (error)="onImageError($event)"
       />
     </div>
-  </div>
-  <div class="mb-4">
-    <p class="text-sm text-gray-600">
-      Usuario solicitado: {{ exchangesSent[0].userRequested.username }}
-    </p>
   </div>
 </div>

@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { Proposal } from '../../shared/interfaces/product.interface';
 import { CommonModule } from '@angular/common';
 
-
 @Component({
   selector: 'app-proposals-list',
   templateUrl: './proposals-list.component.html',
@@ -57,24 +56,17 @@ export class ProposalsListComponent implements OnInit {
     });
   }
 
-  navigateToProduct(productId: string): void {
-    this.router.navigate(['/product', productId]);
+  navigateToProduct(productId: string, exchangeId: string): void {
+    this.router.navigate(['/product', productId, exchangeId]);
   }
 
   onImageError(event: Event): void {
     const element = event.target as HTMLImageElement;
-    element.src = '../../../../assets/default_image.jpg';
+    element.src = 'assets/default_image.jpg'; // Asegúrate de que la ruta sea correcta
   }
 
-  acceptExchange(exchangeId: string): void {
-    this.exchangeService.updateExchangeStatus(exchangeId, 'accepted').subscribe({
-      next: (response) => {
-        this.loadReceivedExchanges();
-      },
-      error: (error) => {
-        console.error('Error al aceptar el intercambio:', error);
-      }
-    });
+  acceptExchange(exchangeId: string, productId: string): void {
+    this.router.navigate(['/product', productId, exchangeId]);
   }
 
   rejectExchange(exchangeId: string): void {

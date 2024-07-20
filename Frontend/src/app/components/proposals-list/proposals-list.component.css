@@ -62,3 +62,21 @@
     animation: swap-reverse 2s ease-in-out;
   }
   
+  .carousel-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+  
+  .carousel-item {
+    min-width: 300px;
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+    margin-right: 16px;
+  }
+  
+  .carousel-item img {
+    width: 100%;
+    height: auto;
+  }
+  

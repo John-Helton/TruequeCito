@@ -5,12 +5,12 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductListComponent } from '../../../components/product-list/product-list.component';
 import { ProfileInfoCardComponent } from '../../../components/profile-info-card/profile-info-card.component';
-import { ProposalsListComponent } from '../../../components/proposals-list/proposals-list.component';
+import { ProposalsListComponent } from '../../../components/proposals-list/proposals-list.component'; // Importar el componente de propuestas
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [CommonModule, ProductListComponent, ProfileInfoCardComponent],
+  imports: [CommonModule, ProductListComponent, ProfileInfoCardComponent, ProposalsListComponent], // Agregar ProposalsListComponent a los imports
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css']
 })
