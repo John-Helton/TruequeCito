@@ -31,10 +31,8 @@ export class ProposalsListComponent implements OnInit {
   }
 
   loadReceivedExchanges(): void {
-    console.log('Cargando intercambios recibidos...');
     this.exchangeService.getReceivedExchanges().subscribe({
       next: (exchanges) => {
-        console.log('Intercambios recibidos:', exchanges);
         this.exchangesReceived = exchanges;
       },
       error: (error) => {
@@ -44,10 +42,8 @@ export class ProposalsListComponent implements OnInit {
   }
 
   loadSentExchanges(): void {
-    console.log('Cargando intercambios enviados...');
     this.exchangeService.getSentExchanges().subscribe({
       next: (exchanges) => {
-        console.log('Intercambios enviados:', exchanges);
         this.exchangesSent = exchanges;
       },
       error: (error) => {

@@ -30,10 +30,11 @@ exports.registerUser = async (req, res) => {
 
     res.status(201).json({
       user: {
-        id: user._id,
+        id: user.id, // Cambiar de _id a id
         email: user.email,
         username: user.username,
-        avatar: user.avatar
+        avatar: user.avatar,
+        role: user.role // Agregar el role aquí si no está
       },
       token: generateToken(user._id),
     });
@@ -41,6 +42,7 @@ exports.registerUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -60,10 +62,11 @@ exports.loginUser = async (req, res) => {
       if (isMatch) {
         res.json({
           user: {
-            _id: user._id,
+            id: user.id, // Cambiar de _id a id
             email: user.email,
             username: user.username,
-            avatar: user.avatar
+            avatar: user.avatar,
+            role: user.role // Agregar el role aquí si no está
           },
           token: generateToken(user._id),
         });
@@ -77,6 +80,7 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 exports.getUserProfile = async (req, res) => {
   try {

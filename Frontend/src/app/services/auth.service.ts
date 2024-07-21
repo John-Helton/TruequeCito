@@ -32,6 +32,7 @@ export class AuthService {
               token: response.token,
               role: response.user.role || 'user'
             };
+            console.log('Usuario autenticado:', user);
             localStorage.setItem('token', response.token);
             localStorage.setItem('user', JSON.stringify(user));
             this.authSubject.next(user);
@@ -46,9 +47,8 @@ export class AuthService {
   }
 
   register(email: string, password: string, username: string): Observable<AuthResponse> {
-    // Si no se proporciona un nombre de usuario, se genera uno por defecto
     const userNameToUse = username.trim() || `user_${Math.floor(Math.random() * 10000)}`;
-  
+
     return this.http.post<AuthResponse>(URL_REGISTER, {
       email,
       password,
@@ -68,6 +68,7 @@ export class AuthService {
                 token: response.token,
                 role: response.user.role || 'user'
               };
+              console.log('Usuario registrado:', user);
               localStorage.setItem('token', response.token);
               localStorage.setItem('user', JSON.stringify(user));
               this.authSubject.next(user);
@@ -83,6 +84,7 @@ export class AuthService {
       })
     );
   }
+
   loginWithGoogle(): void {
     window.location.href = 'http://localhost:5000/api/auth/google';
   }
@@ -134,16 +136,20 @@ export class AuthService {
       const user = localStorage.getItem('user');
       if (user) {
         try {
-          return JSON.parse(user) as User;
+          const parsedUser = JSON.parse(user) as User;
+          console.log('Usuario obtenido de localStorage:', parsedUser);
+          return parsedUser;
         } catch (e) {
           console.error('Error parsing user from localStorage:', e);
           return null;
         }
+      } else {
+        console.log('No se encontró usuario en localStorage');
       }
     }
     return null;
   }
-
+  
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
@@ -163,6 +169,7 @@ export class AuthService {
     }
     return null;
   }
+
   setUser(user: User | null): void {
     if (isPlatformBrowser(this.platformId)) {
       if (user) {
