@@ -24,7 +24,8 @@ export class CreatProductPagesComponent {
     this.productForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      images: ['']
+      estado:['', Validators.required],
+      images: [''],
     });
   }
 
@@ -33,10 +34,10 @@ export class CreatProductPagesComponent {
       return;
     }
 
-    const { title, description, images } = this.productForm.value;
+    const { title, description, images, estado } = this.productForm.value;
     const imageArray = images ? images.split(',').map((url: string) => url.trim()) : [];
 
-    const productData = { title, description, images: imageArray };
+    const productData = { title, description, images: imageArray, estado };
 
     const token = this.authService.getToken(); // Usa el servicio para obtener el token
 

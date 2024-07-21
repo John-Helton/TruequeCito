@@ -7,6 +7,7 @@ export interface Product {
     _id: string;
     username: string;
   };
+  estado:string;
 }
 
 export interface ExchangeProposal {
