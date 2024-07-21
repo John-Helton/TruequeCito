@@ -30,4 +30,23 @@ export class PaymentComponent implements OnInit {
       // Lógica para procesar el pago
     }
   }
+
+  submitComprobante() {
+    console.log('Comprobante enviado');
+    // Lógica para enviar el comprobante
+  }
+
+  finalizarTrueque() {
+    console.log('Trueque finalizado');
+    // Lógica para finalizar el trueque
+  }
+
+  cancelarTrueque() {
+    console.log('Trueque cancelado');
+    // Lógica para cancelar el trueque
+  }
 }
+
+
+
+

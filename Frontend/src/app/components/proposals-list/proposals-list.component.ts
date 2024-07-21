@@ -21,7 +21,6 @@ export class ProposalsListComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = this.authService.getUser();
-    console.log('Usuario actual:', this.currentUser);
     if (this.currentUser) {
       this.loadReceivedExchanges();
       this.loadSentExchanges();

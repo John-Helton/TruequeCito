@@ -32,7 +32,6 @@ export class AuthService {
               token: response.token,
               role: response.user.role || 'user'
             };
-            console.log('Usuario autenticado:', user);
             localStorage.setItem('token', response.token);
             localStorage.setItem('user', JSON.stringify(user));
             this.authSubject.next(user);
@@ -59,7 +58,6 @@ export class AuthService {
         next: (response) => {
           if (isPlatformBrowser(this.platformId)) {
             if (response && response.user) {
-              console.log('Registro exitoso:', response);
               const user: User = {
                 id: response.user.id,
                 email: response.user.email,
@@ -68,7 +66,6 @@ export class AuthService {
                 token: response.token,
                 role: response.user.role || 'user'
               };
-              console.log('Usuario registrado:', user);
               localStorage.setItem('token', response.token);
               localStorage.setItem('user', JSON.stringify(user));
               this.authSubject.next(user);
@@ -137,7 +134,6 @@ export class AuthService {
       if (user) {
         try {
           const parsedUser = JSON.parse(user) as User;
-          console.log('Usuario obtenido de localStorage:', parsedUser);
           return parsedUser;
         } catch (e) {
           console.error('Error parsing user from localStorage:', e);

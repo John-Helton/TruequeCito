@@ -1,35 +1,60 @@
-<div class="container">
-  <div class="flex h-screen ml-10 pt-5">
-    <div class="flex flex-col w-1/2 m-2 space-x-1 p-5 border-2 rounded-lg">
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-center">
+    <div class="w-1/2 m-2 p-5 border-2 rounded-lg">
       <div class="flex justify-center pb-5">
-        <img
-          src="https://img.freepik.com/foto-gratis/colores-arremolinados-interactuan-danza-fluida-sobre-lienzo-que-muestra-tonos-vibrantes-patrones-dinamicos-que-capturan-caos-belleza-arte-abstracto_157027-2892.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1721347200&semt=sph"
-          alt="Imagen del producto"
-          class="w-1/2 h-auto rounded-lg"
-        />
+        <img src="https://img.freepik.com/foto-gratis/colores-arremolinados-interactuan-danza-fluida-sobre-lienzo-que-muestra-tonos-vibrantes-patrones-dinamicos-que-capturan-caos-belleza-arte-abstracto_157027-2892.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1721347200&semt=sph" alt="Imagen del producto" class="w-1/2 h-auto rounded-lg">
       </div>
       <div class="text-left">
         <h1 class="font-bold">Nombre Producto</h1>
-        <h1 class="font-bold">Detalles del producto</h1>
-        <h1 class="font-bold">Estado</h1>
-        <button>Page aqui</button>
+        <p>Detalles del producto</p>
+        <p>Estado: <span class="font-semibold">Nuevo</span></p>
       </div>
     </div>
 
-    <div class="flex flex-col w-1/2 m-2 space-x-1 p-5 border-2 rounded-lg">
+    <div class="w-1/2 m-2 p-5 border-2 rounded-lg">
       <div class="flex justify-center pb-5">
-        <img
-          src="https://img.freepik.com/foto-gratis/colores-arremolinados-interactuan-danza-fluida-sobre-lienzo-que-muestra-tonos-vibrantes-patrones-dinamicos-que-capturan-caos-belleza-arte-abstracto_157027-2892.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1721347200&semt=sph"
-          alt="Imagen del producto"
-          class="w-1/2 h-auto rounded-lg"
-        />
+        <img src="https://img.freepik.com/foto-gratis/colores-arremolinados-interactuan-danza-fluida-sobre-lienzo-que-muestra-tonos-vibrantes-patrones-dinamicos-que-capturan-caos-belleza-arte-abstracto_157027-2892.jpg?size=626&ext=jpg&ga=GA1.1.2008272138.1721347200&semt=sph" alt="Imagen del producto" class="w-1/2 h-auto rounded-lg">
       </div>
       <div class="text-left">
         <h1 class="font-bold">Nombre Producto</h1>
-        <h1 class="font-bold">Detalles del producto</h1>
-        <h1 class="font-bold">Estado</h1>
-        <button>Page aqui</button>
+        <p>Detalles del producto</p>
+        <p>Estado: <span class="font-semibold">Usado</span></p>
       </div>
+    </div>
+  </div>
+  
+
+  <div class="mt-8 p-5 border-2 rounded-lg">
+
+    <div class="mt-4">
+      <h2 class="font-bold text-xl mb-4">Detalles del Envío</h2>
+      <p>Dirección de Envío: <span class="font-semibold">Yavirac</span></p>
+      <p>Envío del Producto al otro usuario: <span class="font-semibold">$6.00</span></p>
+      <p>Tasa de Servicio: <span class="font-semibold">$0.50</span></p>
+      <p class="italic text-sm">*Una vez recibido y revisado el producto, se enviará al otro usuario.</p>
+    </div>
+
+
+    <h2 class="font-bold text-xl mb-4">Detalles de Pago</h2>
+    <p>Banco: <span class="font-semibold">Banco de Ejemplo</span></p>
+    <p>Cuenta: <span class="font-semibold">123456789</span></p>
+    <p>Correo: <span class="font-semibold">bancoejemplo.com</span></p>
+    <p>Cédula: <span class="font-semibold">1234567890</span></p>
+    <p>Teléfono: <span class="font-semibold">+123456789</span></p>
+    <p>Código Único: <span class="font-semibold">ABC123DEF</span> <span class="italic text-sm">(Este código debe ser puesto como descripción de transferencia para validar su pago)</span></p>
+
+    <div class="mt-4">
+      <label class="block mb-2 font-bold" for="comprobante">Subir Comprobante:</label>
+      <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" id="comprobante" type="file">
+    </div>
+
+    <div class="mt-8 text-center text-2xl font-bold text-red-600">
+      Total a Pagar: $6.50
+    </div>
+
+    <div class="mt-4 flex justify-center space-x-4">
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="finalizarTrueque()">Finalizar Trueque</button>
+      <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="cancelarTrueque()">Cancelar Trueque</button>
     </div>
   </div>
 </div>

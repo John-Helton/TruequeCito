@@ -26,30 +26,23 @@ export class ProductListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('ProductListComponent inicializado'); // Nota
     const currentUser = this.authService.getUser();
-    console.log('Usuario actual obtenido de AuthService:', currentUser); // Nota
 
     if (currentUser && currentUser.id) {
       this.currentUserId = currentUser.id;
-      console.log('Usuario actual ID:', this.currentUserId); // Nota
     } else {
-      console.log('Usuario no autenticado o ID no encontrado'); // Nota
+      console.log('Usuario no autenticado o ID no encontrado'); 
     }
 
     this.loadProducts();
   }
 
   loadProducts(): void {
-    console.log('Solicitando productos...'); // Nota
     this.productService.getProducts().subscribe({
       next: (data) => {
-        console.log('Productos recibidos:', data); // Nota
         this.products = data.filter(product => {
-          console.log('Revisando producto:', product); // Nota
           return product.user._id !== this.currentUserId;
         });
-        console.log('Productos filtrados:', this.products); // Nota
         this.loading = false;
       },
       error: (error) => {
@@ -61,7 +54,6 @@ export class ProductListComponent implements OnInit {
   }
 
   proposeExchange(productId: string): void {
-    console.log('Proponiendo intercambio para producto ID:', productId); // Nota
     this.router.navigate(['/propose-exchange', productId]);
   }
 
