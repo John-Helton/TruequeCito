@@ -14,6 +14,7 @@
               <label for="description" class="block text-sm font-medium text-gray-700">Descripción</label>
               <textarea id="description" formControlName="description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Descripción" rows="4" required></textarea>
             </div>
+            
             <div>
               <label for="estado" class="block text-sm font-medium text-gray-700">Estado del producto</label>
               <select id="estado" formControlName="estado" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
@@ -23,7 +24,18 @@
                 <option value="reparado">Reparado</option>
               </select>
             </div>
-            
+            <div>
+              <label for="preference" class="block text-sm font-medium text-gray-700">Me interesaria intercambiar</label>
+              <select id="preference" formControlName="preference" (change)="mostrarOcultarInput()" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value="Teconologia">Teconologia</option>
+                <option value="Arte">Arte</option>
+                <option value="Electrodomesticos">Electrodomesticos</option>
+                <option value="Muebles">Muebles</option>
+                <option value="otra">Algun interes en particular?</option>
+            </select>
+            <input type="text" id="otra" formControlName="preference" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Escribe otra opción" style="display: none;">
+            </div>
+
             <div>
               <label for="images" class="block text-sm font-medium text-gray-700">URL</label>
               <input type="text" id="images" formControlName="images" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="URLs de Imágenes (separadas por comas)"/>

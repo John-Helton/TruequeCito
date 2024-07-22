@@ -25,8 +25,19 @@ export class CreatProductPagesComponent {
       title: ['', Validators.required],
       description: ['', Validators.required],
       estado:['', Validators.required],
+      preference:['', Validators.required],
       images: [''],
     });
+  }
+  mostrarOcultarInput() {
+    const select = document.getElementById('preference') as HTMLSelectElement;
+    const input = document.getElementById('otra') as HTMLInputElement;
+
+    if (select.value === 'otra') {
+      input.style.display = 'block';
+    } else {
+      input.style.display = 'none';
+    }
   }
 
   onSubmit() {
@@ -34,10 +45,10 @@ export class CreatProductPagesComponent {
       return;
     }
 
-    const { title, description, images, estado } = this.productForm.value;
+    const { title, description, images, estado, preference } = this.productForm.value;
     const imageArray = images ? images.split(',').map((url: string) => url.trim()) : [];
 
-    const productData = { title, description, images: imageArray, estado };
+    const productData = { title, description, images: imageArray, estado, preference };
 
     const token = this.authService.getToken(); // Usa el servicio para obtener el token
 

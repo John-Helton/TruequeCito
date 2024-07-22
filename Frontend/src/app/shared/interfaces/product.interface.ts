@@ -8,6 +8,7 @@ export interface Product {
     username: string;
   };
   estado:string;
+  preference:string;
 }
 
 export interface ExchangeProposal {
