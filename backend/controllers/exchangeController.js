@@ -31,7 +31,7 @@ exports.proposeExchange = async (req, res) => {
 exports.getReceivedExchanges = async (req, res) => {
   try {
     console.log('Fetching received exchanges for user:', req.user.id);
-    const exchanges = await Exchange.find({ userRequested: req.user.id, status: 'pending' })
+    const exchanges = await Exchange.find({ userRequested: req.user.id, status: { $in: ['pending', 'accepted'] } })
       .populate({
         path: 'productOffered',
         select: 'title description images',
@@ -49,8 +49,20 @@ exports.getReceivedExchanges = async (req, res) => {
         select: 'username email',
       });
 
-    console.log('Received exchanges fetched:', exchanges);
-    res.status(200).json(exchanges);
+    const formattedExchanges = exchanges.map(exchange => ({
+      ...exchange._doc,
+      productOffered: {
+        ...exchange._doc.productOffered._doc,
+        image: exchange._doc.productOffered.images[0]
+      },
+      productRequested: {
+        ...exchange._doc.productRequested._doc,
+        image: exchange._doc.productRequested.images[0]
+      }
+    }));
+
+    console.log('Received exchanges fetched:', formattedExchanges);
+    res.status(200).json(formattedExchanges);
   } catch (error) {
     console.error('Error fetching received exchanges:', error);
     res.status(500).json({ error: error.message });
@@ -61,7 +73,7 @@ exports.getReceivedExchanges = async (req, res) => {
 exports.getSentExchanges = async (req, res) => {
   try {
     console.log('Fetching sent exchanges for user:', req.user.id);
-    const exchanges = await Exchange.find({ userOffered: req.user.id, status: 'pending' })
+    const exchanges = await Exchange.find({ userOffered: req.user.id, status: { $in: ['pending', 'accepted'] } })
       .populate({
         path: 'productOffered',
         select: 'title description images',
@@ -79,8 +91,20 @@ exports.getSentExchanges = async (req, res) => {
         select: 'username email',
       });
 
-    console.log('Sent exchanges fetched:', exchanges);
-    res.status(200).json(exchanges);
+    const formattedExchanges = exchanges.map(exchange => ({
+      ...exchange._doc,
+      productOffered: {
+        ...exchange._doc.productOffered._doc,
+        image: exchange._doc.productOffered.images[0]
+      },
+      productRequested: {
+        ...exchange._doc.productRequested._doc,
+        image: exchange._doc.productRequested.images[0]
+      }
+    }));
+
+    console.log('Sent exchanges fetched:', formattedExchanges);
+    res.status(200).json(formattedExchanges);
   } catch (error) {
     console.error('Error fetching sent exchanges:', error);
     res.status(500).json({ error: error.message });
