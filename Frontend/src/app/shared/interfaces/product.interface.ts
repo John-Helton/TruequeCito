@@ -7,6 +7,7 @@ export interface Product {
     _id: string;
     username: string;
   };
+  estado:string;
 }
 
 export interface ExchangeProposal {
@@ -55,4 +56,5 @@ export interface Proposal {
     username: string;
   };
   status: string;
+  uniqueCode?: string;
 }

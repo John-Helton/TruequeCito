@@ -37,7 +37,14 @@ export class ProductService {
   }
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>('/api/products');
+    const token = this.getToken();
+    const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
+    return this.http.get<Product[]>('/api/products', { headers }).pipe(
+      catchError(error => {
+        console.error('Error al obtener productos:', error);
+        return throwError(() => new Error('Error al obtener productos.'));
+      })
+    );
   }
 
   getProductById(productId: string): Observable<Product> {

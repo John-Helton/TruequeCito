@@ -6,6 +6,7 @@ const productSchema = new mongoose.Schema({
   description: { type: String, required: true },
   images: { type: [String], required: true },
   approved: { type: Boolean, default: false },
+  estado: { type: String, required: true },
 });
 
 const Product = mongoose.model('Product', productSchema);

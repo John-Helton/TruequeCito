@@ -108,16 +108,19 @@ export class AuthService {
       const user = localStorage.getItem('user');
       if (user) {
         try {
-          return JSON.parse(user) as User;
+          const parsedUser = JSON.parse(user) as User;
+          return parsedUser;
         } catch (e) {
           console.error('Error parsing user from localStorage:', e);
           return null;
         }
+      } else {
+        console.log('No se encontró usuario en localStorage');
       }
     }
     return null;
   }
-
+  
   isLoggedIn(): boolean {
     return !!this.getToken();
   }

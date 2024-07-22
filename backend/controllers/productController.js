@@ -2,13 +2,14 @@ const Product = require('../models/Product');
 const User = require('../models/User');
 
 exports.createProduct = async (req, res) => {
-  const { title, description, images } = req.body;
+  const { title, description, images, estado } = req.body;
   try {
     const product = new Product({
       user: req.user.id,
       title,
       description,
       images,
+      estado,
       approved: true
     });
     await product.save();
