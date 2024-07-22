@@ -41,6 +41,34 @@ exports.registerUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+exports.oauthRegisterUser = async (profile, done) => {
+  const { id, displayName, emails, photos } = profile;
+  try {
+    const email = emails[0].value;
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      user = await User.create({
+        googleId: id,
+        email,
+        username: displayName,
+        avatar: photos[0].value
+      });
+    }
+
+    done(null, {
+      user: {
+        id: user._id,
+        email: user.email,
+        username: user.username,
+        avatar: user.avatar
+      },
+      token: generateToken(user._id),
+    });
+  } catch (error) {
+    done(error, null);
+  }
+};
 
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;

@@ -4,43 +4,45 @@ const { registerUser, loginUser, getUserProfile } = require('../controllers/auth
 const { updateProfile } = require('../controllers/userController');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
+const generateToken = require('../utils/token');
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.get('/user', authMiddleware, getUserProfile);
 router.put('/user/profile', authMiddleware, updateProfile);
 
-router.get("/login/success", (req, res) => {
-  if (req.user) {
+// Ruta para iniciar el proceso de autenticación con Google
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+// Ruta de callback a la que Google redirige después de la autenticación
+router.get(
+  '/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  (req, res) => {
+    // Autenticación exitosa, enviar información del usuario como JSON
     res.json({
-      success: true,
-      message: "user has successfully authenticated",
-      user: req.user,
-      cookies: req.cookies,
-    });
-  } else {
-    res.status(401).json({
-      success: false,
-      message: "user has not authenticated",
-      user: null,
+      user: {
+        id: req.user._id,
+        email: req.user.email,
+        username: req.user.username,
+        avatar: req.user.avatar
+      },
+      token: generateToken(req.user._id),
     });
   }
-});
-router.get("/login/failed", (req, res) => {
-  res.status(401).json({
-    success: false,
-    message: "user failed to authenticate.",
-    user: null,
+);
+
+// Ruta para obtener el perfil del usuario autenticado
+router.get('/profile', (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: 'Usuario no autenticado' });
+  }
+  res.json({
+    id: req.user._id,
+    email: req.user.email,
+    username: req.user.username,
+    avatar: req.user.avatar
   });
 });
-
-router.get('/google', 
-  passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-router.get('/google/callback', 
-    passport.authenticate('google', { 
-      successRedirect: process.env.FRONTEND_URL,
-      failureRedirect: 'http://localhost:4200/login' }),
-);
 
 module.exports = router;

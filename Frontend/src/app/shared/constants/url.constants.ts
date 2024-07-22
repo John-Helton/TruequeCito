@@ -3,7 +3,7 @@ const BASE_URL = 'http://localhost:5000/api';
 //AUTH
 export const URL_LOGIN = `${BASE_URL}/auth/login`;
 export const URL_REGISTER = `${BASE_URL}/auth/register`;
-export const URL_CALLBACK = `${BASE_URL}/auth/google/callback`;
+export const URL_CALLBACK = `http://localhost:5000/auth/google/callback`;
 export const URL_GOOGLE = `${BASE_URL}/auth/google`;
 
 // PRODUCTS

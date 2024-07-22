@@ -1,96 +1,158 @@
 <div class="min-h-screen flex items-center justify-center bg-gray-100">
-  <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
-    <h1 class="text-2xl font-bold mb-6 text-center">Registrarse</h1>
-    <form #registerForm="ngForm" (ngSubmit)="handleSubmit(registerForm)">
-      <div class="mb-4">
-        <label for="username" class="block text-sm font-medium text-gray-700">Nombre de Usuario</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          [(ngModel)]="username"
-          required
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        />
-      </div>
-      <div class="mb-4">
-        <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          [(ngModel)]="email"
-          required
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        />
-      </div>
-      <div class="mb-4">
-        <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          [(ngModel)]="password"
-          required
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        />
-      </div>
-      <div class="mb-6">
-        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirmar Contraseña</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          name="confirmPassword"
-          [(ngModel)]="confirmPassword"
-          required
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        />
-      </div>
-      <button
-        type="submit"
-        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+  <div
+    class="bg-white shadow-md w-full max-w-4xl flex rounded-lg overflow-hidden"
+  >
+    <div class="w-1/2 relative">
+      <img
+        src="assets/register.jpg"
+        alt="Cover Image"
+        class="w-full h-full object-cover"
+      />
+      <div
+        class="absolute inset-0 flex flex-col justify-between p-8 text-black font-extrabold"
       >
-        Registrarse
-      </button>
-    </form>
-    <p class="mt-4 text-center text-red-500">{{ message }}</p>
-    <p class="mt-4 text-center">
-      ¿Ya tienes una cuenta? <a routerLink="/login" class="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">Iniciar Sesión</a>
-    </p>
-    <div class="mt-6 flex justify-center space-x-4">
-      <button
-        (click)="loginWithGoogle()"
-        class="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-      >
-        <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24">
-          <!-- Icono de Google -->
-          <path fill="currentColor" d="M21.35 11.1h-8.9v3.45h5.1c-.25 1.4-1.05 2.5-2.2 3.15v2.6h3.55c2.1-1.95 3.3-4.75 3.3-8.2z"></path>
-          <path fill="currentColor" d="M12.45 22c2.95 0 5.4-1 7.2-2.6l-3.55-2.6c-1 .6-2.3 1-3.65 1-2.8 0-5.15-1.9-5.95-4.45h-3.7v2.8c1.75 3.5 5.3 5.85 9.65 5.85z"></path>
-          <path fill="currentColor" d="M6.5 13.35c-.2-.6-.3-1.25-.3-1.95s.1-1.35.3-1.95v-2.8h-3.7c-.8 1.6-1.3 3.4-1.3 5.35s.5 3.75 1.3 5.35l3.7-2.8z"></path>
-          <path fill="currentColor" d="M12.45 5.35c1.6 0 3 .55 4.15 1.65l3.05-3.05c-2-1.85-4.65-3-7.2-3-4.35 0-7.9 2.35-9.65 5.85l3.7 2.8c.8-2.55 3.15-4.45 5.95-4.45z"></path>
-        </svg>
-        Google
-      </button>
-      <button
-        (click)="loginWithInstagram()"
-        class="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
-      >
-        <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24">
-          <!-- Icono de Instagram -->
-          <path fill="currentColor" d="M7.75 2A5.75 5.75 0 002 7.75v8.5A5.75 5.75 0 007.75 22h8.5A5.75 5.75 0 0022 16.25v-8.5A5.75 5.75 0 0016.25 2h-8.5zM12 6.4a5.6 5.6 0 015.6 5.6A5.6 5.6 0 0112 17.6a5.6 5.6 0 01-5.6-5.6A5.6 5.6 0 01112 6.4zm0 2.1a3.5 3.5 0 00-3.5 3.5 3.5 0 003.5 3.5 3.5 3.5 0 003.5-3.5 3.5 3.5 0 00-3.5-3.5zm5.6-.6a1.4 1.4 0 11-.001 2.801A1.4 1.4 0 0117.6 7.9z"></path>
-        </svg>
-        Instagram
-      </button>
-      <button
-        (click)="loginWithDiscord()"
-        class="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-      >
-        <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24">
-          <!-- Icono de Discord -->
-          <path fill="currentColor" d="M20.317 4.36A19.883 19.883 0 0016.589 3C16.193 3.73 15.693 4.634 15.393 5.364 14.293 5.08 13.193 5.05 12.193 5.05 11.193 5.05 10.093 5.08 8.993 5.364 8.693 4.634 8.193 3.73 7.797 3A19.91 19.91 0 004.069 4.36c-2.517 3.89-3.213 7.72-2.907 11.52a19.885 19.885 0 003.213 2.517c.393-.548.853-1.197 1.23-1.843a12.998 12.998 0 01-1.813-.73c.153-.076.306-.163.453-.25.293-.134.593-.287.866-.437.74.34 1.493.612 2.247.875.193-.613.487-1.184.886-1.703-.74-.08-1.44-.193-2.14-.327.193-.346.44-.693.726-1.027.7-.8 1.54-1.49 2.486-2.033 1.086-.653 2.233-.93 3.353-1.067 1.12.137 2.267.414 3.353 1.067.946.543 1.787 1.233 2.486 2.033.287.334.533.681.726 1.027-.7.134-1.4.247-2.14.327.4.52.693 1.09.886 1.703.753-.263 1.507-.535 2.247-.875.273.15.573.303.866.437.147.087.3.174.453.25a12.968 12.968 0 01-1.813.73c.377.646.837 1.295 1.23 1.843a19.916 19.916 0 003.213-2.517c.306-3.8-.39-7.63-2.907-11.52zM9.193 12.95c-.993 0-1.8-.926-1.8-2.05s.807-2.05 1.8-2.05 1.8.926 1.8 2.05-.807 2.05-1.8 2.05zm5.614 0c-.993 0-1.8-.926-1.8-2.05s.807-2.05 1.8-2.05 1.8.926 1.8 2.05-.807 2.05-1.8 2.05z"></path>
-        </svg>
-        Discord
-      </button>
+        <div>
+          <p class="text">"Cambia lo que tienes, <br />encuentra lo que quieres."</p>
+        </div>
+      </div>
     </div>
+    <div class="w-1/2 p-8 border-l border-gray-300">
+      <!-- Añadido border-l para la línea -->
+      <h1 class="text-2xl font-bold mb-6 text-center">Crea una Cuenta</h1>
+      <form #registerForm="ngForm" (ngSubmit)="handleSubmit(registerForm)">
+        <div class="mb-4">
+          <label for="username" class="block text-sm font-medium text-gray-700"
+            >Nombre de Usuario</label
+          >
+          <input
+            type="text"
+            id="username"
+            name="username"
+            [(ngModel)]="username"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="email" class="block text-sm font-medium text-gray-700"
+            >Correo Electrónico</label
+          >
+          <input
+            type="email"
+            id="email"
+            name="email"
+            [(ngModel)]="email"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="password" class="block text-sm font-medium text-gray-700"
+            >Contraseña</label
+          >
+          <input
+            type="password"
+            id="password"
+            name="password"
+            [(ngModel)]="password"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+        <div class="mb-6">
+          <label
+            for="confirmPassword"
+            class="block text-sm font-medium text-gray-700"
+            >Confirmar Contraseña</label
+          >
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            [(ngModel)]="confirmPassword"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+        <button
+          type="submit"
+          class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Registrarse
+        </button>
+      </form>
+      <p class="mt-4 text-center text-red-500">{{ message }}</p>
+      <div class="flex items-center my-4">
+        <div class="flex-grow border-t border-gray-300"></div>
+        <span class="mx-4 text-gray-500">Tambien te puedes registrar con</span>
+        <div class="flex-grow border-t border-gray-300"></div>
+      </div>
+      <div class="mt-6 flex justify-center space-x-4">
+        <button
+          (click)="loginWithGoogle()"
+          class="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-google"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M15.545 6.558a9.4 9.4 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.7 7.7 0 0 1 5.352 2.082l-2.284 2.284A4.35 4.35 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.8 4.8 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.7 3.7 0 0 0 1.599-2.431H8v-3.08z"
+            />
+          </svg>
+          Google
+        </button>
+        <button
+          (click)="loginWithInstagram()"
+          class="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-instagram"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"
+            />
+          </svg>
+          Instagram
+        </button>
+        <button
+          (click)="loginWithDiscord()"
+          class="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-discord"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"
+            />
+          </svg>
+          Discord
+        </button>
+      </div>
+      <p class="mt-4 text-center">
+        ¿Ya tienes una cuenta?
+        <a
+          routerLink="/login"
+          class="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
+          >Iniciar Sesión</a
+        >
+      </p>
+      
+    </div>
+    
   </div>
 </div>

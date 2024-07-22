@@ -1,8 +1,9 @@
 import { HttpClientModule } from '@angular/common/http';
-import { Component, NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, NgModule, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -39,5 +40,29 @@ import { FooterComponent } from '../../components/footer/footer.component';
 })
 
 
+export class ClientComponent implements OnInit {
 
-export class ClientComponent {}
+  constructor(private route: ActivatedRoute, private authService: AuthService) {}
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      const token = params['token'];
+      const id = params['id'];
+      const email = params['email'];
+      const username = params['username'];
+      const avatar = params['avatar'];
+      const role = params['role'] || 'user';
+
+      if (token && id && email && username && avatar) {
+        const user = { token, id, email, username, avatar, role };
+
+        // Guardar datos en localStorage
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
+
+        // Actualizar el estado del usuario en el servicio de autenticación
+        this.authService.setUser(user);
+      }
+    });
+  }
+}

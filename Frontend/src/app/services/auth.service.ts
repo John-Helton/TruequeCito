@@ -1,9 +1,9 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, Inject, PLATFORM_ID, NgZone } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AuthResponse, User } from '../shared/interfaces/auth.interfaces';
-import { URL_CALLBACK, URL_LOGIN, URL_PROFILE, URL_REGISTER } from '../shared/constants/url.constants';
+import { URL_GOOGLE, URL_LOGIN, URL_REGISTER } from '../shared/constants/url.constants';
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
@@ -16,6 +16,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
+    private ngZone: NgZone,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -46,9 +47,8 @@ export class AuthService {
   }
 
   register(email: string, password: string, username: string): Observable<AuthResponse> {
-    // Si no se proporciona un nombre de usuario, se genera uno por defecto
     const userNameToUse = username.trim() || `user_${Math.floor(Math.random() * 10000)}`;
-  
+
     return this.http.post<AuthResponse>(URL_REGISTER, {
       email,
       password,
@@ -59,7 +59,6 @@ export class AuthService {
         next: (response) => {
           if (isPlatformBrowser(this.platformId)) {
             if (response && response.user) {
-              console.log('Registro exitoso:', response);
               const user: User = {
                 id: response.user.id,
                 email: response.user.email,
@@ -83,34 +82,9 @@ export class AuthService {
       })
     );
   }
-  loginWithGoogle(): void {
-    window.location.href = 'http://localhost:5000/api/auth/google';
-  }
 
-  handleGoogleCallback(): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(URL_CALLBACK, {}).pipe(
-      tap({
-        next: (response) => {
-          if (isPlatformBrowser(this.platformId)) {
-            const user: User = {
-              id: response.user.id,
-              email: response.user.email,
-              username: response.user.username || '',
-              avatar: response.user.avatar || '',
-              token: response.token,
-              role: response.user.role || 'user'
-            };
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('user', JSON.stringify(user));
-            this.authSubject.next(user);
-            this.router.navigate(['/']);
-          }
-        },
-        error: (error) => {
-          console.error('Error en la autenticación con Google', error);
-        }
-      })
-    );
+  loginWithGoogle(): void {
+    window.location.href = URL_GOOGLE;
   }
 
   logout(): void {
@@ -163,12 +137,15 @@ export class AuthService {
     }
     return null;
   }
+
   setUser(user: User | null): void {
     if (isPlatformBrowser(this.platformId)) {
       if (user) {
         localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('token', user.token);
       } else {
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
       }
       this.authSubject.next(user);
     }
