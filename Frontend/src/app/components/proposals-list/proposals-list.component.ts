@@ -22,6 +22,7 @@ export class ProposalsListComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.authService.getUser();
     if (this.currentUser) {
+      console.log('Current user:', this.currentUser);
       this.loadReceivedExchanges();
       this.loadSentExchanges();
     } else {
@@ -30,9 +31,11 @@ export class ProposalsListComponent implements OnInit {
   }
 
   loadReceivedExchanges(): void {
+    console.log('Loading received exchanges');
     this.exchangeService.getReceivedExchanges().subscribe({
       next: (exchanges) => {
         this.exchangesReceived = exchanges;
+        console.log('Received exchanges loaded:', this.exchangesReceived);
       },
       error: (error) => {
         console.error('Error al cargar los intercambios recibidos:', error);
@@ -41,9 +44,11 @@ export class ProposalsListComponent implements OnInit {
   }
 
   loadSentExchanges(): void {
+    console.log('Loading sent exchanges');
     this.exchangeService.getSentExchanges().subscribe({
       next: (exchanges) => {
         this.exchangesSent = exchanges;
+        console.log('Sent exchanges loaded:', this.exchangesSent);
       },
       error: (error) => {
         console.error('Error al cargar los intercambios enviados:', error);
@@ -52,7 +57,13 @@ export class ProposalsListComponent implements OnInit {
   }
 
   navigateToProduct(productId: string, exchangeId: string): void {
+    console.log(`Navigating to product with ID: ${productId} and exchange ID: ${exchangeId}`);
     this.router.navigate(['/product', productId, exchangeId]);
+  }
+
+  navigateToPayment(exchangeId: string): void {
+    console.log(`Navigating to payment for exchange ID: ${exchangeId}`);
+    this.router.navigate(['/payment', exchangeId]);
   }
 
   onImageError(event: Event): void {
@@ -61,12 +72,24 @@ export class ProposalsListComponent implements OnInit {
   }
 
   acceptExchange(exchangeId: string, productId: string): void {
-    this.router.navigate(['/product', productId, exchangeId]);
+    console.log(`Accepting exchange with ID: ${exchangeId}`);
+    this.exchangeService.updateExchangeStatus(exchangeId, 'accepted').subscribe({
+      next: (response) => {
+        console.log('Exchange accepted:', response);
+        this.loadReceivedExchanges();
+        this.router.navigate(['/product', productId, exchangeId]);
+      },
+      error: (error) => {
+        console.error('Error al aceptar el intercambio:', error);
+      }
+    });
   }
 
   rejectExchange(exchangeId: string): void {
+    console.log(`Rejecting exchange with ID: ${exchangeId}`);
     this.exchangeService.updateExchangeStatus(exchangeId, 'rejected').subscribe({
       next: (response) => {
+        console.log('Exchange rejected:', response);
         this.loadReceivedExchanges();
       },
       error: (error) => {

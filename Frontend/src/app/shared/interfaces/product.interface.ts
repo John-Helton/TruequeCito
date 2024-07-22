@@ -56,4 +56,5 @@ export interface Proposal {
     username: string;
   };
   status: string;
+  uniqueCode?: string;
 }
