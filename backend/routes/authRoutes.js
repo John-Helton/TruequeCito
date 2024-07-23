@@ -14,24 +14,7 @@ router.put('/user/profile', authMiddleware, updateProfile);
 // Ruta para iniciar el proceso de autenticación con Google
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 router.get('/facebook', passport.authenticate('facebook', { scope: ['profile', 'email'] }));
-
-// Ruta de callback a la que Google redirige después de la autenticación
-router.get(
-  '/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    // Autenticación exitosa, enviar información del usuario como JSON
-    res.json({
-      user: {
-        id: req.user._id,
-        email: req.user.email,
-        username: req.user.username,
-        avatar: req.user.avatar
-      },
-      token: generateToken(req.user._id),
-    });
-  }
-);
+router.get('/discord', passport.authenticate('discord', { scope: ['identify', 'email'] }));
 
 // Ruta para obtener el perfil del usuario autenticado
 router.get('/profile', (req, res) => {

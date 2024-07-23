@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AuthResponse, User } from '../shared/interfaces/auth.interfaces';
-import { URL_GOOGLE, URL_LOGIN, URL_REGISTER } from '../shared/constants/url.constants';
+import { URL_DISCORD, URL_GOOGLE, URL_LOGIN, URL_REGISTER } from '../shared/constants/url.constants';
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
@@ -85,6 +85,9 @@ export class AuthService {
 
   loginWithGoogle(): void {
     window.location.href = URL_GOOGLE;
+  }
+  loginWithDiscord(): void {
+    window.location.href = URL_DISCORD;
   }
 
   logout(): void {

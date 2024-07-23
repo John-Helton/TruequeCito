@@ -14,7 +14,6 @@ import { AuthGuard } from './guards/auth.guard';
 import { ProposalsListComponent } from './components/proposals-list/proposals-list.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { PaymentComponent } from './components/payment/payment.component';
-import { AuthCallBackComponentComponent } from './components/auth-call-back-component/auth-call-back-component.component';
 
 const titleGlobal = 'Trueques |';
 
@@ -26,7 +25,6 @@ export const routes: Routes = [
       { path: '', component: HomePageComponent, pathMatch: 'full', data: { animation: 'HomePage' } },
       { path: 'login', component: LoginPagesComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Login` },
       { path: 'register', component: RegisterPagesComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Register` },
-      { path: 'auth/google/callback', component: AuthCallBackComponentComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Google Callback`},
       { path: 'profile', component: ProfilePageComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Perfil` },
       { path: 'profile/products', component: UserProductsComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Mis Productos` },
       { path: 'profile/edit-product/:id', component: EditProductPageComponent, canActivate: [AuthGuard] },

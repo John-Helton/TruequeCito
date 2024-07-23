@@ -21,10 +21,11 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
-  }));
+}));
 
 app.use(passport.initialize());
-configurePassport(passport);
+app.use(passport.session());
+configurePassport();
 
 // Importar las rutas
 const authRoutes = require('./routes/authRoutes');
@@ -55,20 +56,20 @@ app.get('/auth/google/callback',
     res.redirect(redirectURL);
 });
 
-app.get('/auth/facebook/callback', 
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
+// Ruta de callback de Discord directamente en el servidor principal (opcional)
+app.get('/auth/discord/callback',
+  passport.authenticate('discord', { failureRedirect: '/login' }),
   (req, res) => {
-    // Autenticación exitosa, enviar información del usuario como JSON
-    res.json({
-      user: {
-        id: req.user._id,
-        email: req.user.email,
-        username: req.user.username,
-        avatar: req.user.avatar
-      },
-      token: generateToken(req.user._id),
-    });
+    // Suponiendo que generateToken(req.user._id) genera el token necesario
+    const token = generateToken(req.user._id);
+    const frontendURL = process.env.FRONTEND_URL; // Cambia esto por la URL de tu frontend en producción
+
+    // Crear la URL de redirección con el token y otros datos del usuario como parámetros
+    const redirectURL = `${frontendURL}/?token=${token}&id=${req.user._id}&email=${req.user.email}&username=${encodeURIComponent(req.user.username)}&avatar=${encodeURIComponent(req.user.avatar)}`;
+
+    // Redirigir al usuario al frontend con los datos como parámetros de la URL
+    res.redirect(redirectURL);
 });
 
 const PORT = process.env.PORT || 8090;
-app.listen(PORT, () => console.log(`servidor: http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));

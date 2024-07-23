@@ -24,6 +24,8 @@ export class ProfilePageComponent implements OnInit {
   user: User = { id: '', email: '', username: '', avatar: '', token: '', role: '' };
   userProducts: Product[] = [];
   message: string = '';
+  isEditModalOpen: boolean = false;
+  activeComponent: string = 'profile';
 
   constructor(
     private productService: ProductService,
@@ -77,11 +79,24 @@ export class ProfilePageComponent implements OnInit {
         this.user = updatedUser;
         this.authService.setUser(updatedUser); // Actualizar usuario en AuthService si es necesario
         this.message = 'Perfil actualizado exitosamente.';
+        this.closeEditModal();
       },
       (error) => {
         console.error('Error actualizando perfil:', error);
         this.message = 'Error al actualizar perfil.';
       }
     );
+  }
+
+  showComponent(component: string): void {
+    this.activeComponent = component;
+  }
+
+  openEditModal(): void {
+    this.isEditModalOpen = true;
+  }
+
+  closeEditModal(): void {
+    this.isEditModalOpen = false;
   }
 }

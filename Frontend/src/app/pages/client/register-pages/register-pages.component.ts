@@ -44,11 +44,8 @@ export class RegisterPagesComponent {
   loginWithGoogle(): void {
     this.authService.loginWithGoogle();
   }
-  loginWithInstagram(): void {
-    this.authService.loginWithGoogle();
-  }
   loginWithDiscord(): void {
-    this.authService.loginWithGoogle();
+    this.authService.loginWithDiscord();
   }
 
 

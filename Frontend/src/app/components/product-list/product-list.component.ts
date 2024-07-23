@@ -40,14 +40,13 @@ export class ProductListComponent implements OnInit {
   loadProducts(): void {
     this.productService.getProducts().subscribe({
       next: (data) => {
-        this.products = data.filter(product => {
-          return product.user._id !== this.currentUserId;
-        });
+        // Filtra los productos asegurándote de que `product.user` y `product.user._id` existan
+        this.products = data.filter(product => product.user && product.user._id !== this.currentUserId);
         this.loading = false;
       },
       error: (error) => {
-        console.error('Error al obtener productos:', error); // Nota
-        this.error = error;
+        console.error('Error al obtener productos:', error);
+        this.error = 'No se pudieron obtener los productos. Inténtalo de nuevo más tarde.';
         this.loading = false;
       }
     });
@@ -59,13 +58,12 @@ export class ProductListComponent implements OnInit {
 
   shouldAnimateTitle(title: string): boolean {
     const maxLength = 19;
-    const charCount = title.length;
-    return charCount > maxLength;
+    return title.length > maxLength;
   }
 
   onImageError(event: Event) {
     const imgElement = event.target as HTMLImageElement;
     imgElement.src = 'assets/default_image.jpg';  // Ruta a la imagen por defecto
-    console.log('Error de imagen, cargando imagen por defecto'); // Nota
+    console.log('Error de imagen, cargando imagen por defecto');
   }
 }
