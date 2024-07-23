@@ -2,6 +2,9 @@
 
 TruequeCito es una plataforma de intercambio que permite a los usuarios intercambiar productos de manera eficiente y segura. Este proyecto está dividido en dos partes principales: el backend y el frontend.
 
+![image](https://github.com/user-attachments/assets/3d824cbb-14f7-45f3-b621-c6c8cbf8fe83)
+
+
 ## Estructura del Proyecto
 
 El proyecto se organiza en dos carpetas principales:
