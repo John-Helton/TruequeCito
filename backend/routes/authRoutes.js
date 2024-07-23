@@ -13,6 +13,7 @@ router.put('/user/profile', authMiddleware, updateProfile);
 
 // Ruta para iniciar el proceso de autenticación con Google
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/facebook', passport.authenticate('facebook', { scope: ['profile', 'email'] }));
 
 // Ruta de callback a la que Google redirige después de la autenticación
 router.get(

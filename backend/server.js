@@ -55,5 +55,20 @@ app.get('/auth/google/callback',
     res.redirect(redirectURL);
 });
 
+app.get('/auth/facebook/callback', 
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  (req, res) => {
+    // Autenticación exitosa, enviar información del usuario como JSON
+    res.json({
+      user: {
+        id: req.user._id,
+        email: req.user.email,
+        username: req.user.username,
+        avatar: req.user.avatar
+      },
+      token: generateToken(req.user._id),
+    });
+});
+
 const PORT = process.env.PORT || 8090;
 app.listen(PORT, () => console.log(`servidor: http://localhost:${PORT}`));

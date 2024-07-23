@@ -3,7 +3,9 @@
     <h1 class="text-2xl font-bold mb-6 text-center">Iniciar Sesión</h1>
     <form #loginForm="ngForm" (ngSubmit)="handleSubmit(loginForm)">
       <div class="mb-4">
-        <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+        <label for="email" class="block text-sm font-medium text-gray-700"
+          >Correo Electrónico</label
+        >
         <input
           type="email"
           id="email"
@@ -14,7 +16,9 @@
         />
       </div>
       <div class="mb-6">
-        <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+        <label for="password" class="block text-sm font-medium text-gray-700"
+          >Contraseña</label
+        >
         <input
           type="password"
           id="password"
@@ -33,45 +37,43 @@
     </form>
     <p class="mt-4 text-center text-red-500">{{ message }}</p>
     <p class="mt-4 text-center">
-      ¿No tienes una cuenta? <a routerLink="/register" class="font-medium text-indigo-600 hover:text-indigo-500">Regístrate</a>
+      ¿No tienes una cuenta?
+      <a
+        routerLink="/register"
+        class="font-medium text-indigo-600 hover:text-indigo-500"
+        >Regístrate</a
+      >
     </p>
     <p class="mt-4 text-center">
-      <a routerLink="/forgot-password" class="font-medium text-indigo-600 hover:text-indigo-500">¿Olvidaste tu contraseña?</a>
+      <a
+        routerLink="/forgot-password"
+        class="font-medium text-indigo-600 hover:text-indigo-500"
+        >¿Olvidaste tu contraseña?</a
+      >
     </p>
-    <div class="mt-6 flex justify-center space-x-4">
-      <button
-        (click)="loginWithGoogle()"
-        class="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-      >
-        <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24">
-          <!-- Icono de Google -->
-          <path fill="currentColor" d="M21.35 11.1h-8.9v3.45h5.1c-.25 1.4-1.05 2.5-2.2 3.15v2.6h3.55c2.1-1.95 3.3-4.75 3.3-8.2z"></path>
-          <path fill="currentColor" d="M12.45 22c2.95 0 5.4-1 7.2-2.6l-3.55-2.6c-1 .6-2.3 1-3.65 1-2.8 0-5.15-1.9-5.95-4.45h-3.7v2.8c1.75 3.5 5.3 5.85 9.65 5.85z"></path>
-          <path fill="currentColor" d="M6.5 13.35c-.2-.6-.3-1.25-.3-1.95s.1-1.35.3-1.95v-2.8h-3.7c-.8 1.6-1.3 3.4-1.3 5.35s.5 3.75 1.3 5.35l3.7-2.8z"></path>
-          <path fill="currentColor" d="M12.45 5.35c1.6 0 3 .55 4.15 1.65l3.05-3.05c-2-1.85-4.65-3-7.2-3-4.35 0-7.9 2.35-9.65 5.85l3.7 2.8c.8-2.55 3.15-4.45 5.95-4.45z"></path>
-        </svg>
-        Google
-      </button>
-      <button
-        (click)="loginWithInstagram()"
-        class="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
-      >
-        <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24">
-          <!-- Icono de Instagram -->
-          <path fill="currentColor" d="M7.75 2A5.75 5.75 0 002 7.75v8.5A5.75 5.75 0 007.75 22h8.5A5.75 5.75 0 0022 16.25v-8.5A5.75 5.75 0 0016.25 2h-8.5zM12 6.4a5.6 5.6 0 015.6 5.6A5.6 5.6 0 0112 17.6a5.6 5.6 0 01-5.6-5.6A5.6 5.6 0 0112 6.4zm0 2.1a3.5 3.5 0 00-3.5 3.5 3.5 0 003.5 3.5 3.5 3.5 0 003.5-3.5 3.5 3.5 0 00-3.5-3.5zm5.6-.6a1.4 1.4 0 11-.001 2.801A1.4 1.4 0 0117.6 7.9z"></path>
-        </svg>
-        Instagram
-      </button>
-      <button
-        (click)="loginWithDiscord()"
-        class="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-      >
-        <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24">
-          <!-- Icono de Discord -->
-          <path fill="currentColor" d="M20.317 4.36A19.883 19.883 0 0016.589 3C16.193 3.73 15.693 4.634 15.393 5.364 14.293 5.08 13.193 5.05 12.193 5.05 11.193 5.05 10.093 5.08 8.993 5.364 8.693 4.634 8.193 3.73 7.797 3A19.91 19.91 0 004.069 4.36c-2.517 3.89-3.213 7.72-2.907 11.52a19.885 19.885 0 003.213 2.517c.393-.548.853-1.197 1.23-1.843a12.998 12.998 0 01-1.813-.73c.153-.076.306-.163.453-.25.293-.134.577-.288.866-.437.516-.294.987-.634 1.45-.988.394-.327.773-.664 1.156-1.006a9.605 9.605 0 002.026 1.18c.213.105.436.201.666.283.324.13.657.226.996.302.676.155 1.373.233 2.06.233.687 0 1.384-.078 2.06-.233.34-.076.672-.171.996-.302.23-.082.453-.178.666-.283a9.579 9.579 0 002.026-1.18c.383.342.763.679 1.156 1.006.463.354.934.694 1.45.988.289.149.573.303.866.437.147.087.3.174.453.25a12.968 12.968 0 01-1.813.73c.377.646.837 1.295 1.23 1.843a19.916 19.916 0 003.213-2.517c.306-3.8-.39-7.63-2.907-11.52zM9.193 12.95c-.993 0-1.8-.926-1.8-2.05s.807-2.05 1.8-2.05 1.8.926 1.8 2.05-.807 2.05-1.8 2.05zm5.614 0c-.993 0-1.8-.926-1.8-2.05s.807-2.05 1.8-2.05 1.8.926 1.8 2.05-.807 2.05-1.8 2.05z"></path>
-        </svg>
-        Discord
-      </button>
+    <div class="flex items-center my-4">
+      <div class="flex-grow border-t border-gray-300"></div>
+      <span class="mx-4 text-gray-500">Or</span>
+      <div class="flex-grow border-t border-gray-300"></div>
     </div>
+    <button
+      (click)="loginWithGoogle()"
+      class="w-full mt-5 flex justify-center items-center gap-2 px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        class="bi bi-google"
+        viewBox="0 0 16 16"
+      >
+        <path
+          d="M15.545 6.558a9.4 9.4 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.7 7.7 0 0 1 5.352 2.082l-2.284 2.284A4.35 4.35 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.8 4.8 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.7 3.7 0 0 0 1.599-2.431H8v-3.08z"
+        />
+      </svg>
+
+      Continuar con Google
+    </button>
   </div>
 </div>
