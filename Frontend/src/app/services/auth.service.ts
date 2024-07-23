@@ -92,7 +92,11 @@ export class AuthService {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       this.authSubject.next(null);
-      this.router.navigate(['/login']);
+
+      // Navegar a la página de inicio de sesión y recargar la página
+      this.router.navigate(['/login']).then(() => {
+        window.location.reload();
+      });
     }
   }
 

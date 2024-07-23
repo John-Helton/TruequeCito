@@ -56,9 +56,11 @@ export class ClientComponent implements OnInit {
       if (token && id && email && username && avatar) {
         const user = { token, id, email, username, avatar, role };
 
-        // Guardar datos en localStorage
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
+        // Verificar si estamos en el navegador antes de acceder a localStorage
+        if (typeof window !== 'undefined' && window.localStorage) {
+          localStorage.setItem('token', token);
+          localStorage.setItem('user', JSON.stringify(user));
+        }
 
         // Actualizar el estado del usuario en el servicio de autenticación
         this.authService.setUser(user);
