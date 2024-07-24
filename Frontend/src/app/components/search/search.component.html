@@ -2,7 +2,7 @@
   <div class="flex-grow">
     <input
       [(ngModel)]="searchQuery"
-      (ngModelChange)="onSearchQueryChange()"
+      (input)="onSearchQueryChange()"
       type="text"
       class="w-full p-2 rounded-l-md border text-pink focus:outline-none focus:ring focus:ring-blue-500"
       placeholder="Buscar"

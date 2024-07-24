@@ -15,14 +15,14 @@ import { SearchComponent } from '../search/search.component';
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
+  filteredProducts: Product[] = [];
   loading: boolean = true;
   error: string = '';
   currentUserId: string | undefined;
 
   constructor(
     private productService: ProductService,
-    private authService: AuthService,
-    private router: Router
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -40,8 +40,8 @@ export class ProductListComponent implements OnInit {
   loadProducts(): void {
     this.productService.getProducts().subscribe({
       next: (data) => {
-        // Filtra los productos asegurándote de que `product.user` y `product.user._id` existan
         this.products = data.filter(product => product.user && product.user._id !== this.currentUserId);
+        this.filteredProducts = [...this.products]; // Inicialmente, muestra todos los productos
         this.loading = false;
       },
       error: (error) => {
@@ -52,8 +52,19 @@ export class ProductListComponent implements OnInit {
     });
   }
 
+  applyFilter(searchQuery: string): void {
+    if (!searchQuery.trim()) {
+      this.filteredProducts = [...this.products]; // Mostrar todos los productos si la búsqueda está vacía
+    } else {
+      this.filteredProducts = this.products.filter(product =>
+        product.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+  }
+
   proposeExchange(productId: string): void {
-    this.router.navigate(['/propose-exchange', productId]);
+    // Aquí puedes implementar la lógica para proponer un intercambio
+    console.log(`Proponer intercambio para el producto con ID: ${productId}`);
   }
 
   shouldAnimateTitle(title: string): boolean {
