@@ -8,89 +8,35 @@
 </nav>
 
 <div class="container mx-auto mt-8">
-  <div class="rounded-lg p-6 text-center">
-    <h1 class="text-3xl font-bold">{{ user.username }}</h1>
-    <img [src]="user.avatar" alt="Avatar" class="w-24 h-24 rounded-full mx-auto mt-4">
-    <p class="text-gray-700">{{ user.email }}</p>
-
-    <div class="flex justify-center space-x-4 mt-4">
-      <div class="text-center">
-        <span class="font-bold">16</span>
-        <p class="text-gray-600">Siguiendo</p>
+  <h1 class="text-3xl font-bold mb-4">Bienvenido, {{ user.username }}</h1>
+  
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-2xl font-semibold mb-6">Configuración de Usuario</h2>
+    <form (ngSubmit)="updateProfile()">
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+          Correo Electrónico
+        </label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" [(ngModel)]="user.email" name="email" required>
       </div>
-      <div class="text-center">
-        <span class="font-bold">78</span>
-        <p class="text-gray-600">Seguidores</p>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+          Nombre de Usuario
+        </label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" [(ngModel)]="user.username" name="username">
       </div>
-      <div class="text-center">
-        <span class="font-bold">1171</span>
-        <p class="text-gray-600">Me gusta</p>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="avatar">
+          Avatar
+        </label>
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="avatar" type="text" [(ngModel)]="user.avatar" name="avatar">
       </div>
-    </div>
-
-    <div class="flex justify-center space-x-4 mt-4">
-      <button (click)="openEditModal()" class="bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-4 rounded">Editar perfil</button>
-      <button (click)="showComponent('share')" class="bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-4 rounded">Intercambios</button>
-      <button (click)="showComponent('products')" class="bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-4 rounded">Productos</button>
-    </div>
-
-    <div class="mt-4">
-      <p>Made in Ecuador</p>
-      <a href="https://youtube.com" class="text-red-500">YouTube</a>
-    </div>
-  </div>
-
-  <div class="mt-8">
-    <ng-container *ngIf="activeComponent === 'profile'">
-      <!-- Contenido para Editar perfil -->
-      <p>Aquí va el componente para editar el perfil.</p>
-    </ng-container>
-    <ng-container *ngIf="activeComponent === 'share'">
-      <!-- Contenido para Compartir perfil -->
-      <p>Aquí va el componente para compartir el perfil.</p>
-    </ng-container>
-    <ng-container *ngIf="activeComponent === 'products'">
-      <!-- Contenido para Productos -->
-      <p>ashfja</p>
-    </ng-container>
-  </div>
-</div>
-
-<!-- Modal -->
-<div *ngIf="isEditModalOpen" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal">
-  <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-    <div class="mt-3 text-center">
-      <h3 class="text-lg leading-6 font-medium text-gray-900">Editar Perfil</h3>
-      <div class="mt-2">
-        <form (ngSubmit)="updateProfile()">
-          <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
-              Correo Electrónico
-            </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" [(ngModel)]="user.email" name="email" required>
-          </div>
-          <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-              Nombre de Usuario
-            </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" [(ngModel)]="user.username" name="username">
-          </div>
-          <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="avatar">
-              Avatar
-            </label>
-            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="avatar" type="text" [(ngModel)]="user.avatar" name="avatar">
-          </div>
-          <div class="flex items-center justify-between">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-              Guardar Cambios
-            </button>
-            <button type="button" (click)="closeEditModal()" class="ml-2 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-              Cancelar
-            </button>
-          </div>
-        </form>
+      <div class="flex items-center justify-between">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+          Guardar Cambios
+        </button>
       </div>
-    </div>
+    </form>
+    <p *ngIf="message" class="text-red-500 text-xs italic">{{ message }}</p>
   </div>
 </div>

@@ -33,6 +33,7 @@ const productRoutes = require('./routes/productRoutes');
 const exchangeRoutes = require('./routes/exchangeRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 // Usar las rutas
 app.use('/api/auth', authRoutes);
@@ -40,6 +41,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/exchanges', exchangeRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api', uploadRoutes);
+app.use('/api/user', userRoutes);
 
 // Ruta de callback de Google directamente en el servidor principal (opcional)
 app.get('/auth/google/callback', 

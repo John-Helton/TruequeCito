@@ -7,14 +7,16 @@ const authMiddleware = async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
       token = req.headers.authorization.split(' ')[1];
+      // Verifica si el token tiene el formato esperado
+      if (!token || token.split('.').length !== 3) {
+        throw new Error('El formato del token JWT no es válido');
+      }
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log('Token decodificado:', decoded);
       req.user = await User.findById(decoded.id).select('-password');
-      console.log('Usuario autenticado:', req.user);
       next();
     } catch (err) {
-      console.error('Token inválido:', err);
-      res.status(401).json({ message: 'No autorizado, token inválido' });
+      console.error('Error al verificar el token:', err.message);
+      res.status(401).json({ message: `No autorizado, error en el token: ${err.message}` });
     }
   } else {
     console.log('Token no proporcionado');

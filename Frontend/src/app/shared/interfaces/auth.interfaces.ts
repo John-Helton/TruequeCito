@@ -20,7 +20,11 @@ export class User {
   role!: string;
   exchanges?: number; // Add exchanges property
   reputation?: number; // Add reputation property
+  following?: string[];
+  followers?: string[];
+  likes?: number;
 }
+
 
 export interface AuthResponse {
   token: string;
