@@ -22,7 +22,8 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -63,8 +64,7 @@ export class ProductListComponent implements OnInit {
   }
 
   proposeExchange(productId: string): void {
-    // Aquí puedes implementar la lógica para proponer un intercambio
-    console.log(`Proponer intercambio para el producto con ID: ${productId}`);
+    this.router.navigate(['/propose-exchange', productId]);
   }
 
   shouldAnimateTitle(title: string): boolean {
