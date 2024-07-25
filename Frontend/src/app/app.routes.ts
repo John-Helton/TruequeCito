@@ -15,6 +15,13 @@ import { ProposalsListComponent } from './components/proposals-list/proposals-li
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { PaymentComponent } from './components/payment/payment.component';
 import { UsersProfileComponent } from './pages/client/users-profile/users-profile.component';
+import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
+import { GestionUsuarioComponent } from './pages/admin/gestion-usuario/gestion-usuario.component';
+import { GestionProductosComponent } from './pages/admin/gestion-productos/gestion-productos.component';
+import { GestionIntercambiosComponent } from './pages/admin/gestion-intercambios/gestion-intercambios.component';
+import { ReportesComponent } from './pages/admin/reportes/reportes.component';
+import { ConfiguracionComponent } from './pages/admin/configuracion/configuracion.component';
+import { RolesComponent } from './pages/admin/roles/roles.component';
 
 const titleGlobal = 'Trueques |';
 
@@ -43,7 +50,14 @@ export const routes: Routes = [
     path: 'dashboard', component: AdminComponent,
     title: `${titleGlobal} Dashboard`,
     children: [
-      { path: '', component: AdminComponent, pathMatch: 'full' },
+      { path: '', component: DashboardComponent, pathMatch: 'full', data: { animation: 'HomePage' } },
+      { path: 'gestion-usuarios', component: GestionUsuarioComponent, pathMatch: 'full', data: { animation: 'HomePage' } },
+      { path: 'gestion-productos', component: GestionProductosComponent, pathMatch: 'full', data: { animation: 'HomePage' } },
+      { path: 'gestion-intercambios', component: GestionIntercambiosComponent, pathMatch: 'full', data: { animation: 'HomePage' } },
+      { path: 'gestion-reportes', component: ReportesComponent, pathMatch: 'full', data: { animation: 'HomePage' } },
+      { path: 'configuracion', component: ConfiguracionComponent, pathMatch: 'full', data: { animation: 'HomePage' } },
+      { path: 'gestion-roles', component: RolesComponent, pathMatch: 'full', data: { animation: 'HomePage' } },
+      
     ]
   },
   {
