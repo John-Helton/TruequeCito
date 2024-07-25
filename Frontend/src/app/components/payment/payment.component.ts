@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExchangeService } from '../../services/exchange.service';
 import { ProductService } from '../../services/product.service';
+import { AuthService } from '../../services/auth.service';
 import { Product, Proposal } from '../../shared/interfaces/product.interface';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -20,18 +21,19 @@ export class PaymentComponent implements OnInit {
   productRequested: Product | undefined;
   uniqueCode: string | undefined;
   selectedFile: File | null = null;
+  userType: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private exchangeService: ExchangeService,
     private productService: ProductService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.exchangeId = this.route.snapshot.paramMap.get('exchangeId');
-    
     if (this.exchangeId) {
       this.loadExchange(this.exchangeId);
     }
@@ -42,7 +44,16 @@ export class PaymentComponent implements OnInit {
       next: (exchange: Proposal) => {
         this.exchange = exchange;
         this.uniqueCode = exchange.uniqueCode;
+        this.userType = exchange.userType || ''; // Utilizar el userType asignado en proposals-list.component.ts o una cadena vacía
         this.loadProducts(exchange.productOffered._id, exchange.productRequested._id);
+
+        const currentUser = this.authService.getUser();
+        if (currentUser) {
+          console.log(`User type determined as: ${this.userType}`);
+          console.log(`Current User ID: ${currentUser.id}, First Receipt Uploaded By: ${exchange.firstReceiptUploadedBy}`);
+        } else {
+          console.error('No authenticated user found');
+        }
       },
       error: (error: any) => {
         console.error('Error fetching exchange:', error);
@@ -86,12 +97,13 @@ export class PaymentComponent implements OnInit {
     const formData = new FormData();
     formData.append('receipt', this.selectedFile);
     formData.append('exchangeId', this.exchangeId);
-    formData.append('userType', 'offered'); // o 'requested' dependiendo del usuario
+    formData.append('userType', this.userType);
 
     this.exchangeService.uploadReceipt(formData).subscribe({
       next: (response) => {
         console.log('Comprobante enviado:', response);
-        alert('Espera que el otro usuario haga el pago');
+        this.loadExchange(this.exchangeId!); // Recargar el intercambio para actualizar el estado
+        this.verifyAndCompleteExchange();
         this.router.navigate(['/']);
       },
       error: (error) => {
@@ -100,25 +112,35 @@ export class PaymentComponent implements OnInit {
     });
   }
 
-  finalizarTrueque(): void {
-    if (this.exchangeId) {
-      console.log('Finalizing exchange with ID:', this.exchangeId); // Agregar mensaje de consola
-      this.exchangeService.updateExchangeStatus(this.exchangeId, 'accepted').subscribe({
-        next: (response) => {
-          console.log('Exchange finalized:', response); // Agregar mensaje de consola
-          alert('Espera que el otro usuario haga el pago');
-          this.router.navigate(['/']);
-        },
-        error: (error) => {
-          console.error('Error al finalizar el trueque:', error);
-        }
-      });
+  verifyAndCompleteExchange(): void {
+    if (this.exchange) {
+      const otherReceipt = this.userType === 'offered' ? this.exchange.receiptRequested : this.exchange.receiptOffered;
+
+      if (otherReceipt) {
+        this.exchangeService.updateExchangeStatus(this.exchange._id, 'completed').subscribe({
+          next: (response) => {
+            console.log('Exchange completed:', response);
+            alert('Ambos comprobantes han sido subidos. El intercambio está pendiente de revisión por el administrador.');
+            this.router.navigate(['/']);
+          },
+          error: (error) => {
+            console.error('Error al completar el trueque:', error);
+          }
+        });
+      } else {
+        const otherUserType = this.userType === 'offered' ? 'requested' : 'offered';
+        console.log(`Esperando que el usuario ${otherUserType} suba su comprobante.`);
+        alert(`Comprobante enviado exitosamente. Esperando que el usuario ${otherUserType} suba su comprobante.`);
+      }
     }
+  }
+
+  shouldShowPaymentButton(): boolean {
+    return this.exchange ? this.exchange.status !== 'completed' : false;
   }
 
   cancelarTrueque(): void {
     console.log('Trueque cancelado');
-    // Lógica para cancelar el trueque
   }
 
   onImageError(event: Event): void {

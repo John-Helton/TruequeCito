@@ -30,7 +30,6 @@ exports.proposeExchange = async (req, res) => {
 // Obtener intercambios recibidos
 exports.getReceivedExchanges = async (req, res) => {
   try {
-    console.log('Fetching received exchanges for user:', req.user.id);
     const exchanges = await Exchange.find({ userRequested: req.user.id, status: { $in: ['pending', 'accepted'] } })
       .populate({
         path: 'productOffered',
@@ -49,30 +48,21 @@ exports.getReceivedExchanges = async (req, res) => {
         select: 'username email',
       });
 
-    const formattedExchanges = exchanges.map(exchange => ({
-      ...exchange._doc,
-      productOffered: {
-        ...exchange._doc.productOffered._doc,
-        image: exchange._doc.productOffered.images[0]
-      },
-      productRequested: {
-        ...exchange._doc.productRequested._doc,
-        image: exchange._doc.productRequested.images[0]
-      }
+    const modifiedExchanges = exchanges.map(exchange => ({
+      ...exchange.toObject(),
+      userType: 'offered'
     }));
 
-    console.log('Received exchanges fetched:', formattedExchanges);
-    res.status(200).json(formattedExchanges);
+    res.status(200).json(modifiedExchanges);
   } catch (error) {
-    console.error('Error fetching received exchanges:', error);
     res.status(500).json({ error: error.message });
   }
 };
 
+
 // Obtener intercambios enviados
 exports.getSentExchanges = async (req, res) => {
   try {
-    console.log('Fetching sent exchanges for user:', req.user.id);
     const exchanges = await Exchange.find({ userOffered: req.user.id, status: { $in: ['pending', 'accepted'] } })
       .populate({
         path: 'productOffered',
@@ -91,25 +81,51 @@ exports.getSentExchanges = async (req, res) => {
         select: 'username email',
       });
 
-    const formattedExchanges = exchanges.map(exchange => ({
-      ...exchange._doc,
-      productOffered: {
-        ...exchange._doc.productOffered._doc,
-        image: exchange._doc.productOffered.images[0]
-      },
-      productRequested: {
-        ...exchange._doc.productRequested._doc,
-        image: exchange._doc.productRequested.images[0]
-      }
+    const modifiedExchanges = exchanges.map(exchange => ({
+      ...exchange.toObject(),
+      userType: 'requested'
     }));
 
-    console.log('Sent exchanges fetched:', formattedExchanges);
-    res.status(200).json(formattedExchanges);
+    res.status(200).json(modifiedExchanges);
   } catch (error) {
-    console.error('Error fetching sent exchanges:', error);
     res.status(500).json({ error: error.message });
   }
 };
+
+// Controlador para manejar la subida de los comprobantes
+exports.uploadReceipt = async (req, res) => {
+  const { exchangeId, userType } = req.body;
+  const file = req.file;
+
+  try {
+    const exchange = await Exchange.findById(exchangeId);
+    if (!exchange) {
+      return res.status(404).json({ message: 'Intercambio no encontrado' });
+    }
+
+    if (userType === 'requested') {
+      exchange.receiptRequested = file.path;
+    } else if (userType === 'offered') {
+      exchange.receiptOffered = file.path;
+    }
+
+    await exchange.save();
+
+    // Verificar si ambos comprobantes han sido subidos
+    if (exchange.receiptRequested && exchange.receiptOffered) {
+      exchange.status = 'completed';
+      await exchange.save();
+      // Notificación al administrador
+      console.log('Ambos comprobantes cargados, notificar al administrador.');
+      // Aquí puedes agregar la lógica para notificar al administrador
+    }
+
+    res.status(200).json({ message: 'Comprobante cargado con éxito', exchange });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al cargar el comprobante', error: error.message });
+  }
+};
+
 
 
 // Actualizar estado del intercambio
@@ -154,43 +170,14 @@ exports.getExchangeById = async (req, res) => {
       return res.status(404).json({ message: 'Exchange not found' });
     }
 
+    // Determinar el userType
+    const userType = exchange.userOffered.toString() === req.user.id ? 'requested' : 'offered';
+
     console.log('Exchange fetched:', exchange);
     console.log('Exchange unique code:', exchange.uniqueCode);
-    res.json(exchange);
+    res.json({ ...exchange.toObject(), userType });
   } catch (error) {
     console.error('Error fetching exchange:', error);
     res.status(500).json({ message: 'Server error' });
-  }
-};
-
-// Subir comprobante
-exports.uploadReceipt = async (req, res) => {
-  const { exchangeId, userType } = req.body;
-  const file = req.file;
-
-  try {
-    const exchange = await Exchange.findById(exchangeId);
-    if (!exchange) {
-      return res.status(404).json({ message: 'Intercambio no encontrado' });
-    }
-
-    if (userType === 'offered') {
-      exchange.receiptOffered = file.path;
-    } else if (userType === 'requested') {
-      exchange.receiptRequested = file.path;
-    }
-
-    await exchange.save();
-
-    // Notificar al otro usuario si ambos comprobantes han sido cargados
-    if (exchange.receiptOffered && exchange.receiptRequested) {
-      // Notificación al administrador
-      console.log('Ambos comprobantes cargados, notificar al administrador.');
-      // Aquí puedes agregar la lógica para notificar al administrador
-    }
-
-    res.status(200).json({ message: 'Comprobante cargado con éxito', exchange });
-  } catch (error) {
-    res.status(500).json({ message: 'Error al cargar el comprobante', error: error.message });
   }
 };

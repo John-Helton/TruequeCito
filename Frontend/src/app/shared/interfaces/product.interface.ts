@@ -58,4 +58,8 @@ export interface Proposal {
   };
   status: string;
   uniqueCode?: string;
+  firstReceiptUploadedBy?: string;
+  receiptOffered?: string; 
+  receiptRequested?: string; 
+  userType?: string;
 }

@@ -8,8 +8,9 @@ const exchangeSchema = new mongoose.Schema({
   uniqueCode: { type: String, unique: true },
   status: { type: String, enum: ['pending', 'accepted', 'rejected', 'completed'], default: 'pending' },
   createdAt: { type: Date, default: Date.now },
-  receiptOffered: { type: String }, // Ruta del comprobante del usuario que ofrece
-  receiptRequested: { type: String }, // Ruta del comprobante del usuario que solicita
+  receiptOffered: { type: String },
+  receiptRequested: { type: String },
+  firstReceiptUploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' } // Nuevo campo
 });
 
 const Exchange = mongoose.model('Exchange', exchangeSchema);

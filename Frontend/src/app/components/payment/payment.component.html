@@ -48,8 +48,12 @@
     </div>
 
     <div class="mt-4 flex justify-center space-x-4">
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="submitComprobante()">Finalizar Trueque</button>
+      <button *ngIf="shouldShowPaymentButton()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" (click)="submitComprobante()">Finalizar Trueque</button>
       <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="cancelarTrueque()">Cancelar Trueque</button>
+    </div>
+
+    <div *ngIf="!shouldShowPaymentButton()" class="mt-4 text-center">
+      <p>Ambos comprobantes han sido subidos. El intercambio está pendiente de revisión por el administrador.</p>
     </div>
   </div>
 </div>

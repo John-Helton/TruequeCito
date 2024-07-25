@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 export class ProposalsListComponent implements OnInit {
   exchangesReceived: Proposal[] = [];
   exchangesSent: Proposal[] = [];
-  currentUser: Proposal | any;
+  currentUser: any;
 
   constructor(private exchangeService: ExchangeService, private authService: AuthService, private router: Router) {}
 
@@ -33,8 +33,15 @@ export class ProposalsListComponent implements OnInit {
   loadReceivedExchanges(): void {
     console.log('Loading received exchanges');
     this.exchangeService.getReceivedExchanges().subscribe({
-      next: (exchanges) => {
-        this.exchangesReceived = exchanges;
+      next: (exchanges: Proposal[]) => {
+        this.exchangesReceived = exchanges.map((exchange: Proposal) => {
+          const updatedExchange = {
+            ...exchange,
+            userType: 'offered'  // Asignar explícitamente el rol de offered
+          };
+          console.log('Updated received exchange:', updatedExchange);
+          return updatedExchange;
+        });
         console.log('Received exchanges loaded:', this.exchangesReceived);
       },
       error: (error) => {
@@ -46,8 +53,15 @@ export class ProposalsListComponent implements OnInit {
   loadSentExchanges(): void {
     console.log('Loading sent exchanges');
     this.exchangeService.getSentExchanges().subscribe({
-      next: (exchanges) => {
-        this.exchangesSent = exchanges;
+      next: (exchanges: Proposal[]) => {
+        this.exchangesSent = exchanges.map((exchange: Proposal) => {
+          const updatedExchange = {
+            ...exchange,
+            userType: 'requested'  // Asignar explícitamente el rol de requested
+          };
+          console.log('Updated sent exchange:', updatedExchange);
+          return updatedExchange;
+        });
         console.log('Sent exchanges loaded:', this.exchangesSent);
       },
       error: (error) => {
