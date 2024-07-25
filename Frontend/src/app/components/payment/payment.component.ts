@@ -49,8 +49,7 @@ export class PaymentComponent implements OnInit {
 
         const currentUser = this.authService.getUser();
         if (currentUser) {
-          console.log(`User type determined as: ${this.userType}`);
-          console.log(`Current User ID: ${currentUser.id}, First Receipt Uploaded By: ${exchange.firstReceiptUploadedBy}`);
+     
         } else {
           console.error('No authenticated user found');
         }
@@ -101,8 +100,8 @@ export class PaymentComponent implements OnInit {
 
     this.exchangeService.uploadReceipt(formData).subscribe({
       next: (response) => {
-        console.log('Comprobante enviado:', response);
-        this.loadExchange(this.exchangeId!); // Recargar el intercambio para actualizar el estado
+   
+        this.loadExchange(this.exchangeId!); 
         this.verifyAndCompleteExchange();
         this.router.navigate(['/']);
       },
@@ -129,7 +128,6 @@ export class PaymentComponent implements OnInit {
         });
       } else {
         const otherUserType = this.userType === 'offered' ? 'requested' : 'offered';
-        console.log(`Esperando que el usuario ${otherUserType} suba su comprobante.`);
         alert(`Comprobante enviado exitosamente. Esperando que el usuario ${otherUserType} suba su comprobante.`);
       }
     }
