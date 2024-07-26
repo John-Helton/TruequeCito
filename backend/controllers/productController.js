@@ -2,8 +2,12 @@ const Product = require('../models/Product');
 const User = require('../models/User');
 
 exports.createProduct = async (req, res) => {
-  const { title, description, images, estado,preference } = req.body;
+  const { title, description, images, estado, preference } = req.body;
   try {
+    if (!title || !description || !images) {
+      return res.status(400).json({ message: 'Todos los campos son requeridos' });
+    }
+
     const product = new Product({
       user: req.user.id,
       title,
@@ -16,11 +20,18 @@ exports.createProduct = async (req, res) => {
     await product.save();
 
     const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
     user.products.push(product._id);
     await user.save();
 
+    console.log('Producto creado correctamente:', product);
+
     res.status(201).json({ message: 'Producto creado correctamente', product });
   } catch (error) {
+    console.error('Error al crear producto:', error);
     res.status(500).json({ error: error.message });
   }
 };

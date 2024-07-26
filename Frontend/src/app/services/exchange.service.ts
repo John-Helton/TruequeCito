@@ -32,14 +32,12 @@ export class ExchangeService {
   getReceivedExchanges(): Observable<any> {
     const token = this.getToken();
     const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
-    console.log('Fetching received exchanges with headers:', headers);
     return this.http.get(`${this.apiUrl}/received`, { headers });
   }
 
   getSentExchanges(): Observable<any> {
     const token = this.getToken();
     const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
-    console.log('Fetching sent exchanges with headers:', headers);
     return this.http.get(`${this.apiUrl}/sent`, { headers });
   }
 

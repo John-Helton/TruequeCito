@@ -58,6 +58,8 @@ export class CreatProductPagesComponent {
     }
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    console.log('Enviando datos del producto:', productData); // Registro de datos del producto
+    console.log('Token:', token); // Registro del token
 
     this.http.post('/api/products', productData, { headers }).subscribe(
       response => {
@@ -66,6 +68,9 @@ export class CreatProductPagesComponent {
       },
       error => {
         console.error('Error al agregar el producto:', error);
+        if (error.status === 500) {
+          alert('Error interno del servidor al agregar el producto. Por favor, intenta nuevamente.');
+        }
       }
     );
   }
