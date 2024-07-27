@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { SearchComponent } from '../search/search.component';
+import { ProductModalComponent } from '../product-modal/product-modal.component';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, SearchComponent],
+  imports: [CommonModule, SearchComponent, ProductModalComponent],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
@@ -19,6 +20,7 @@ export class ProductListComponent implements OnInit {
   loading: boolean = true;
   error: string = '';
   currentUserId: string | undefined;
+  selectedProduct: Product | null = null;
 
   constructor(
     private productService: ProductService,
@@ -61,6 +63,14 @@ export class ProductListComponent implements OnInit {
         product.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
+  }
+
+  openModal(product: Product): void {
+    this.selectedProduct = product;
+  }
+
+  closeModal(): void {
+    this.selectedProduct = null;
   }
 
   proposeExchange(productId: string): void {
