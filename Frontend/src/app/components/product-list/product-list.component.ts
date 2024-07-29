@@ -6,11 +6,12 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { SearchComponent } from '../search/search.component';
 import { ProductModalComponent } from '../product-modal/product-modal.component';
+import { PublicProfileComponent } from '../public-profile/public-profile.component';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, SearchComponent, ProductModalComponent],
+  imports: [CommonModule, SearchComponent, ProductModalComponent, PublicProfileComponent],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
@@ -21,6 +22,7 @@ export class ProductListComponent implements OnInit {
   error: string = '';
   currentUserId: string | undefined;
   selectedProduct: Product | null = null;
+  selectedUserId: string | null = null;
 
   constructor(
     private productService: ProductService,
@@ -71,6 +73,14 @@ export class ProductListComponent implements OnInit {
 
   closeModal(): void {
     this.selectedProduct = null;
+  }
+
+  openUserProfileModal(userId: string): void {
+    this.selectedUserId = userId;
+  }
+
+  closeUserProfileModal(): void {
+    this.selectedUserId = null;
   }
 
   proposeExchange(productId: string): void {

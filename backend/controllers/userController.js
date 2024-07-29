@@ -2,10 +2,10 @@ const User = require('../models/User');
 const Product = require('../models/Product');
 const Follower = require('../models/Follower');
 
-// Obtener perfil del usuario
+// Obtener perfil del usuario autenticado
 exports.getProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user.id).select('-password');
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
@@ -15,7 +15,7 @@ exports.getProfile = async (req, res) => {
   }
 };
 
-// Actualizar perfil del usuario
+// Actualizar perfil del usuario autenticado
 exports.updateProfile = async (req, res) => {
   const { username, avatar, exchanges, reputation } = req.body;
 
@@ -37,22 +37,21 @@ exports.updateProfile = async (req, res) => {
   }
 };
 
+// Obtener perfil de un usuario por ID
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId).select('-password');
+    const user = await User.findById(req.params.userId).select('-password').populate('products', 'title');
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
-    const products = await Product.find({ user: user._id });
-    const followers = await Follower.find({ user: user._id }).populate('follower', 'username avatar');
-
-    res.json({ user, products, followers });
+    res.json({ user });
   } catch (err) {
     res.status(500).json({ message: 'Error del servidor' });
   }
 };
 
+// Seguir a un usuario
 exports.followUser = async (req, res) => {
   try {
     const userToFollow = await User.findById(req.params.userId);

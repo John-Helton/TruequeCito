@@ -20,8 +20,8 @@
           <h3 [ngClass]="shouldAnimateTitle(product.title) ? 'animate-marquee' : ''" class="font-semibold whitespace-nowrap overflow-hidden uppercase text-center">{{ product.title }}</h3>
         </div>
         <p class="text-sm text-gray-600 line-clamp-3 text-center">{{ product.description }}</p>
-        <p class="text-sm text-gray-600 line-clamp-3 text-center">Publicado por: {{ product.user.username }}</p>
       </div>
+      <p class="text-sm text-center" (click)="openUserProfileModal(product.user._id)">Publicado por: <strong class="text-green-500 cursor-pointer"> {{ product.user.username }}</strong></p>
       <button class="mt-4 bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-300" (click)="proposeExchange(product._id)">
         Proponer Intercambio
       </button>
@@ -34,3 +34,15 @@
   [product]="selectedProduct"
   (closeModal)="closeModal()"
 ></app-product-modal>
+
+<div *ngIf="selectedUserId" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg shadow-lg p-4 max-w-2xl w-full relative">
+    <button (click)="closeUserProfileModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+      &times;
+    </button>
+    <app-public-profile
+      [userId]="selectedUserId"
+      (closeModal)="closeUserProfileModal()"
+    ></app-public-profile>
+  </div>
+</div>
