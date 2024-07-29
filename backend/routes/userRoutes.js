@@ -3,7 +3,7 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const authMiddleware = require('../middleware/authMiddleware');
 
-// Ruta para obtener la información de un usuario
+// Ruta para obtener la información de un usuario por su ID
 router.get('/:userId', userController.getUserById);
 
 // Ruta para seguir a un usuario

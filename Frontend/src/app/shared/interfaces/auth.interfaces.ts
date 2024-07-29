@@ -14,16 +14,22 @@ export class User {
   id!: string;
   username!: string;
   email!: string;
-  password?: string; // Optional for profile update
+  password?: string;
   avatar?: string;
   token!: string;
   role!: string;
-  exchanges?: number; // Add exchanges property
-  reputation?: number; // Add reputation property
+  exchanges?: number;
+  reputation?: number;
   following?: string[];
   followers?: string[];
   likes?: number;
+  products?: { title: string, images: string, _id: string }[]; // Agregar imagen y _id a los productos
+  name?: string;
+  location?: string;
 }
+
+
+
 
 
 export interface AuthResponse {
