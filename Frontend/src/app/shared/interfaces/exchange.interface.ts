@@ -1,13 +1,24 @@
 export interface Product {
-    name: string;
-    description: string;
-    image: string;
-  }
-  
-  export interface Exchange {
-    proposingUser: string;
-    receivingUser: string;
-    offeredProduct: Product;
-    requestedProduct: Product;
-  }
-  
+  _id: string;
+  title: string;
+  description: string;
+  images: string[];
+}
+
+export interface User {
+  _id: string;
+  username: string;
+  email: string;
+}
+
+export interface Exchange {
+  _id: string;
+  status: string;
+  productOffered: Product;
+  productRequested: Product;
+  userOffered: User;
+  userRequested: User;
+  uniqueCode: string;
+  createdAt: string;
+  receiptRequested?: string;
+}

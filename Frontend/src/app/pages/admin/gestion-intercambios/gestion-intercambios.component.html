@@ -1,1 +1,56 @@
-<p>gestion-intercambios works!</p>
+<div class="p-4 bg-gray-100 min-h-screen">
+  <div class="max-w-4xl mx-auto">
+    <!-- Mensaje de error o de no intercambios encontrados -->
+    <div *ngIf="error" class="bg-red-100 text-red-700 p-4 mb-4 rounded-md border border-red-200">
+      {{ error }}
+    </div>
+    <div *ngIf="!error && exchanges.length === 0" class="text-center text-gray-600 p-4">
+      No se encontraron intercambios.
+    </div>
+    <div *ngIf="!error && exchanges.length > 0">
+      <div *ngFor="let exchange of exchanges" class="bg-white shadow-md rounded-lg overflow-hidden mb-6">
+        <div class="p-4 border-b border-gray-200">
+          <h3 class="text-xl font-semibold">Exchange ID: {{ exchange._id }}</h3>
+          <p class="text-gray-600 text-sm">Status: {{ exchange.status }}</p>
+        </div>
+        <div class="flex flex-col lg:flex-row p-4">
+          <!-- Producto Ofrecido -->
+          <div class="lg:w-1/2 mb-4 lg:mb-0 lg:pr-4 flex flex-col items-center">
+            <div class="w-full max-w-sm text-left">
+              <h4 class="text-lg font-semibold mb-2">Producto Ofrecido</h4>
+              <img [src]="exchange.productOffered.images[0]" alt="{{ exchange.productOffered.title }}" class="w-1/2 h-auto rounded-md shadow-sm mx-auto">
+              <p class="mt-2 text-gray-800 font-semibold text-base">Titulo: {{ exchange.productOffered.title }}</p>
+              <p class="text-gray-600 text-base">Descripcion: {{ exchange.productOffered.description }}</p>
+            </div>
+          </div>
+          <!-- Producto Solicitado -->
+          <div class="lg:w-1/2 flex flex-col items-center">
+            <div class="w-full max-w-sm text-left">
+              <h4 class="text-lg font-semibold mb-2">Producto Solicitado</h4>
+              <img [src]="exchange.productRequested.images[0]" alt="{{ exchange.productRequested.title }}" class="w-1/2 h-auto rounded-md shadow-sm mx-auto">
+              <p class="mt-2 text-gray-800 font-semibold text-base">Titulo: {{ exchange.productRequested.title }}</p>
+              <p class="text-gray-600 text-base">Descripcion: {{ exchange.productRequested.description }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="p-4 border-t border-gray-200">
+          <div class="mb-4">
+            <h4 class="text-lg font-semibold mb-2">Ofrecido por:</h4>
+            <p class="text-gray-800 text-base">Username: {{ exchange.userOffered.username }}</p>
+            <p class="text-gray-600 text-base">Email: {{ exchange.userOffered.email }}</p>
+          </div>
+          <div class="mb-4">
+            <h4 class="text-lg font-semibold mb-2">Recibido por:</h4>
+            <p class="text-gray-800 text-base">Username: {{ exchange.userRequested.username }}</p>
+            <p class="text-gray-600 text-base">Email: {{ exchange.userRequested.email }}</p>
+          </div>
+          <p class="text-gray-600 text-base">Unique Code: {{ exchange.uniqueCode }}</p>
+          <p class="text-gray-600 text-base">Created At: {{ exchange.createdAt | date }}</p>
+          <div *ngIf="exchange.receiptRequested" class="mt-4">
+            <p class="text-gray-800 text-base">Receipt Requested: <a [href]="exchange.receiptRequested" target="_blank" class="text-blue-500 hover:underline">View Receipt</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

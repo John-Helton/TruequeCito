@@ -35,6 +35,8 @@ export const URL_SENT_EXCHANGES = `${BASE_URL}/exchanges/sent`;
 export const URL_UPDATE_EXCHANGE_STATUS = `${BASE_URL}/exchanges/status`;
 export const URL_EXCHANGE_BY_ID = `${BASE_URL}/exchanges/:exchangeId`;
 export const URL_UPLOAD_RECEIPT = `${BASE_URL}/exchanges/upload-receipt`;
+export const URL_ALL_EXCHANGES = `${BASE_URL}/exchanges/all`;
+export const URL_COMPLETED_EXCHANGES = `${BASE_URL}/exchanges/completed`;
 
 // PRODUCTS
 export const URL_PRODUCTS = `${BASE_URL}/products`;
