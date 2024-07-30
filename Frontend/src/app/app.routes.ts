@@ -11,6 +11,7 @@ import { ProposeExchangePagesComponent } from './pages/client/propose-exchange-p
 import { UserProductsComponent } from './pages/client/user-products/user-products.component';
 import { EditProductPageComponent } from './pages/client/edit-product-page/edit-product-page.component';
 import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
 import { ProposalsListComponent } from './components/proposals-list/proposals-list.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { PaymentComponent } from './components/payment/payment.component';
@@ -50,6 +51,7 @@ export const routes: Routes = [
   {
     path: 'dashboard', component: AdminComponent,
     title: `${titleGlobal} Dashboard`,
+    canActivate: [AdminGuard],
     children: [
       { path: '', component: DashboardComponent, pathMatch: 'full', data: { animation: 'HomePage' } },
       { path: 'gestion-usuarios', component: GestionUsuarioComponent, pathMatch: 'full', data: { animation: 'HomePage' } },
