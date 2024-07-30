@@ -54,3 +54,21 @@ export const URL_UPLOAD = `${BASE_URL}/upload`;
 
 // PAYMENTS
 export const URL_PAYMENTS = `${BASE_URL}/payments`;
+
+// ADMIN - USERS
+export const URL_ADMIN_USERS = `${BASE_URL}/admin/users`;
+export const URL_ADMIN_CREATE_USER = `${BASE_URL}/admin/users`;
+export const URL_ADMIN_EDIT_USER = `${BASE_URL}/admin/users/:id`;
+export const URL_ADMIN_DELETE_USER = `${BASE_URL}/admin/users/:id`;
+
+// ADMIN - PRODUCTS
+export const URL_ADMIN_PRODUCTS = `${BASE_URL}/admin/products`;
+export const URL_ADMIN_CREATE_PRODUCT = `${BASE_URL}/admin/products`;
+export const URL_ADMIN_EDIT_PRODUCT = `${BASE_URL}/admin/products/:id`;
+export const URL_ADMIN_DELETE_PRODUCT = `${BASE_URL}/admin/products/:id`;
+
+// ADMIN - ROLES
+export const URL_ADMIN_ROLES = `${BASE_URL}/admin/roles`;
+export const URL_ADMIN_CREATE_ROLE = `${BASE_URL}/admin/roles`;
+export const URL_ADMIN_EDIT_ROLE = `${BASE_URL}/admin/roles/:id`;
+export const URL_ADMIN_DELETE_ROLE = `${BASE_URL}/admin/roles/:id`;

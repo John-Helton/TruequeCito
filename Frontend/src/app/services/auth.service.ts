@@ -16,7 +16,6 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private ngZone: NgZone,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 

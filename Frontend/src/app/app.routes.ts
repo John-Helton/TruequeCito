@@ -23,6 +23,7 @@ import { ReportesComponent } from './pages/admin/reportes/reportes.component';
 import { ConfiguracionComponent } from './pages/admin/configuracion/configuracion.component';
 import { RolesComponent } from './pages/admin/roles/roles.component';
 import { NotificationsComponent } from './components/notifications/notifications.component'; // Importa el componente de notificaciones
+import { adminGuard } from './guards/admin.guard';
 
 const titleGlobal = 'Trueques |';
 
@@ -50,6 +51,7 @@ export const routes: Routes = [
   {
     path: 'dashboard', component: AdminComponent,
     title: `${titleGlobal} Dashboard`,
+    canActivate: [adminGuard],
     children: [
       { path: '', component: DashboardComponent, pathMatch: 'full', data: { animation: 'HomePage' } },
       { path: 'gestion-usuarios', component: GestionUsuarioComponent, pathMatch: 'full', data: { animation: 'HomePage' } },

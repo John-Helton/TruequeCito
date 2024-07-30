@@ -34,6 +34,9 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const userRoutes = require('./routes/userRoutes');
 const notificationRoutes = require('./routes/notificationRoutes'); // Añadir las rutas de notificaciones
+//rutas administrador
+const adminRoutes = require('../backend/admin/routes/admin.routes');
+app.use('/api/admin', adminRoutes);
 
 // Usar las rutas
 app.use('/api/auth', authRoutes);

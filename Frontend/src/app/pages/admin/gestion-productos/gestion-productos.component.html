@@ -1,1 +1,36 @@
-<p>gestion-productos works!</p>
+<div>
+  <h2>Products</h2>
+  <ul>
+    <li *ngFor="let product of products" (click)="selectProduct(product)">
+      {{ product.name }} - {{ product.price }}
+      <button (click)="deleteProduct(product.id); $event.stopPropagation();">Delete</button>
+    </li>
+  </ul>
+
+  <div *ngIf="selectedProduct">
+    <h3>Edit Product</h3>
+    <label>
+      Name:
+      <input [(ngModel)]="selectedProduct.name" />
+    </label>
+    <label>
+      Price:
+      <input [(ngModel)]="selectedProduct.price" type="number" />
+    </label>
+    <button (click)="editProduct()">Save</button>
+    <button (click)="clearSelection()">Cancel</button>
+  </div>
+
+  <div>
+    <h3>Create Product</h3>
+    <label>
+      Name:
+      <input [(ngModel)]="newProduct.name" />
+    </label>
+    <label>
+      Price:
+      <input [(ngModel)]="newProduct.price" type="number" />
+    </label>
+    <button (click)="createProduct()">Create</button>
+  </div>
+</div>

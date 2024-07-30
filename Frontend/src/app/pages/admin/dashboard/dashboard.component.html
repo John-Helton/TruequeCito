@@ -1,2 +1,21 @@
-<p>dashboard works!</p>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<div class="p-8 bg-white shadow-md rounded-lg">
+  <h1 class="text-3xl font-bold mb-6">Dashboard</h1>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="bg-blue-500 text-white p-4 rounded-lg shadow">
+      <h2 class="text-xl">Usuarios Activos</h2>
+      <p class="text-3xl font-bold">{{ userCount }}</p>
+    </div>
+    <div class="bg-green-500 text-white p-4 rounded-lg shadow">
+      <h2 class="text-xl">Productos Publicados</h2>
+      <p class="text-3xl font-bold">{{ productCount }}</p>
+    </div>
+    <div class="bg-yellow-500 text-white p-4 rounded-lg shadow">
+      <h2 class="text-xl">Roles</h2>
+      <p class="text-3xl font-bold">{{ roleCount }}</p>
+    </div>
+    <div class="bg-red-500 text-white p-4 rounded-lg shadow">
+      <h2 class="text-xl">Intercambios Realizados</h2>
+      <p class="text-3xl font-bold">{{ exchangeCount }}</p>
+    </div>
+  </div>
+</div>

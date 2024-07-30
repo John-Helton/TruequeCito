@@ -1,1 +1,28 @@
-<p>roles works!</p>
+<div>
+  <h2>Roles</h2>
+  <ul>
+    <li *ngFor="let role of roles" (click)="selectRole(role)">
+      {{ role.name }}
+      <button (click)="deleteRole(role.id); $event.stopPropagation();">Delete</button>
+    </li>
+  </ul>
+
+  <div *ngIf="selectedRole">
+    <h3>Edit Role</h3>
+    <label>
+      Name:
+      <input [(ngModel)]="selectedRole.name" />
+    </label>
+    <button (click)="editRole()">Save</button>
+    <button (click)="clearSelection()">Cancel</button>
+  </div>
+
+  <div>
+    <h3>Create Role</h3>
+    <label>
+      Name:
+      <input [(ngModel)]="newRole.name" />
+    </label>
+    <button (click)="createRole()">Create</button>
+  </div>
+</div>
