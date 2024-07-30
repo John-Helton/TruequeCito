@@ -1,5 +1,5 @@
 const express = require('express');
-const { proposeExchange, getReceivedExchanges, getSentExchanges, updateExchangeStatus, getExchangeById, uploadReceipt } = require('../controllers/exchangeController');
+const { proposeExchange, getReceivedExchanges, getSentExchanges, updateExchangeStatus, getExchangeById, uploadReceipt, getAllExchanges, getCompletedExchanges } = require('../controllers/exchangeController');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
 const multer = require('multer');

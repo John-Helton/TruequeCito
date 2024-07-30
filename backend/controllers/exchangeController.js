@@ -99,7 +99,65 @@ exports.uploadReceipt = async (req, res) => {
     res.status(500).json({ message: 'Error al cargar el comprobante', error: error.message });
   }
 };
+  //Obtener todos los intercabios
+exports.getAllExchanges = async (req, res) => {
+  try {
+    // Verifica que el modelo Exchange esté correctamente configurado
+    const exchanges = await Exchange.find()
+      .populate({
+        path: 'productOffered',
+        select: 'title description images',
+      })
+      .populate({
+        path: 'productRequested',
+        select: 'title description images',
+      })
+      .populate({
+        path: 'userOffered',
+        select: 'username email',
+      })
+      .populate({
+        path: 'userRequested',
+        select: 'username email',
+      });
 
+    // Devuelve la respuesta exitosa con los intercambios
+    res.status(200).json(exchanges);
+  } catch (error) {
+    // Log de error para depuración
+    console.error('Error:', error.message);
+
+    // Respuesta con error
+    res.status(500).json({ error: 'Error, intentalo nuevamente' });
+  }
+};
+// Obtener intercambios completados
+exports.getCompletedExchanges = async (req, res) => {
+  try {
+    const exchanges = await Exchange.find({ status: 'completed' })
+      .populate({
+        path: 'productOffered',
+        select: 'title description images',
+      })
+      .populate({
+        path: 'productRequested',
+        select: 'title description images',
+      })
+      .populate({
+        path: 'userOffered',
+        select: 'username email',
+      })
+      .populate({
+        path: 'userRequested',
+        select: 'username email',
+      });
+
+    res.status(200).json(exchanges);
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ error: 'Error, intentalo nuevamente' });
+    }
+  };
 
 // Actualizar estado del intercambio
 exports.updateExchangeStatus = async (req, res) => {
