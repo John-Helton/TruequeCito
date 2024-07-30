@@ -13,7 +13,8 @@ const userSchema = new mongoose.Schema({
   reputation: { type: Number, default: 0 }, // Añadido campo de reputación
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }], // Añadido campo de seguidores
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }], // Añadido campo de siguiendo
-  likes: { type: Number, default: 0 }, // Añadido campo de likes
+  likes: { type: Number, default: 0 },
+  role: { type: String, default: 'user' },
   role: { type: String, default: 'user' }
 }, {
   timestamps: true
