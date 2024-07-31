@@ -99,8 +99,7 @@ exports.uploadReceipt = async (req, res) => {
     res.status(500).json({ message: 'Error al cargar el comprobante', error: error.message });
   }
 };
-
-//Obtener todos los intercabios
+  //Obtener todos los intercabios
 exports.getAllExchanges = async (req, res) => {
   try {
     // Verifica que el modelo Exchange esté correctamente configurado

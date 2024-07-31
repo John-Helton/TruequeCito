@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-creat-product-pages',
@@ -24,11 +25,12 @@ export class CreatProductPagesComponent {
     this.productForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      estado:['', Validators.required],
-      preference:['', Validators.required],
+      estado: ['', Validators.required],
+      preference: ['', Validators.required],
       images: [''],
     });
   }
+
   mostrarOcultarInput() {
     const select = document.getElementById('preference') as HTMLSelectElement;
     const input = document.getElementById('otra') as HTMLInputElement;
@@ -42,6 +44,13 @@ export class CreatProductPagesComponent {
 
   onSubmit() {
     if (this.productForm.invalid) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Por favor, completa todos los campos requeridos.',
+        timer: 1500,
+        showConfirmButton: false
+      });
       return;
     }
 
@@ -54,6 +63,13 @@ export class CreatProductPagesComponent {
 
     if (!token) {
       console.error('No se encontró el token');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se encontró el token. Por favor, inicia sesión nuevamente.',
+        timer: 1500,
+        showConfirmButton: false
+      });
       return;
     }
 
@@ -64,12 +80,34 @@ export class CreatProductPagesComponent {
     this.http.post('/api/products', productData, { headers }).subscribe(
       response => {
         console.log('Producto agregado:', response);
-        this.router.navigate(['/']); // Redirigir a la página principal o a la página de productos
+        Swal.fire({
+          icon: 'success',
+          title: 'Producto agregado',
+          text: 'El producto ha sido agregado correctamente.',
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => {
+          this.router.navigate(['/']); // Redirigir a la página principal o a la página de productos
+        });
       },
       error => {
         console.error('Error al agregar el producto:', error);
         if (error.status === 500) {
-          alert('Error interno del servidor al agregar el producto. Por favor, intenta nuevamente.');
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error interno del servidor al agregar el producto. Por favor, intenta nuevamente.',
+            timer: 1500,
+            showConfirmButton: false
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al agregar el producto. Por favor, intenta nuevamente.',
+            timer: 1500,
+            showConfirmButton: false
+          });
         }
       }
     );

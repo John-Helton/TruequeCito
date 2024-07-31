@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ProductService } from '../../../services/product.service';
 import { AuthService } from '../../../services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-propose-exchange-pages',
@@ -62,7 +63,13 @@ export class ProposeExchangePagesComponent implements OnInit {
 
   handleSubmit(form: NgForm): void {
     if (!this.proposedExchangeProduct || !this.product) {
-      this.message = 'Selecciona los productos correctamente.';
+      Swal.fire({
+        icon: 'warning',
+        title: 'Error',
+        text: 'Selecciona los productos correctamente.',
+        timer: 1500,
+        showConfirmButton: false
+      });
       return;
     }
 
@@ -80,11 +87,24 @@ export class ProposeExchangePagesComponent implements OnInit {
 
       this.http.post('/api/exchanges', exchangeData, { headers }).subscribe({
         next: () => {
-          this.message = 'Propuesta de intercambio enviada correctamente.';
+          Swal.fire({
+            icon: 'success',
+            title: 'Propuesta de intercambio enviada correctamente',
+            timer: 1500,
+            showConfirmButton: false
+          }).then(() => {
+            this.router.navigate(['/']);
+          });
         },
         error: (error: any) => {
           console.error('Error al enviar la propuesta de intercambio:', error);
-          this.message = 'Error al enviar la propuesta de intercambio.';
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Error al enviar la propuesta de intercambio.',
+            timer: 1500,
+            showConfirmButton: false
+          });
         }
       });
     }
