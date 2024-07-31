@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { Product, Proposal } from '../../shared/interfaces/product.interface';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-payment',
@@ -44,7 +45,7 @@ export class PaymentComponent implements OnInit {
       next: (exchange: Proposal) => {
         this.exchange = exchange;
         this.uniqueCode = exchange.uniqueCode;
-        this.userType = exchange.userType || ''; // Utilizar el userType asignado en proposals-list.component.ts o una cadena vacía
+        this.userType = exchange.userType || '';
         this.loadProducts(exchange.productOffered._id, exchange.productRequested._id);
 
         const currentUser = this.authService.getUser();
@@ -89,7 +90,13 @@ export class PaymentComponent implements OnInit {
 
   submitComprobante(): void {
     if (!this.selectedFile || !this.exchangeId) {
-      console.error('No file selected or exchange ID is missing');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Error',
+        text: 'No se seleccionó ningún archivo.',
+        timer: 1500,
+        showConfirmButton: false
+      });
       return;
     }
 
@@ -100,13 +107,27 @@ export class PaymentComponent implements OnInit {
 
     this.exchangeService.uploadReceipt(formData).subscribe({
       next: (response) => {
-   
         this.loadExchange(this.exchangeId!); 
         this.verifyAndCompleteExchange();
-        this.router.navigate(['/']);
+        Swal.fire({
+          icon: 'success',
+          title: 'Comprobante enviado',
+          text: 'Propuesta de intercambio enviada correctamente.',
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => {
+          this.router.navigate(['/']);
+        });
       },
       error: (error) => {
         console.error('Error al enviar el comprobante:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error al enviar el comprobante.',
+          timer: 1500,
+          showConfirmButton: false
+        });
       }
     });
   }
@@ -119,16 +140,36 @@ export class PaymentComponent implements OnInit {
         this.exchangeService.updateExchangeStatus(this.exchange._id, 'completed').subscribe({
           next: (response) => {
             console.log('Exchange completed:', response);
-            alert('Ambos comprobantes han sido subidos. El intercambio está pendiente de revisión por el administrador.');
-            this.router.navigate(['/']);
+            Swal.fire({
+              icon: 'success',
+              title: 'Intercambio completado',
+              text: 'Ambos comprobantes han sido subidos. El intercambio está pendiente de revisión por el administrador.',
+              timer: 3500,
+              showConfirmButton: false
+            }).then(() => {
+              this.router.navigate(['/']);
+            });
           },
           error: (error) => {
             console.error('Error al completar el trueque:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Error al completar el trueque.',
+              timer: 1500,
+              showConfirmButton: false
+            });
           }
         });
       } else {
         const otherUserType = this.userType === 'offered' ? 'requested' : 'offered';
-        alert(`Comprobante enviado exitosamente. Esperando que el usuario ${otherUserType} suba su comprobante.`);
+        Swal.fire({
+          icon: 'info',
+          title: 'Comprobante enviado',
+          text: `Comprobante enviado exitosamente, le hemos notificado al usuario para que realice su pago.`,
+          timer: 4500,
+          showConfirmButton: false
+        });
       }
     }
   }
