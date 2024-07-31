@@ -10,7 +10,7 @@ import { SidebarComponent } from '../../components/sidebar/sidebar.component';
   template: `
   <div class="flex">
   <app-sidebar></app-sidebar>
-  <div class="flex-1 p-10 text-2xl font-bold bg-gray-100">
+  <div class="flex-1 p-10  bg-gray-100">
     <!-- Aquí va el contenido principal -->
      <router-outlet></router-outlet>
   </div>

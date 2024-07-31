@@ -15,6 +15,7 @@ export class GestionUsuarioComponent {
   users: User[] = [];
   newUser: User = new User();
   editUser: User | null = null;
+  view: 'list' | 'create' | 'edit' = 'list';  // Controls the current view
 
   constructor(private adminService: AdminService) {}
 
@@ -38,6 +39,7 @@ export class GestionUsuarioComponent {
       (data: User) => {
         this.users.push(data);
         this.newUser = new User(); // Reset the form
+        this.view = 'list'; // Return to the user list view
       },
       (error) => {
         console.error('Error creating user:', error);
@@ -47,6 +49,7 @@ export class GestionUsuarioComponent {
 
   startEditUser(user: User): void {
     this.editUser = { ...user }; // Create a copy for editing
+    this.view = 'edit'; // Switch to edit view
   }
 
   saveEditUser(): void {
@@ -58,12 +61,18 @@ export class GestionUsuarioComponent {
             this.users[index] = data;
           }
           this.editUser = null; // Reset the edit form
+          this.view = 'list'; // Return to the user list view
         },
         (error) => {
           console.error('Error editing user:', error);
         }
       );
     }
+  }
+
+  cancelEdit(): void {
+    this.editUser = null;
+    this.view = 'list'; // Return to the user list view
   }
 
   deleteUser(id: string): void {
@@ -75,5 +84,9 @@ export class GestionUsuarioComponent {
         console.error('Error deleting user:', error);
       }
     );
+  }
+
+  toggleView(view: 'list' | 'create'): void {
+    this.view = view;
   }
 }

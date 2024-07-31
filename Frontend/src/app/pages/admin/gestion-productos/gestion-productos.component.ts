@@ -14,6 +14,7 @@ export class GestionProductosComponent {
   products: any[] = [];
   selectedProduct: any = null;
   newProduct: any = {};
+  view: 'list' | 'create' | 'edit' = 'list'; // Controls the current view
 
   constructor(private adminService: AdminService) {}
 
@@ -31,16 +32,28 @@ export class GestionProductosComponent {
     this.adminService.createProduct(this.newProduct).subscribe(() => {
       this.loadProducts();
       this.newProduct = {};
+      this.view = 'list';
     });
   }
 
-  editProduct(): void {
+  startEditProduct(product: any): void {
+    this.selectedProduct = { ...product };
+    this.view = 'edit';
+  }
+
+  saveEditProduct(): void {
     if (this.selectedProduct) {
       this.adminService.editProduct(this.selectedProduct.id, this.selectedProduct).subscribe(() => {
         this.loadProducts();
         this.selectedProduct = null;
+        this.view = 'list';
       });
     }
+  }
+
+  cancelEdit(): void {
+    this.selectedProduct = null;
+    this.view = 'list';
   }
 
   deleteProduct(id: string): void {
@@ -49,12 +62,8 @@ export class GestionProductosComponent {
     });
   }
 
-  selectProduct(product: any): void {
-    this.selectedProduct = { ...product };
-  }
-
-  clearSelection(): void {
-    this.selectedProduct = null;
+  toggleView(view: 'list' | 'create'): void {
+    this.view = view;
   }
 }
 

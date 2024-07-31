@@ -17,7 +17,7 @@ export class adminGuard implements CanActivate {
     if (user && user.role === 'admin') {
       return true;
     } else {
-      this.router.navigate(['/not-authorized']); // Redirige a una página de no autorizado
+      this.router.navigate(['/']); // Redirige a una página de no autorizado
       return false;
     }
   }

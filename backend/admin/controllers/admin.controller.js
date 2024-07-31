@@ -1,6 +1,7 @@
 const User = require('../../models/User');
 const Product = require('../../models/Product');
 const Role = require('../../models/Role');
+const Exchange = require('../../models/Exchange');
 
 // Usuarios
 exports.getAllUsers = async (req, res) => {

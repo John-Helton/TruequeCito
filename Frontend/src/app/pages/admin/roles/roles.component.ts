@@ -14,6 +14,7 @@ export class RolesComponent {
   roles: any[] = [];
   selectedRole: any = null;
   newRole: any = {};
+  view: 'list' | 'create' | 'edit' = 'list'; // Controls the current view
 
   constructor(private adminService: AdminService) {}
 
@@ -31,16 +32,28 @@ export class RolesComponent {
     this.adminService.createRole(this.newRole).subscribe(() => {
       this.loadRoles();
       this.newRole = {};
+      this.view = 'list';
     });
   }
 
-  editRole(): void {
+  startEditRole(role: any): void {
+    this.selectedRole = { ...role };
+    this.view = 'edit';
+  }
+
+  saveEditRole(): void {
     if (this.selectedRole) {
       this.adminService.editRole(this.selectedRole.id, this.selectedRole).subscribe(() => {
         this.loadRoles();
         this.selectedRole = null;
+        this.view = 'list';
       });
     }
+  }
+
+  cancelEdit(): void {
+    this.selectedRole = null;
+    this.view = 'list';
   }
 
   deleteRole(id: string): void {
@@ -49,11 +62,7 @@ export class RolesComponent {
     });
   }
 
-  selectRole(role: any): void {
-    this.selectedRole = { ...role };
-  }
-
-  clearSelection(): void {
-    this.selectedRole = null;
+  toggleView(view: 'list' | 'create'): void {
+    this.view = view;
   }
 }
