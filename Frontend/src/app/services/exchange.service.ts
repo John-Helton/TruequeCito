@@ -63,7 +63,7 @@ export class ExchangeService {
     const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
     console.log('Updating exchange status with headers:', headers);
     return this.http.put(`${this.apiUrl}/status`, { exchangeId, status }, { headers });
-  }
+  }  
 
   getExchangeById(exchangeId: string): Observable<Proposal> {
     const token = this.getToken();
@@ -79,7 +79,12 @@ export class ExchangeService {
     return this.http.post(`${this.apiUrl}/upload-receipt`, formData, { headers });
   }
 
-  
+  cancelExchange(exchangeId: string): Observable<any> {
+    const token = this.getToken();
+    const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
+    console.log('Cancelling exchange with headers:', headers);
+    return this.http.put(`${this.apiUrl}/cancel`, { exchangeId }, { headers });
+  }
 
 }
 

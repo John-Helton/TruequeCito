@@ -6,6 +6,7 @@ const passport = require('passport');
 const session = require('express-session');
 const configurePassport = require('./config/passport');
 const generateToken = require('./utils/token');
+const path = require('path'); // Importa el módulo path
 
 dotenv.config();
 
@@ -33,10 +34,8 @@ const exchangeRoutes = require('./routes/exchangeRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const userRoutes = require('./routes/userRoutes');
-const notificationRoutes = require('./routes/notificationRoutes'); // Añadir las rutas de notificaciones
-//rutas administrador
+const notificationRoutes = require('./routes/notificationRoutes');
 const adminRoutes = require('../backend/admin/routes/admin.routes');
-app.use('/api/admin', adminRoutes);
 
 // Usar las rutas
 app.use('/api/auth', authRoutes);
@@ -45,7 +44,11 @@ app.use('/api/exchanges', exchangeRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api', uploadRoutes);
 app.use('/api/user', userRoutes);
-app.use('/api/notifications', notificationRoutes); // Usar las rutas de notificaciones
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/admin', adminRoutes);
+
+// Servir archivos estáticos desde la carpeta uploads
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Ruta de callback de Google directamente en el servidor principal (opcional)
 app.get('/auth/google/callback', 

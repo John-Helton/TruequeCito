@@ -47,10 +47,39 @@
           <p class="text-gray-600 text-base">Unique Code: {{ exchange.uniqueCode }}</p>
           <p class="text-gray-600 text-base">Created At: {{ exchange.createdAt | date }}</p>
           <div *ngIf="exchange.receiptRequested" class="mt-4">
-            <p class="text-gray-800 text-base">Receipt Requested: <a [href]="exchange.receiptRequested" target="_blank" class="text-blue-500 hover:underline">View Receipt</a></p>
+            <p class="text-gray-800 text-base">Receipt Requested: <a (click)="viewReceipt(exchange.receiptRequested)" class="text-blue-500 hover:underline cursor-pointer">Ver Comprobante</a></p>
+          </div>
+          <div *ngIf="exchange.receiptOffered" class="mt-4">
+            <p class="text-gray-800 text-base">Receipt Offered: <a (click)="viewReceipt(exchange.receiptOffered)" class="text-blue-500 hover:underline cursor-pointer">Ver Comprobante</a></p>
+          </div>
+          <div class="flex justify-end mt-4 space-x-2">
+            <button (click)="acceptExchange(exchange._id)" class="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors duration-300">
+              Aceptar Intercambio
+            </button>
+            <button (click)="cancelExchange(exchange._id)" class="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition-colors duration-300">
+              Cancelar Intercambio
+            </button>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div *ngIf="selectedReceiptUrl" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+  <div class="bg-white rounded-lg overflow-hidden shadow-xl w-full max-w-2xl h-5/6">
+    <div class="flex justify-between items-center p-4 border-b">
+      <h3 class="text-xl font-semibold">Comprobante</h3>
+      <button (click)="closeReceiptModal()" class="text-gray-500 hover:text-gray-800">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    <div class="p-4 overflow-y-auto h-full">
+      <img *ngIf="selectedReceiptUrl" [src]="selectedReceiptUrl" alt="Comprobante" class="w-full h-full object-contain rounded-md"/>
+      <p *ngIf="!selectedReceiptUrl" class="text-red-500">No se pudo cargar la imagen del comprobante.</p>
     </div>
   </div>
 </div>

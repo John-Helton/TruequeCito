@@ -13,4 +13,5 @@ router.get('/sent', authMiddleware, getSentExchanges);
 router.put('/status', authMiddleware, updateExchangeStatus);
 router.get('/:exchangeId', authMiddleware, getExchangeById);
 router.post('/upload-receipt', authMiddleware, upload.single('receipt'), uploadReceipt);
+
 module.exports = router;

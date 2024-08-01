@@ -23,7 +23,7 @@ export class User {
   following?: string[];
   followers?: string[];
   likes?: number;
-  products?: { title: string, images: string, _id: string }[]; // Agregar imagen y _id a los productos
+  products?: { title: string, images: string, _id: string }[];
   name?: string;
   location?: string;
 }

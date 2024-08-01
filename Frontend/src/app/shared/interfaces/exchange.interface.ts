@@ -21,4 +21,5 @@ export interface Exchange {
   uniqueCode: string;
   createdAt: string;
   receiptRequested?: string;
+  receiptOffered?: string;
 }
