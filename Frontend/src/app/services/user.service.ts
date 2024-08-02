@@ -36,6 +36,8 @@ export class UserService {
     const token = this.getToken();
     const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
 
+    console.log(`Actualizando usuario: ${JSON.stringify(user)}`);
+
     return this.http.put<User>(`${this.apiUrl}/profile`, user, { headers }).pipe(
       catchError(error => {
         console.error('Error actualizando perfil:', error);

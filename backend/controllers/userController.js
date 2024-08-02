@@ -17,7 +17,7 @@ exports.getProfile = async (req, res) => {
 
 // Actualizar perfil del usuario autenticado
 exports.updateProfile = async (req, res) => {
-  const { username, avatar, exchanges, reputation } = req.body;
+  const { username, avatar, exchanges } = req.body;
 
   try {
     const user = await User.findById(req.user.id);
@@ -27,12 +27,24 @@ exports.updateProfile = async (req, res) => {
 
     user.username = username || user.username;
     user.avatar = avatar || user.avatar;
-    user.exchanges = exchanges || user.exchanges;
-    user.reputation = reputation || user.reputation;
+
+    if (typeof exchanges === 'number' && exchanges >= 0) {
+      user.exchanges = exchanges;
+      console.log(`Exchanges antes de guardar: ${user.exchanges}`);
+
+      if (user.exchanges >= 15) {
+        user.reputation = 5;
+      } else {
+        user.reputation = Math.round((user.exchanges / 15) * 5);
+      }
+      console.log(`Reputation antes de guardar: ${user.reputation}`);
+    }
 
     await user.save();
+    console.log(`Usuario guardado: ${user}`);
     res.json(user);
   } catch (err) {
+    console.error('Error actualizando perfil:', err);
     res.status(500).json({ message: 'Error del servidor' });
   }
 };
@@ -45,6 +57,14 @@ exports.getUserById = async (req, res) => {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
+    // Calcular reputación basada en el número de intercambios
+    if (user.exchanges >= 15) {
+      user.reputation = 5;
+    } else {
+      user.reputation = Math.round((user.exchanges / 15) * 5);
+    }
+    console.log(`Reputation calculada en getUserById: ${user.reputation}`);
+    
     res.json({ user });
   } catch (err) {
     res.status(500).json({ message: 'Error del servidor' });
