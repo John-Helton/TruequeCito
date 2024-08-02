@@ -21,6 +21,8 @@
               <img [src]="exchange.productOffered.images[0]" alt="{{ exchange.productOffered.title }}" class="w-1/2 h-auto rounded-md shadow-sm mx-auto">
               <p class="mt-2 text-gray-800 font-semibold text-base">Titulo: {{ exchange.productOffered.title }}</p>
               <p class="text-gray-600 text-base">Descripcion: {{ exchange.productOffered.description }}</p>
+              <p class="text-gray-600 text-base">Estado: {{ exchange.productOffered.estado }}</p>
+              <p class="text-gray-600 text-base">Preferencia: {{ exchange.productOffered.preference }}</p>
             </div>
           </div>
           <!-- Producto Solicitado -->
@@ -30,6 +32,8 @@
               <img [src]="exchange.productRequested.images[0]" alt="{{ exchange.productRequested.title }}" class="w-1/2 h-auto rounded-md shadow-sm mx-auto">
               <p class="mt-2 text-gray-800 font-semibold text-base">Titulo: {{ exchange.productRequested.title }}</p>
               <p class="text-gray-600 text-base">Descripcion: {{ exchange.productRequested.description }}</p>
+              <p class="text-gray-600 text-base">Estado: {{ exchange.productRequested.estado }}</p>
+              <p class="text-gray-600 text-base">Preferencia: {{ exchange.productRequested.preference }}</p>
             </div>
           </div>
         </div>

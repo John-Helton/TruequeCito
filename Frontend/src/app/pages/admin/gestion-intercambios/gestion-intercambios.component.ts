@@ -81,7 +81,7 @@ export class GestionIntercambiosComponent implements OnInit {
   }
 
   acceptExchange(exchangeId: string): void {
-    this.exchangeService.updateExchangeStatus(exchangeId, 'accepted').subscribe({
+    this.exchangeService.acceptExchange(exchangeId).subscribe({
       next: () => {
         Swal.fire(
           'Intercambio Aceptado!',
@@ -110,11 +110,9 @@ export class GestionIntercambiosComponent implements OnInit {
       console.error('No se pudo cargar el comprobante:', receiptUrl);
     }
   }  
-  
-  
-
   closeReceiptModal(): void {
     console.log('Cerrando el modal del comprobante');
     this.selectedReceiptUrl = null;
   }
+  
 }

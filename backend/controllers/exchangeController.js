@@ -35,6 +35,71 @@ const notification = new Notification({
     res.status(500).json({ error: error.message });
   }
 };
+  // Aceptar intercambio
+  exports.acceptExchange = async (req, res) => {
+    const { exchangeId } = req.params;
+    try {
+      // Actualiza el estado del intercambio a "accepted"
+      const exchange = await Exchange.findByIdAndUpdate(exchangeId, { status: 'accepted' }, { new: true });
+  
+      if (!exchange) {
+        return res.status(404).json({ message: 'Exchange not found' });
+      }
+      await User.updateOne(
+        { _id: exchange.userOffered },
+        { $inc: { exchanges: 1 } }
+      );
+  
+      await User.updateOne(
+        { _id: exchange.userRequested },
+        { $inc: { exchanges: 1 } }
+      );
+  
+      // Envía notificación a los usuarios involucrados
+      await sendNotificationToUsers(exchange, 'accepted');
+  
+      res.status(200).json({ message: 'Intercambio aceptado correctamente', exchange });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+  
+  // Rechazar intercambio
+  exports.rejectExchange = async (req, res) => {
+    const { exchangeId } = req.params;
+    try {
+      // Actualiza el estado del intercambio a "rejected"
+      const exchange = await Exchange.findByIdAndUpdate(exchangeId, { status: 'rejected' }, { new: true });
+  
+      if (!exchange) {
+        return res.status(404).json({ message: 'Exchange not found' });
+      }
+  
+      // Envía notificación a los usuarios involucrados
+      await sendNotificationToUsers(exchange, 'rejected');
+  
+      res.status(200).json({ message: 'Intercambio rechazado correctamente', exchange });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+  
+  // Función para enviar notificaciones a los usuarios involucrados
+  async function sendNotificationToUsers(exchange, status) {
+    const userOffered = await User.findById(exchange.userOffered);
+    const userRequested = await User.findById(exchange.userRequested);
+  
+    if (userOffered && userRequested) {
+      const message = `El intercambio fue ${status}`;
+      const notifications = [
+        new Notification({ userId: userOffered._id, message, timestamp: new Date(), read: false }),
+        new Notification({ userId: userRequested._id, message, timestamp: new Date(), read: false })
+      ];
+  
+      await Notification.insertMany(notifications);
+      console.log(`Notificando a ${userOffered.email} y ${userRequested.email} que el intercambio fue ${status}`);
+    }
+  }
 
 // Obtener intercambios recibidos
 exports.getReceivedExchanges = async (req, res) => {
@@ -137,11 +202,11 @@ exports.getCompletedExchanges = async (req, res) => {
     const exchanges = await Exchange.find({ status: 'completed' })
       .populate({
         path: 'productOffered',
-        select: 'title description images',
+        select: 'title description images estado preference',
       })
       .populate({
         path: 'productRequested',
-        select: 'title description images',
+        select: 'title description images estado preference',
       })
       .populate({
         path: 'userOffered',
@@ -211,4 +276,5 @@ exports.getExchangeById = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
+
 };

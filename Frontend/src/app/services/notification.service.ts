@@ -18,9 +18,9 @@ export class NotificationService {
       case 'Propuesta de intercambio recibida':
         return 'Has recibido una nueva propuesta de intercambio';
       case 'El intercambio fue accepted':
-        return 'Tu propuesta de intercambio fue aceptada';
+        return 'Tu intercambio ha sido exitoso, Felicidades por tu nuevo producto';
       case 'El intercambio fue rejected':
-        return 'Tu propuesta de intercambio fue rechazada';
+        return 'Tu intercambio ha sido rechazado, se enviará de vuelta tu producto';
       case 'El intercambio fue completed':
         return 'El intercambio ha sido completado, envia tu producto y cuando lo revisemos te vamos a notificar';
       default:

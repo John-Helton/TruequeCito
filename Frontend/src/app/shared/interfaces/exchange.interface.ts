@@ -3,6 +3,8 @@ export interface Product {
   title: string;
   description: string;
   images: string[];
+  estado: string;
+  preference: string;
 }
 
 export interface User {

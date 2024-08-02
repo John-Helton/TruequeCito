@@ -83,7 +83,14 @@ export class ExchangeService {
     const token = this.getToken();
     const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
     console.log('Cancelling exchange with headers:', headers);
-    return this.http.put(`${this.apiUrl}/cancel`, { exchangeId }, { headers });
+    return this.http.put(`${this.apiUrl}/cancel/${exchangeId}`, { exchangeId }, { headers });
+  }
+
+  acceptExchange(exchangeId: string): Observable<any> {
+    const token = this.getToken();
+    const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
+    console.log('Accepting exchange with headers:', headers);
+    return this.http.put(`${this.apiUrl}/accept/${exchangeId}`, {}, { headers });
   }
 
 }
