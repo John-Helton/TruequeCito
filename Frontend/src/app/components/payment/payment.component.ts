@@ -7,13 +7,15 @@ import { Product, Proposal } from '../../shared/interfaces/product.interface';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import { FormsModule } from '@angular/forms';
+import { Address } from '../../shared/interfaces/auth.interfaces';
 
 @Component({
   selector: 'app-payment',
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.css'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, FormsModule]
 })
 export class PaymentComponent implements OnInit {
   exchangeId: string | null = null;
@@ -23,6 +25,20 @@ export class PaymentComponent implements OnInit {
   uniqueCode: string | undefined;
   selectedFile: File | null = null;
   userType: string = '';
+  userAddress: Address = {
+    provincia: '',
+    ciudad: '',
+    canton: '',
+    parroquia: '',
+    callePrincipal: '',
+    numeracion: '',
+    calleSecundaria: '',
+    tipo: '',
+    referencia: ''
+  };
+  provincias: any = {};
+  cantones: string[] = [];
+  parroquias: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -38,6 +54,7 @@ export class PaymentComponent implements OnInit {
     if (this.exchangeId) {
       this.loadExchange(this.exchangeId);
     }
+    this.loadProvincias();
   }
 
   private loadExchange(exchangeId: string): void {
@@ -49,10 +66,10 @@ export class PaymentComponent implements OnInit {
         this.loadProducts(exchange.productOffered._id, exchange.productRequested._id);
 
         const currentUser = this.authService.getUser();
-        if (currentUser) {
-     
+        if (currentUser && currentUser.address) {
+          this.userAddress = currentUser.address;
         } else {
-          console.error('No authenticated user found');
+          console.error('No authenticated user found or address not available');
         }
       },
       error: (error: any) => {
@@ -80,6 +97,38 @@ export class PaymentComponent implements OnInit {
     });
   }
 
+  private loadProvincias(): void {
+    this.http.get('/assets/provincias.json').subscribe({
+      next: (data: any) => {
+        this.provincias = data;
+      },
+      error: (error: any) => {
+        console.error('Error loading provincias:', error);
+      }
+    });
+  }
+
+  onProvinciaChange(event: any): void {
+    const selectedProvincia = event.target.value;
+    if (this.provincias[selectedProvincia]) {
+      this.cantones = Object.keys(this.provincias[selectedProvincia]);
+      this.parroquias = [];
+    } else {
+      this.cantones = [];
+      this.parroquias = [];
+    }
+  }
+
+  onCantonChange(event: any): void {
+    const selectedCanton = event.target.value;
+    const selectedProvincia = this.userAddress.provincia;
+    if (selectedProvincia && this.provincias[selectedProvincia][selectedCanton]) {
+      this.parroquias = this.provincias[selectedProvincia][selectedCanton];
+    } else {
+      this.parroquias = [];
+    }
+  }
+
   getImageSrc(images: string[] | undefined): string {
     return images && images.length > 0 ? images[0] : 'assets/default_image.jpg';
   }
@@ -104,6 +153,7 @@ export class PaymentComponent implements OnInit {
     formData.append('receipt', this.selectedFile);
     formData.append('exchangeId', this.exchangeId);
     formData.append('userType', this.userType);
+    formData.append('address', JSON.stringify(this.userAddress)); // Añadir la dirección al formData
 
     this.exchangeService.uploadReceipt(formData).subscribe({
       next: (response) => {

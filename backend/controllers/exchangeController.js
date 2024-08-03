@@ -37,28 +37,18 @@ const notification = new Notification({
 };
   // Aceptar intercambio
   exports.acceptExchange = async (req, res) => {
-    const { exchangeId } = req.params;
     try {
-      // Actualiza el estado del intercambio a "accepted"
-      const exchange = await Exchange.findByIdAndUpdate(exchangeId, { status: 'accepted' }, { new: true });
+      const { exchangeId } = req.params;
   
+      const exchange = await Exchange.findById(exchangeId);
       if (!exchange) {
-        return res.status(404).json({ message: 'Exchange not found' });
+        return res.status(404).json({ message: 'Intercambio no encontrado' });
       }
-      await User.updateOne(
-        { _id: exchange.userOffered },
-        { $inc: { exchanges: 1 } }
-      );
   
-      await User.updateOne(
-        { _id: exchange.userRequested },
-        { $inc: { exchanges: 1 } }
-      );
+      exchange.status = 'completed';
+      await exchange.save();
   
-      // Envía notificación a los usuarios involucrados
-      await sendNotificationToUsers(exchange, 'accepted');
-  
-      res.status(200).json({ message: 'Intercambio aceptado correctamente', exchange });
+      res.status(200).json({ message: 'Intercambio completado correctamente' });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

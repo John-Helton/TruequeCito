@@ -45,12 +45,18 @@ export class ProductListComponent implements OnInit {
   loadProducts(): void {
     this.productService.getProducts().subscribe({
       next: (data) => {
-        this.products = data.filter(product => product.user && product.user._id !== this.currentUserId);
+        console.log('Productos recibidos:', data); // Mensaje de consola para verificar los datos recibidos
+        this.products = data.filter(product => 
+          product.user && 
+          product.user._id !== this.currentUserId && 
+          product.status !== 'completed'
+        );
+        console.log('Productos filtrados:', this.products); // Mensaje de consola para verificar los productos filtrados
         this.filteredProducts = [...this.products]; // Inicialmente, muestra todos los productos
         this.loading = false;
       },
       error: (error) => {
-        console.error('Error al obtener productos:', error);
+        console.error('Error al obtener productos:', error); // Mensaje de consola para errores
         this.error = 'No se pudieron obtener los productos. Inténtalo de nuevo más tarde.';
         this.loading = false;
       }
