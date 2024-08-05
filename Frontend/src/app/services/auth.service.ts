@@ -30,7 +30,9 @@ export class AuthService {
               username: response.user.username || '',
               avatar: response.user.avatar || '',
               token: response.token,
-              role: response.user.role || 'user'
+              role: response.user.role || 'user',
+              exchanges: response.user.exchanges || 0,
+              reputation: response.user.reputation || 0
             };
             localStorage.setItem('token', response.token);
             localStorage.setItem('user', JSON.stringify(user));
@@ -64,7 +66,9 @@ export class AuthService {
                 username: response.user.username || '',
                 avatar: response.user.avatar || '',
                 token: response.token,
-                role: response.user.role || 'user'
+                role: response.user.role || 'user',
+                exchanges: response.user.exchanges || 0,
+                reputation: response.user.reputation || 0
               };
               localStorage.setItem('token', response.token);
               localStorage.setItem('user', JSON.stringify(user));

@@ -37,7 +37,7 @@ export class GestionIntercambiosComponent implements OnInit {
   loadCompletedExchanges(): void {
     this.exchangeService.getCompletedExchanges().subscribe({
       next: (data) => {
-        this.exchanges = data;
+        this.exchanges = data.filter(exchange => exchange.status !== 'accepted');
         this.error = null;
       },
       error: (error) => {
@@ -84,11 +84,11 @@ export class GestionIntercambiosComponent implements OnInit {
     this.exchangeService.acceptExchange(exchangeId).subscribe({
       next: () => {
         Swal.fire(
-          'Intercambio Aceptado!',
-          'El intercambio ha sido aceptado.',
+          'Intercambio Completado!',
+          'El intercambio ha sido completado.',
           'success'
         );
-        this.loadCompletedExchanges();
+        this.exchanges = this.exchanges.filter(exchange => exchange._id !== exchangeId);
       },
       error: (error: any) => {
         console.error('Error al aceptar el intercambio:', error);
@@ -105,14 +105,14 @@ export class GestionIntercambiosComponent implements OnInit {
     const baseUrl = 'http://localhost:5000/uploads/'; // Cambia esto según tu configuración del servidor
     this.selectedReceiptUrl = `${baseUrl}${receiptUrl.replace(/^uploads[\\/]/, '')}`;
     console.log('Mostrando el comprobante:', this.selectedReceiptUrl);
-  
+
     if (!this.selectedReceiptUrl) {
       console.error('No se pudo cargar el comprobante:', receiptUrl);
     }
-  }  
+  }
+
   closeReceiptModal(): void {
     console.log('Cerrando el modal del comprobante');
     this.selectedReceiptUrl = null;
   }
-  
 }

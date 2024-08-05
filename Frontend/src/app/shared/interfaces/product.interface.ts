@@ -9,6 +9,7 @@ export interface Product {
   };
   estado:string;
   preference:string;
+  status?: string;
 }
 
 export interface ExchangeProposal {

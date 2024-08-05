@@ -1,8 +1,9 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
-import { BehaviorSubject, catchError, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, throwError, map, forkJoin } from 'rxjs';
 import { Product } from '../shared/interfaces/product.interface';
+import { Exchange } from '../shared/interfaces/exchange.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,34 @@ export class ProductService {
   getUserProducts(): Observable<Product[]> {
     const token = this.getToken();
     const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
-    return this.http.get<Product[]>('/api/products/user-products', { headers });
+
+    const products$ = this.http.get<Product[]>('/api/products/user-products', { headers });
+    const exchanges$ = this.http.get<Exchange[]>('/api/exchanges/completed', { headers });
+
+    return forkJoin([products$, exchanges$]).pipe(
+      map(([products, exchanges]) => {
+        console.log('Productos obtenidos:', products);
+        console.log('Intercambios completados obtenidos:', exchanges);
+
+        const completedProductIds = new Set<string>();
+        exchanges.forEach(exchange => {
+          completedProductIds.add(exchange.productOffered._id.toString());
+          completedProductIds.add(exchange.productRequested._id.toString());
+        });
+
+        console.log('IDs de productos completados:', completedProductIds);
+
+        const filteredProducts = products.filter(product => !completedProductIds.has(product._id.toString()));
+
+        console.log('Productos después de filtrar:', filteredProducts);
+
+        return filteredProducts;
+      }),
+      catchError(error => {
+        console.error('Error al obtener productos del usuario:', error);
+        return throwError(() => new Error('Error al obtener productos del usuario.'));
+      })
+    );
   }
 
   getProducts(): Observable<Product[]> {

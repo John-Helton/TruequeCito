@@ -10,6 +10,18 @@ export interface interfaceRegister {
   password_confirmation: string;
 }
 
+export interface Address {  // Definir la interfaz Address
+  provincia: string;
+  ciudad: string;
+  canton: string;
+  parroquia: string;
+  callePrincipal: string;
+  numeracion: string;
+  calleSecundaria: string;
+  tipo: string;
+  referencia: string;
+}
+
 export class User {
   id!: string;
   username!: string;
@@ -26,11 +38,8 @@ export class User {
   products?: { title: string, images: string, _id: string }[];
   name?: string;
   location?: string;
+  address?: Address;  // Usar la interfaz Address para la dirección
 }
-
-
-
-
 
 export interface AuthResponse {
   token: string;
@@ -43,5 +52,6 @@ export interface AuthResponse {
     role: string;
     exchanges?: number;
     reputation?: number;
+    address?: Address;  // Usar la interfaz Address para la dirección
   };
 }
