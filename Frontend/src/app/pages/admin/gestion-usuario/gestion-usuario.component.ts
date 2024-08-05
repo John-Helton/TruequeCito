@@ -3,13 +3,14 @@ import { User } from '../../../shared/interfaces/auth.interfaces';
 import { AdminService } from '../../../services/admin.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-gestion-usuario',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './gestion-usuario.component.html',
-  styleUrl: './gestion-usuario.component.css'
+  styleUrls: ['./gestion-usuario.component.css']
 })
 export class GestionUsuarioComponent implements OnInit {
   users: User[] = [];
@@ -25,8 +26,11 @@ export class GestionUsuarioComponent implements OnInit {
 
   getAllUsers(): void {
     this.adminService.getAllUsers().subscribe(
-      (data: User[]) => {
-        this.users = data;
+      (data: any[]) => {
+        this.users = data.map(user => ({
+          ...user,
+          id: user._id // Mapear _id a id
+        }));
       },
       (error) => {
         this.handleError('Error fetching users:', error);
@@ -40,9 +44,19 @@ export class GestionUsuarioComponent implements OnInit {
         this.users.push(data);
         this.newUser = {}; // Reset the form
         this.view = 'list'; // Return to the user list view
+        Swal.fire(
+          'Creado!',
+          'El usuario ha sido creado.',
+          'success'
+        );
       },
       (error) => {
         this.handleError('Error creating user:', error);
+        Swal.fire(
+          'Error!',
+          'No se pudo crear el usuario.',
+          'error'
+        );
       }
     );
   }
@@ -50,6 +64,7 @@ export class GestionUsuarioComponent implements OnInit {
   startEditUser(user: User): void {
     this.editUser = { ...user }; // Create a copy for editing
     this.view = 'edit'; // Switch to edit view
+    console.log('Editing user:', this.editUser); // Verifica el valor de editUser
   }
 
   saveEditUser(): void {
@@ -59,7 +74,7 @@ export class GestionUsuarioComponent implements OnInit {
         console.error('User ID is missing');
         return;
       }
-  
+
       this.adminService.editUser(this.editUser.id, this.editUser).subscribe(
         (data: User) => {
           const index = this.users.findIndex(u => u.id === data.id);
@@ -68,9 +83,19 @@ export class GestionUsuarioComponent implements OnInit {
           }
           this.editUser = null; // Reset the edit form
           this.view = 'list'; // Return to the user list view
+          Swal.fire(
+            'Guardado!',
+            'Los cambios han sido guardados.',
+            'success'
+          );
         },
         (error) => {
           this.handleError('Error editing user:', error);
+          Swal.fire(
+            'Error!',
+            'No se pudieron guardar los cambios.',
+            'error'
+          );
         }
       );
     }
@@ -82,14 +107,40 @@ export class GestionUsuarioComponent implements OnInit {
   }
 
   deleteUser(id: string): void {
-    this.adminService.deleteUser(id).subscribe(
-      () => {
-        this.users = this.users.filter(user => user.id !== id);
-      },
-      (error) => {
-        this.handleError('Error deleting user:', error);
-      }
-    );
+    if (id) {
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'No podrás revertir esto!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.adminService.deleteUser(id).subscribe(
+            () => {
+              this.users = this.users.filter(user => user.id !== id);
+              Swal.fire(
+                'Eliminado!',
+                'El usuario ha sido eliminado.',
+                'success'
+              );
+            },
+            (error) => {
+              this.handleError('Error deleting user:', error);
+              Swal.fire(
+                'Error!',
+                'No se pudo eliminar el usuario.',
+                'error'
+              );
+            }
+          );
+        }
+      });
+    } else {
+      console.error('User ID is undefined');
+    }
   }
 
   toggleView(view: 'list' | 'create'): void {
