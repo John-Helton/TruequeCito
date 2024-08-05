@@ -45,13 +45,17 @@ export class ProductService {
 
         const completedProductIds = new Set<string>();
         exchanges.forEach(exchange => {
-          completedProductIds.add(exchange.productOffered._id.toString());
-          completedProductIds.add(exchange.productRequested._id.toString());
+          if (exchange.productOffered && exchange.productOffered._id) {
+            completedProductIds.add(exchange.productOffered._id.toString());
+          }
+          if (exchange.productRequested && exchange.productRequested._id) {
+            completedProductIds.add(exchange.productRequested._id.toString());
+          }
         });
 
         console.log('IDs de productos completados:', completedProductIds);
 
-        const filteredProducts = products.filter(product => !completedProductIds.has(product._id.toString()));
+        const filteredProducts = products.filter(product => product && product._id && !completedProductIds.has(product._id.toString()));
 
         console.log('Productos después de filtrar:', filteredProducts);
 
@@ -76,25 +80,45 @@ export class ProductService {
   }
 
   getProductById(productId: string): Observable<Product> {
-    return this.http.get<Product>(`/api/products/${productId}`);
+    return this.http.get<Product>(`/api/products/${productId}`).pipe(
+      catchError(error => {
+        console.error(`Error al obtener el producto con ID ${productId}:`, error);
+        return throwError(() => new Error('Error al obtener el producto.'));
+      })
+    );
   }
 
   createProduct(product: Product): Observable<Product> {
     const token = this.getToken();
     const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
-    return this.http.post<Product>('/api/products', product, { headers });
+    return this.http.post<Product>('/api/products', product, { headers }).pipe(
+      catchError(error => {
+        console.error('Error al crear el producto:', error);
+        return throwError(() => new Error('Error al crear el producto.'));
+      })
+    );
   }
 
   editProduct(productId: string, product: Product): Observable<Product> {
     const token = this.getToken();
     const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
-    return this.http.put<Product>(`/api/products/${productId}`, product, { headers });
+    return this.http.put<Product>(`/api/products/${productId}`, product, { headers }).pipe(
+      catchError(error => {
+        console.error(`Error al editar el producto con ID ${productId}:`, error);
+        return throwError(() => new Error('Error al editar el producto.'));
+      })
+    );
   }
 
   deleteProduct(productId: string): Observable<void> {
     const token = this.getToken();
     const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
-    return this.http.delete<void>(`/api/products/${productId}`, { headers });
+    return this.http.delete<void>(`/api/products/${productId}`, { headers }).pipe(
+      catchError(error => {
+        console.error(`Error al eliminar el producto con ID ${productId}:`, error);
+        return throwError(() => new Error('Error al eliminar el producto.'));
+      })
+    );
   }
 
   private getToken(): string | null {
