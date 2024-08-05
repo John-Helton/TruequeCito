@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../../services/admin.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CreatProductPagesComponent } from '../../client/creat-product-pages/creat-product-pages.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-gestion-productos',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CreatProductPagesComponent],
   templateUrl: './gestion-productos.component.html',
   styleUrls: ['./gestion-productos.component.css']
 })
@@ -15,6 +17,7 @@ export class GestionProductosComponent implements OnInit {
   selectedProduct: any = null;
   newProduct: any = {};
   view: 'list' | 'create' | 'edit' = 'list'; // Controla la vista actual
+  noProducts: boolean = false;
 
   constructor(private adminService: AdminService) {}
 
@@ -30,19 +33,14 @@ export class GestionProductosComponent implements OnInit {
       },
       (error) => {
         console.error('Error cargando productos', error);
-      }
-    );
-  }
-
-  createProduct(): void {
-    this.adminService.createProduct(this.newProduct).subscribe(
-      () => {
-        this.loadProducts();
-        this.newProduct = {};
-        this.view = 'list';
       },
-      (error) => {
-        console.error('Error creando producto', error);
+      () => {
+        if (this.products.length === 0) {
+          console.log('No hay productos disponibles');
+          this.noProducts = true; // Establece la bandera a true si no hay productos
+        } else {
+          this.noProducts = false; // Establece la bandera a false si hay productos
+        }
       }
     );
   }
@@ -60,9 +58,19 @@ export class GestionProductosComponent implements OnInit {
           this.loadProducts();
           this.selectedProduct = null;
           this.view = 'list';
+          Swal.fire({
+            icon: 'success',
+            title: 'Producto guardado',
+            text: 'El producto se ha guardado correctamente.',
+          });
         },
         (error) => {
           console.error('Error editando producto', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al guardar',
+            text: 'Hubo un error al guardar el producto.',
+          });
         }
       );
     } else {
@@ -80,9 +88,19 @@ export class GestionProductosComponent implements OnInit {
       this.adminService.deleteProduct(id).subscribe(
         () => {
           this.loadProducts();
+          Swal.fire({
+            icon: 'success',
+            title: 'Producto eliminado',
+            text: 'El producto se ha eliminado correctamente.',
+          });
         },
         (error) => {
           console.error('Error eliminando producto', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al eliminar',
+            text: 'Hubo un error al eliminar el producto.',
+          });
         }
       );
     } else {
