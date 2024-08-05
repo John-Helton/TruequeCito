@@ -12,7 +12,6 @@
         <li *ngFor="let role of roles" class="flex items-center justify-between p-4 border-b last:border-none">
           <div class="flex items-center space-x-3">
             <span class="font-semibold">{{ role.name }}</span>
-            <span class="text-gray-500">({{ role.description }})</span>
           </div>
           <div class="flex space-x-4">
             <button (click)="startEditRole(role)" class="text-blue-500 hover:text-blue-700 font-medium">Editar</button>

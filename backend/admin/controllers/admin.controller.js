@@ -2,6 +2,7 @@ const User = require('../../models/User');
 const Product = require('../../models/Product');
 const Role = require('../../models/Role');
 const Exchange = require('../../models/Exchange');
+const Info = require('../../models/Info');
 
 // Usuarios
 exports.getAllUsers = async (req, res) => {

@@ -17,10 +17,6 @@ const InfoSchema = new mongoose.Schema({
       type: String,
       required: true
     },
-    generalInfo: {
-      type: String,
-      required: true
-    }
   });
   
   module.exports = mongoose.model('Info', InfoSchema);
