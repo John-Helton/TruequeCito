@@ -199,3 +199,40 @@ exports.getExchangeCount = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+//informacion de truequecito
+exports.getInfo = async (req, res) => {
+  try {
+    const info = await Info.findOne();
+    res.json(info);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener la información' });
+  }
+};
+
+exports.createInfo = async (req, res) => {
+  try {
+    const newInfo = new Info(req.body);
+    await newInfo.save();
+    res.status(201).json(newInfo);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al crear la información' });
+  }
+};
+
+exports.updateInfo = async (req, res) => {
+  try {
+    const updatedInfo = await Info.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(updatedInfo);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al actualizar la información' });
+  }
+};
+
+exports.deleteInfo = async (req, res) => {
+  try {
+    await Info.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Información eliminada' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al eliminar la información' });
+  }
+};

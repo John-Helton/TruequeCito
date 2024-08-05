@@ -74,3 +74,7 @@ export const URL_ADMIN_ROLES = `${BASE_URL}/admin/roles`;
 export const URL_ADMIN_CREATE_ROLE = `${BASE_URL}/admin/roles`;
 export const URL_ADMIN_EDIT_ROLE = `${BASE_URL}/admin/roles/:id`;
 export const URL_ADMIN_DELETE_ROLE = `${BASE_URL}/admin/roles/:id`;
+
+// ADMIN - INFO TRUEQUECITO
+
+export const URL_ADMIN_INFO = `${BASE_URL}/admin/info`;

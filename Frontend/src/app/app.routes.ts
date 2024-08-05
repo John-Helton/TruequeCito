@@ -24,6 +24,7 @@ import { ConfiguracionComponent } from './pages/admin/configuracion/configuracio
 import { RolesComponent } from './pages/admin/roles/roles.component';
 import { NotificationsComponent } from './components/notifications/notifications.component'; // Importa el componente de notificaciones
 import { adminGuard } from './guards/admin.guard';
+import { AboutPagesComponent } from './pages/client/about-pages/about-pages.component';
 
 const titleGlobal = 'Trueques |';
 
@@ -46,6 +47,7 @@ export const routes: Routes = [
       { path: 'payment/:exchangeId', component: PaymentComponent, canActivate: [AuthGuard], title: `${titleGlobal} Pago` },
       { path: 'user-profile/:Id', component: UsersProfileComponent, pathMatch: 'full', canActivate: [AuthGuard], data: { animation: 'HomePage' }, title: `${titleGlobal} Perfil de Usuario` },
       { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard], title: `${titleGlobal} Notificaciones` }, // Nueva ruta para notificaciones
+      { path: 'about', component: AboutPagesComponent, pathMatch: 'full', data: { animation: 'HomePage' }, title: `${titleGlobal} Nosotros` },
     ]
   },
   {

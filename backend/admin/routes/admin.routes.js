@@ -27,5 +27,10 @@ router.get('/product-count', adminController.getProductCount);
 router.get('/role-count', adminController.getRoleCount);
 router.get('/exchange-count', adminController.getExchangeCount);
 
+router.get('info/', adminController.getInfo);
+router.post('info/', adminController.createInfo);
+router.put('info/:id', adminController.updateInfo);
+router.delete('info/:id', adminController.deleteInfo);
+
 
 module.exports = router;
