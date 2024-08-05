@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { User } from '../../../shared/interfaces/auth.interfaces';
 import { AdminService } from '../../../services/admin.service';
 import { CommonModule } from '@angular/common';
@@ -11,11 +11,11 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './gestion-usuario.component.html',
   styleUrl: './gestion-usuario.component.css'
 })
-export class GestionUsuarioComponent {
+export class GestionUsuarioComponent implements OnInit {
   users: User[] = [];
-  newUser: User = new User();
+  newUser: Partial<User> = {}; // Cambiado a Partial<User>
   editUser: User | null = null;
-  view: 'list' | 'create' | 'edit' = 'list';  // Controls the current view
+  view: 'list' | 'create' | 'edit' = 'list'; // Controls the current view
 
   constructor(private adminService: AdminService) {}
 
@@ -29,7 +29,7 @@ export class GestionUsuarioComponent {
         this.users = data;
       },
       (error) => {
-        console.error('Error fetching users:', error);
+        this.handleError('Error fetching users:', error);
       }
     );
   }
@@ -38,11 +38,11 @@ export class GestionUsuarioComponent {
     this.adminService.createUser(this.newUser).subscribe(
       (data: User) => {
         this.users.push(data);
-        this.newUser = new User(); // Reset the form
+        this.newUser = {}; // Reset the form
         this.view = 'list'; // Return to the user list view
       },
       (error) => {
-        console.error('Error creating user:', error);
+        this.handleError('Error creating user:', error);
       }
     );
   }
@@ -54,6 +54,12 @@ export class GestionUsuarioComponent {
 
   saveEditUser(): void {
     if (this.editUser) {
+      console.log('Editing user:', this.editUser); // Verifica el valor de editUser
+      if (!this.editUser.id) {
+        console.error('User ID is missing');
+        return;
+      }
+  
       this.adminService.editUser(this.editUser.id, this.editUser).subscribe(
         (data: User) => {
           const index = this.users.findIndex(u => u.id === data.id);
@@ -64,7 +70,7 @@ export class GestionUsuarioComponent {
           this.view = 'list'; // Return to the user list view
         },
         (error) => {
-          console.error('Error editing user:', error);
+          this.handleError('Error editing user:', error);
         }
       );
     }
@@ -81,12 +87,17 @@ export class GestionUsuarioComponent {
         this.users = this.users.filter(user => user.id !== id);
       },
       (error) => {
-        console.error('Error deleting user:', error);
+        this.handleError('Error deleting user:', error);
       }
     );
   }
 
   toggleView(view: 'list' | 'create'): void {
     this.view = view;
+  }
+
+  private handleError(message: string, error: any): void {
+    console.error(message, error);
+    // Optionally, you can show a user-friendly error message
   }
 }

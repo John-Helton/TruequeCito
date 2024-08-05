@@ -1,23 +1,25 @@
-<div>
-  <h2 class="text-xl font-bold mb-4">Gestión de Productos</h2>
+<div class="p-6 bg-gray-100 min-h-screen">
+  <h2 class="text-2xl font-bold mb-6">Gestión de Productos</h2>
 
-  <div class="mb-4">
-    <button class="bg-pink-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" (click)="toggleView('list')">Ver Productos</button>
-    <button class="bg-pink-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" (click)="toggleView('create')">Crear Producto</button>
+  <div class="mb-6">
+    <button (click)="toggleView('list')" class="btn-primary">Ver Productos</button>
+    <button (click)="toggleView('create')" class="btn-primary">Crear Producto</button>
   </div>
 
   <ng-container *ngIf="view === 'list'">
-    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
       <ul>
         <li *ngFor="let product of products" class="flex items-center justify-between p-4 border-b last:border-none">
           <div class="flex items-center space-x-3">
-            <img src={{product.images}} alt="Product Image" class="rounded-full h-10 w-10 object-cover">
-            <span class="font-semibold">{{ product.name }}</span>
-            <span class="text-gray-500">{{ product.description }}</span>
+            <img [src]="product.images" alt="Imagen del Producto" class="w-12 h-12 object-cover rounded-full">
+            <div>
+              <h3 class="font-semibold text-lg">{{ product.name }}</h3>
+              <p class="text-gray-600">{{ product.description }}</p>
+            </div>
           </div>
           <div class="flex space-x-4">
-            <button (click)="startEditProduct(product)" class="text-blue-500 hover:text-blue-700 font-medium">Editar</button>
-            <button (click)="deleteProduct(product.id)" class="text-red-500 hover:text-red-700 font-medium">Eliminar</button>
+            <button (click)="startEditProduct(product)" class="text-blue-600 hover:text-blue-800 font-medium">Editar</button>
+            <button (click)="deleteProduct(product.id)" class="text-red-600 hover:text-red-800 font-medium">Eliminar</button>
           </div>
         </li>
       </ul>
@@ -25,23 +27,23 @@
   </ng-container>
 
   <ng-container *ngIf="view === 'create'">
-    <form (ngSubmit)="createProduct()" class="space-y-4">
+    <form (ngSubmit)="createProduct()" class="space-y-6 bg-white p-6 shadow-lg rounded-lg">
+      <h3 class="text-xl font-semibold mb-4">Crear Producto</h3>
       <input [(ngModel)]="newProduct.name" name="name" placeholder="Nombre del Producto" class="input" required />
       <input [(ngModel)]="newProduct.description" name="description" placeholder="Descripción" class="input" required />
       <input [(ngModel)]="newProduct.price" name="price" placeholder="Precio" class="input" required type="number" />
-      <button type="submit" class="btn">Crear Producto</button>
+      <button type="submit" class="btn-primary">Crear Producto</button>
     </form>
   </ng-container>
 
   <ng-container *ngIf="view === 'edit' && selectedProduct">
-    <h3 class="text-lg font-bold mb-2">Editar Producto</h3>
-    <form (ngSubmit)="saveEditProduct()" class="space-y-4">
-      <input [(ngModel)]="selectedProduct.name" name="editName" placeholder="Nombre del Producto" class="input" required />
+    <h3 class="text-xl font-semibold mb-4">Editar Producto</h3>
+    <form (ngSubmit)="saveEditProduct()" class="space-y-6 bg-white p-6 shadow-lg rounded-lg">
+      <input [(ngModel)]="selectedProduct.title" name="editName" placeholder="Nombre del Producto" class="input" required />
       <input [(ngModel)]="selectedProduct.description" name="editDescription" placeholder="Descripción" class="input" required />
-      <input [(ngModel)]="selectedProduct.price" name="editPrice" placeholder="Precio" class="input" required type="number" />
       <div class="flex space-x-2">
-        <button type="submit" class="btn">Guardar Cambios</button>
-        <button type="button" class="btn" (click)="cancelEdit()">Cancelar</button>
+        <button type="submit" class="btn-primary">Guardar Cambios</button>
+        <button type="button" class="btn-secondary" (click)="cancelEdit()">Cancelar</button>
       </div>
     </form>
   </ng-container>
