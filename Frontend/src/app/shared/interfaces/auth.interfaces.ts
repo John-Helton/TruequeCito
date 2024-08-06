@@ -1,3 +1,5 @@
+import { Product } from './product.interface';  // Importar la interfaz Product
+
 export interface interfaceLogin {
   email: string;
   password: string;
@@ -35,12 +37,11 @@ export class User {
   following?: string[];
   followers?: string[];
   likes?: string[];
-  products?: { title: string, images: string, _id: string }[];
+  products?: { title: string, images: string[], _id: string }[]; // Asegurarse de que `images` sea un array de strings
   name?: string;
   location?: string;
   address?: Address;
 }
-
 
 export interface AuthResponse {
   token: string;

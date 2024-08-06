@@ -52,7 +52,7 @@ exports.updateProfile = async (req, res) => {
 // Obtener perfil de un usuario por ID
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId).select('-password').populate('products', 'title');
+    const user = await User.findById(req.params.userId).populate('products', 'title description images estado preference');
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
@@ -64,9 +64,10 @@ exports.getUserById = async (req, res) => {
       user.reputation = Math.round((user.exchanges / 15) * 5);
     }
     console.log(`Reputation calculada en getUserById: ${user.reputation}`);
-    
+
     res.json({ user });
   } catch (err) {
+    console.error('Error obteniendo usuario:', err);
     res.status(500).json({ message: 'Error del servidor' });
   }
 };

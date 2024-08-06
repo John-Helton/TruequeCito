@@ -30,19 +30,19 @@
         <span class="mt-1 bg-red-100 text-red-800 text-sm font-semibold px-2.5 py-0.5 rounded">{{ user.likes?.length ?? 0 }}</span>
       </div>
     </div>
-    <div class="mb-6">
-      <h3 class="text-xl font-semibold text-pink-500 mb-2 text-center">Productos para intercambio</h3>
-      <ul class="space-y-4">
-        <li *ngFor="let product of user.products ?? []" class="flex items-center justify-between">
-          <div class="flex items-center">
-            <img [src]="product.images" alt="{{product.title}}" class="w-16 h-16 rounded mr-4 shadow">
-            <span>{{ product.title }}</span>
+    <div class="container mx-auto">
+      <h3 class="text-2xl font-semibold text-pink-500 mb-4 text-center">Productos para intercambio</h3>
+      <swiper [config]="config" class="mySwiper">
+        <ng-template swiperSlide *ngFor="let product of user.products ?? []">
+          <div class="flex flex-col items-center justify-center bg-white rounded-lg shadow-lg p-4 max-w-xs mx-auto">
+            <img [src]="product.images[0]" alt="{{product.title}}" class="product-image mb-4">
+            <span class="text-lg font-semibold mb-2">{{ product.title }}</span>
+            <button class="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-300" (click)="proposeExchange(product._id)">
+              Proponer Intercambio
+            </button>
           </div>
-          <button class="bg-blue-500 text-white py-1 px-3 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-300" (click)="proposeExchange(product._id)">
-            Proponer Intercambio
-          </button>
-        </li>
-      </ul>
+        </ng-template>
+      </swiper>
     </div>
     <div class="mt-6 flex justify-center space-x-4">
       <button class="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors duration-300" (click)="followUser()">
