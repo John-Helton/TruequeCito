@@ -13,7 +13,7 @@ import { Product } from '../../../shared/interfaces/product.interface';
   styleUrls: ['./users-profile.component.css']
 })
 export class UsersProfileComponent implements OnInit {
-  user: User = { id: '', email: '', username: '', avatar: '', token: '', role: '', following: [], followers: [], likes: 0 };
+  user: User = { id: '', email: '', username: '', avatar: '', token: '', role: '', following: [], followers: [], likes: [] };
   userProducts: Product[] = [];
   message: string = '';
   isEditModalOpen: boolean = false;

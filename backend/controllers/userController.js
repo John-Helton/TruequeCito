@@ -1,6 +1,6 @@
 const User = require('../models/User');
-const Product = require('../models/Product');
 const Follower = require('../models/Follower');
+const Like = require('../models/Like');
 
 // Obtener perfil del usuario autenticado
 exports.getProfile = async (req, res) => {
@@ -73,23 +73,84 @@ exports.getUserById = async (req, res) => {
 
 // Seguir a un usuario
 exports.followUser = async (req, res) => {
+  const { userId } = req.params;
+  const { id: followerId } = req.user;
+
+  if (userId === followerId) {
+    return res.status(400).json({ message: "No puedes seguirte a ti mismo." });
+  }
+
   try {
-    const userToFollow = await User.findById(req.params.userId);
-    if (!userToFollow) {
-      return res.status(404).json({ message: 'Usuario no encontrado' });
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado." });
     }
 
-    const currentUser = req.user;
-    const existingFollow = await Follower.findOne({ user: userToFollow._id, follower: currentUser._id });
-
-    if (!existingFollow) {
-      const newFollower = new Follower({ user: userToFollow._id, follower: currentUser._id });
-      await newFollower.save();
-      res.json({ message: 'Usuario seguido' });
-    } else {
-      res.status(400).json({ message: 'Ya sigues a este usuario' });
+    if (user.followers.includes(followerId)) {
+      return res.status(400).json({ message: "Ya sigues a este usuario." });
     }
-  } catch (err) {
-    res.status(500).json({ message: 'Error del servidor' });
+
+    user.followers.push(followerId);
+    await user.save();
+
+    res.status(200).json({ message: "Usuario seguido con éxito." });
+  } catch (error) {
+    console.error("Error al seguir al usuario:", error);
+    res.status(500).json({ message: "Error al seguir al usuario. Inténtalo de nuevo más tarde." });
+  }
+};
+
+// Dejar de seguir a un usuario
+exports.unfollowUser = async (req, res) => {
+  const { userId } = req.params;
+  const { id: followerId } = req.user;
+
+  if (userId === followerId) {
+    return res.status(400).json({ message: "No puedes dejar de seguirte a ti mismo." });
+  }
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado." });
+    }
+
+    const followerIndex = user.followers.indexOf(followerId);
+    if (followerIndex === -1) {
+      return res.status(400).json({ message: "No sigues a este usuario." });
+    }
+
+    user.followers.splice(followerIndex, 1);
+    await user.save();
+
+    res.status(200).json({ message: "Usuario dejado de seguir con éxito." });
+  } catch (error) {
+    console.error("Error al dejar de seguir al usuario:", error);
+    res.status(500).json({ message: "Error al dejar de seguir al usuario. Inténtalo de nuevo más tarde." });
+  }
+};
+
+// Dar like a un usuario
+exports.likeUser = async (req, res) => {
+  const { userId } = req.params;
+  const { id: likerId } = req.user;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado." });
+    }
+
+    if (user.likes.includes(likerId)) {
+      return res.status(400).json({ message: "Ya has dado like a este usuario." });
+    }
+
+    user.likes.push(likerId);
+    await user.save();
+
+    res.status(200).json({ message: "Usuario recibió like con éxito." });
+  } catch (error) {
+    console.error("Error al dar like al usuario:", error);
+    res.status(500).json({ message: "Error al dar like al usuario. Inténtalo de nuevo más tarde." });
   }
 };

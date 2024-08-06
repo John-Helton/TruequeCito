@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { User } from '../../shared/interfaces/auth.interfaces';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-public-profile',
@@ -11,25 +12,69 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule],
 })
-export class PublicProfileComponent implements OnInit {
+export class PublicProfileComponent implements OnInit, OnChanges {
   @Input() userId!: string;
-  user: User | null = null;
+  user: User = {
+    id: '',
+    username: '',
+    email: '',
+    token: '',
+    role: '',
+    following: [],
+    followers: [],
+    likes: [],
+    products: [],
+    name: '',
+    location: '',
+    address: {
+      provincia: '',
+      ciudad: '',
+      canton: '',
+      parroquia: '',
+      callePrincipal: '',
+      numeracion: '',
+      calleSecundaria: '',
+      tipo: '',
+      referencia: ''
+    }
+  };
   loading: boolean = true;
   error: string = '';
+  isFollowing: boolean = false;
+  hasLiked: boolean = false;
+  currentUserId: string = ''; // ID del usuario actual
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    console.log('UserID recibido:', this.userId);
-    this.loadUserProfile();
+    this.currentUserId = this.authService.getUser()?.id || ''; // Obtener el ID del usuario actual desde el servicio de autenticación
+    console.log('ID del usuario actual:', this.currentUserId);
+  }
+
+  ngOnChanges(): void {
+    if (this.userId) {
+      this.resetState();
+      this.loadUserProfile();
+    }
+  }
+
+  resetState(): void {
+    this.loading = true;
+    this.error = '';
+    this.isFollowing = false;
+    this.hasLiked = false;
   }
 
   loadUserProfile(): void {
+    console.log('Cargando perfil para userId:', this.userId);
     this.userService.getUserById(this.userId).subscribe({
       next: (data) => {
         console.log('Datos del usuario recibidos:', data);
         this.user = data.user;
-        console.log('Usuario asignado:', this.user);
+        this.isFollowing = Array.isArray(this.user.followers) ? this.user.followers.includes(this.currentUserId) : false;
+        this.hasLiked = Array.isArray(this.user.likes) ? this.user.likes.includes(this.currentUserId) : false;
+        console.log('isFollowing:', this.isFollowing);
+        console.log('hasLiked:', this.hasLiked);
         this.loading = false;
       },
       error: (error) => {
@@ -40,21 +85,50 @@ export class PublicProfileComponent implements OnInit {
     });
   }
 
-  closeUserProfileModal(): void {
-    // Implement the method to close the modal
+  followUser(): void {
+    console.log('Toggling follow status. isFollowing:', this.isFollowing);
+    if (this.isFollowing) {
+      this.userService.unfollowUser(this.userId).subscribe({
+        next: () => {
+          this.isFollowing = false;
+          this.user.followers = this.user.followers?.filter(followerId => followerId !== this.currentUserId) || [];
+          console.log('Dejado de seguir al usuario. Followers actualizados:', this.user.followers);
+        },
+        error: (error) => {
+          console.error('Error al dejar de seguir al usuario:', error);
+        }
+      });
+    } else {
+      this.userService.followUser(this.userId).subscribe({
+        next: () => {
+          this.isFollowing = true;
+          this.user.followers = [...(this.user.followers || []), this.currentUserId];
+          console.log('Seguido al usuario. Followers actualizados:', this.user.followers);
+        },
+        error: (error) => {
+          console.error('Error al seguir al usuario:', error);
+        }
+      });
+    }
+  }
+
+  likeUser(): void {
+    console.log('Toggling like status. hasLiked:', this.hasLiked);
+    if (!this.hasLiked) {
+      this.userService.likeUser(this.userId).subscribe({
+        next: () => {
+          this.hasLiked = true;
+          this.user.likes = [...(this.user.likes || []), this.currentUserId];
+          console.log('Dado like al usuario. Likes actualizados:', this.user.likes);
+        },
+        error: (error) => {
+          console.error('Error al dar like al usuario:', error);
+        }
+      });
+    }
   }
 
   proposeExchange(productId: string): void {
     this.router.navigate(['/propose-exchange', productId]);
-  }
-
-  followUser(userId: string): void {
-    console.log('Seguir usuario con ID:', userId);
-    // Implement the follow user functionality
-  }
-
-  likeUser(userId: string): void {
-    console.log('Dar like al usuario con ID:', userId);
-    // Implement the like user functionality
   }
 }

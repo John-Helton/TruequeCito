@@ -10,11 +10,10 @@ const userSchema = new mongoose.Schema({
   avatar: { type: String, default: 'https://cdn-icons-png.flaticon.com/512/6596/6596121.png' },
   exchanges: { type: Number, default: 0 },
   products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product', default: [] }],
-  reputation: { type: Number, default: 0 }, // Añadido campo de reputación
-  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }], // Añadido campo de seguidores
-  following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }], // Añadido campo de siguiendo
-  likes: { type: Number, default: 0 },
-  role: { type: String, default: 'user' },
+  reputation: { type: Number, default: 0 },
+  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }],
+  following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }],
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }], // Cambiado a array de ObjectIds
   role: { type: String, default: 'user' }
 }, {
   timestamps: true

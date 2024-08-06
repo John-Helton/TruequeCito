@@ -34,12 +34,13 @@ export class User {
   reputation?: number;
   following?: string[];
   followers?: string[];
-  likes?: number;
+  likes?: string[];
   products?: { title: string, images: string, _id: string }[];
   name?: string;
   location?: string;
-  address?: Address;  // Usar la interfaz Address para la dirección
+  address?: Address;
 }
+
 
 export interface AuthResponse {
   token: string;

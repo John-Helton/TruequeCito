@@ -46,6 +46,57 @@ export class UserService {
     );
   }
 
+  followUser(userId: string): Observable<any> {
+    const url = `${this.apiUrl}/${userId}/follow`;
+    console.log('Calling followUser API with URL:', url);
+    const token = this.getToken();
+    console.log('Token usado:', token);
+    return this.http.post(url, {}, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      })
+    }).pipe(
+      catchError(error => {
+        console.error('Error in followUser:', error);
+        return throwError(() => new Error('Error al seguir al usuario. Inténtalo de nuevo más tarde.'));
+      })
+    );
+  }
+
+  unfollowUser(userId: string): Observable<any> {
+    const url = `${this.apiUrl}/${userId}/unfollow`;
+    console.log('Calling unfollowUser API with URL:', url);
+    const token = this.getToken();
+    console.log('Token usado:', token);
+    return this.http.post(url, {}, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      })
+    }).pipe(
+      catchError(error => {
+        console.error('Error in unfollowUser:', error);
+        return throwError(() => new Error('Error al dejar de seguir al usuario. Inténtalo de nuevo más tarde.'));
+      })
+    );
+  }
+
+  likeUser(userId: string): Observable<any> {
+    const url = `${this.apiUrl}/${userId}/like`;
+    console.log('Calling likeUser API with URL:', url);
+    const token = this.getToken();
+    console.log('Token usado:', token);
+    return this.http.post(url, {}, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      })
+    }).pipe(
+      catchError(error => {
+        console.error('Error in likeUser:', error);
+        return throwError(() => new Error('Error al dar like al usuario. Inténtalo de nuevo más tarde.'));
+      })
+    );
+  }
+
   private getToken(): string | null {
     if (isPlatformBrowser(this.platformId)) {
       return localStorage.getItem('token');
