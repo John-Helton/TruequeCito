@@ -25,9 +25,11 @@ export class GestionIntercambiosComponent implements OnInit {
 
   ngOnInit(): void {
     const currentUser = this.authService.getUser();
+    console.log('Current user:', currentUser);
 
     if (currentUser && currentUser.id) {
       this.currentUserId = currentUser.id;
+      console.log('Current user ID:', this.currentUserId);
     } else {
       console.log('Usuario no autenticado o ID no encontrado');
     }
@@ -37,7 +39,9 @@ export class GestionIntercambiosComponent implements OnInit {
   loadCompletedExchanges(): void {
     this.exchangeService.getCompletedExchanges().subscribe({
       next: (data) => {
-        this.exchanges = data.filter(exchange => exchange.status !== 'accepted');
+        console.log('Completed exchanges fetched:', data);
+        this.exchanges = data.filter(exchange => exchange.status === 'completed');
+        console.log('Filtered exchanges:', this.exchanges);
         this.error = null;
       },
       error: (error) => {
@@ -59,7 +63,8 @@ export class GestionIntercambiosComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.exchangeService.cancelExchange(exchangeId).subscribe({
-          next: () => {
+          next: (response) => {
+            console.log('Exchange cancelled:', response.exchange);
             this.exchanges = this.exchanges.filter(exchange => exchange._id !== exchangeId);
             Swal.fire(
               'Cancelado!',
@@ -81,14 +86,17 @@ export class GestionIntercambiosComponent implements OnInit {
   }
 
   acceptExchange(exchangeId: string): void {
+    console.log('Accepting exchange with ID:', exchangeId); // Log para verificar el exchangeId
     this.exchangeService.acceptExchange(exchangeId).subscribe({
-      next: () => {
+      next: (response) => {
+        console.log('Exchange accepted:', response.exchange);
         Swal.fire(
           'Intercambio Completado!',
           'El intercambio ha sido completado.',
           'success'
         );
         this.exchanges = this.exchanges.filter(exchange => exchange._id !== exchangeId);
+        console.log('Updated exchanges after acceptance:', this.exchanges);
       },
       error: (error: any) => {
         console.error('Error al aceptar el intercambio:', error);
@@ -100,6 +108,7 @@ export class GestionIntercambiosComponent implements OnInit {
       }
     });
   }
+  
 
   viewReceipt(receiptUrl: string): void {
     const baseUrl = 'http://localhost:5000/uploads/'; // Cambia esto según tu configuración del servidor

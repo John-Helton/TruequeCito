@@ -35,24 +35,26 @@ const notification = new Notification({
     res.status(500).json({ error: error.message });
   }
 };
-  // Aceptar intercambio
-  exports.acceptExchange = async (req, res) => {
-    try {
-      const { exchangeId } = req.params;
-  
-      const exchange = await Exchange.findById(exchangeId);
-      if (!exchange) {
-        return res.status(404).json({ message: 'Intercambio no encontrado' });
-      }
-  
-      exchange.status = 'completed';
-      await exchange.save();
-  
-      res.status(200).json({ message: 'Intercambio completado correctamente' });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+
+// Aceptar intercambio
+exports.acceptExchange = async (req, res) => {
+  try {
+    const { exchangeId } = req.params;
+
+    const exchange = await Exchange.findById(exchangeId);
+    if (!exchange) {
+      return res.status(404).json({ message: 'Intercambio no encontrado' });
     }
-  };
+
+    exchange.status = 'accepted';
+    await exchange.save();
+
+    res.status(200).json({ message: 'Intercambio completado correctamente', exchange });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
   
   // Rechazar intercambio
   exports.rejectExchange = async (req, res) => {
