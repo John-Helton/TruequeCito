@@ -57,6 +57,8 @@ export const URL_UPLOAD = `${BASE_URL}/upload`;
 // PAYMENTS
 export const URL_PAYMENTS = `${BASE_URL}/payments`;
 
+export const URL_ADMIN = `${BASE_URL}/admin`;
+
 // ADMIN - USERS
 export const URL_ADMIN_USERS = `${BASE_URL}/admin/users`;
 export const URL_ADMIN_CREATE_USER = `${BASE_URL}/admin/users`;

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { URL_ADMIN_USERS, URL_ADMIN_CREATE_USER, URL_ADMIN_EDIT_USER, URL_ADMIN_DELETE_USER, URL_ADMIN_PRODUCTS, URL_ADMIN_CREATE_PRODUCT, URL_ADMIN_EDIT_PRODUCT, URL_ADMIN_DELETE_PRODUCT, URL_ADMIN_ROLES, URL_ADMIN_CREATE_ROLE, URL_ADMIN_EDIT_ROLE, URL_ADMIN_DELETE_ROLE } from '../shared/constants/url.constants';
+import { URL_ADMIN_USERS, URL_ADMIN_CREATE_USER, URL_ADMIN_EDIT_USER, URL_ADMIN_DELETE_USER, URL_ADMIN_PRODUCTS, URL_ADMIN_CREATE_PRODUCT, URL_ADMIN_EDIT_PRODUCT, URL_ADMIN_DELETE_PRODUCT, URL_ADMIN_ROLES, URL_ADMIN_CREATE_ROLE, URL_ADMIN_EDIT_ROLE, URL_ADMIN_DELETE_ROLE, URL_ADMIN } from '../shared/constants/url.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -60,7 +60,7 @@ export class AdminService {
   deleteRole(id: string): Observable<any> {
     return this.http.delete(URL_ADMIN_DELETE_ROLE.replace(':id', id));
   }
-  private baseUrl = 'http://localhost:5000/api/admin'; // Ajusta la URL según tu configuración
+  private baseUrl = URL_ADMIN; // Ajusta la URL según tu configuración
 
   getUserCount(): Observable<{ count: number }> {
     return this.http.get<{ count: number }>(`${this.baseUrl}/user-count`);
