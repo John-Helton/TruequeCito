@@ -23,12 +23,24 @@ export class ProposalsListComponent implements OnInit {
   exchangesSent: Proposal[] = [];
   currentUser: any;
 
-  config: SwiperOptions = {
-    loop: true,
+  configReceived: SwiperOptions = {
+    loop: false,
     slidesPerView: 1,
     spaceBetween: 30,
-    navigation: true,
+    navigation: false,
     pagination: { clickable: true },
+    scrollbar: { draggable: true },
+    
+  };
+
+  configSent: SwiperOptions = {
+    loop: false,
+    slidesPerView: 1,
+    spaceBetween: 0,
+    navigation: false,
+    pagination: { type:
+      'custom', 
+    },
     scrollbar: { draggable: true },
   };
 
@@ -68,6 +80,8 @@ export class ProposalsListComponent implements OnInit {
 
           return updatedExchange;
         });
+
+        this.updateSwiperConfig();
       },
       error: (error) => {
         console.error('Error al cargar los intercambios recibidos:', error);
@@ -86,11 +100,21 @@ export class ProposalsListComponent implements OnInit {
 
           return updatedExchange;
         });
+
+        this.updateSwiperConfig();
       },
       error: (error) => {
         console.error('Error al cargar los intercambios enviados:', error);
       }
     });
+  }
+
+  updateSwiperConfig(): void {
+    this.configReceived.navigation = this.exchangesReceived.length > 1;
+    this.configReceived.loop = this.exchangesReceived.length > 1;
+
+    this.configSent.navigation = this.exchangesSent.length > 1;
+    this.configSent.loop = this.exchangesSent.length > 1;
   }
 
   navigateToProduct(productId: string, exchangeId: string): void {

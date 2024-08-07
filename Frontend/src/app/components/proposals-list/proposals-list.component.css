@@ -1,6 +1,8 @@
+
+
 .exchange-container {
     position: relative;
-    height: 250px; /* Ajusta según sea necesario */
+    height: 280px; /* Ajusta según sea necesario */
   }
   
   .product-card-1,
@@ -80,3 +82,5 @@
     height: auto;
   }
 
+  
+  
