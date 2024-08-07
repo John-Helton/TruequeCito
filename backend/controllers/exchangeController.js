@@ -125,7 +125,7 @@ exports.getSentExchanges = async (req, res) => {
 
 // Subir comprobante
 exports.uploadReceipt = async (req, res) => {
-  const { exchangeId, userType } = req.body;
+  const { exchangeId, userType, address, phoneNumber } = req.body;
   const file = req.file;
 
   try {
@@ -136,19 +136,34 @@ exports.uploadReceipt = async (req, res) => {
 
     if (userType === 'requested') {
       exchange.receiptRequested = file.path;
+      exchange.addressRequested = address;
+      exchange.phoneRequested = phoneNumber;
     } else if (userType === 'offered') {
       exchange.receiptOffered = file.path;
+      exchange.addressOffered = address;
+      exchange.phoneOffered = phoneNumber;
+    }
+
+    if (!exchange.firstReceiptUploadedBy) {
+      exchange.firstReceiptUploadedBy = req.user._id;
     }
 
     await exchange.save();
 
-    // Verificar si ambos comprobantes han sido subidos
     if (exchange.receiptRequested && exchange.receiptOffered) {
       exchange.status = 'completed';
       await exchange.save();
-      // Notificación al administrador
       console.log('Ambos comprobantes cargados, notificar al administrador.');
-      // Aquí puedes agregar la lógica para notificar al administrador
+      // Lógica para notificar al administrador
+    } else {
+      const otherUserId = userType === 'offered' ? exchange.userRequested : exchange.userOffered;
+      const notification = new Notification({
+        userId: otherUserId,
+        message: 'Comprobante subido, por favor sube tu comprobante para completar el intercambio',
+        timestamp: new Date(),
+        read: false
+      });
+      await notification.save();
     }
 
     res.status(200).json({ message: 'Comprobante cargado con éxito', exchange });
@@ -156,6 +171,7 @@ exports.uploadReceipt = async (req, res) => {
     res.status(500).json({ message: 'Error al cargar el comprobante', error: error.message });
   }
 };
+
   //Obtener todos los intercabios
 exports.getAllExchanges = async (req, res) => {
   try {

@@ -35,9 +35,9 @@ export class UserService {
   updateUserProfile(user: User): Observable<User> {
     const token = this.getToken();
     const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
-
-    console.log(`Actualizando usuario: ${JSON.stringify(user)}`);
-
+  
+    console.log('Token usado para actualizar el perfil:', token); // Log del token
+  
     return this.http.put<User>(`${this.apiUrl}/profile`, user, { headers }).pipe(
       catchError(error => {
         console.error('Error actualizando perfil:', error);
@@ -45,6 +45,8 @@ export class UserService {
       })
     );
   }
+  
+  
 
   followUser(userId: string): Observable<any> {
     const url = `${this.apiUrl}/${userId}/follow`;

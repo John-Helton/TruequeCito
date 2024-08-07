@@ -24,4 +24,8 @@ export interface Exchange {
   createdAt: string;
   receiptRequested?: string;
   receiptOffered?: string;
+  addressOffered?: string;
+  addressRequested?: string;
+  phoneOffered?: string;
+  phoneRequested?: string;
 }

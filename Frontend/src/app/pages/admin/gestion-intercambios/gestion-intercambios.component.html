@@ -23,6 +23,12 @@
               <p class="text-gray-600 text-base">Descripcion: {{ exchange.productOffered.description }}</p>
               <p class="text-gray-600 text-base">Estado: {{ exchange.productOffered.estado }}</p>
               <p class="text-gray-600 text-base">Preferencia: {{ exchange.productOffered.preference }}</p>
+              <div class="mt-4 p-4 border rounded-md bg-gray-50">
+                <h5 class="font-semibold">Dirección:</h5>
+                <p class="text-gray-600">{{ exchange.addressOffered }}</p>
+                <h5 class="font-semibold">Teléfono:</h5>
+                <p class="text-gray-600">{{ exchange.phoneOffered }}</p>
+              </div>
             </div>
           </div>
           <!-- Producto Solicitado -->
@@ -34,6 +40,12 @@
               <p class="text-gray-600 text-base">Descripcion: {{ exchange.productRequested.description }}</p>
               <p class="text-gray-600 text-base">Estado: {{ exchange.productRequested.estado }}</p>
               <p class="text-gray-600 text-base">Preferencia: {{ exchange.productRequested.preference }}</p>
+              <div class="mt-4 p-4 border rounded-md bg-gray-50">
+                <h5 class="font-semibold">Dirección:</h5>
+                <p class="text-gray-600">{{ exchange.addressRequested }}</p>
+                <h5 class="font-semibold">Teléfono:</h5>
+                <p class="text-gray-600">{{ exchange.phoneRequested }}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -64,7 +76,6 @@
               Cancelar Intercambio
             </button>
           </div>
-          
         </div>
       </div>
     </div>

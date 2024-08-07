@@ -5,18 +5,32 @@ import { Router } from '@angular/router';
 import { Proposal } from '../../shared/interfaces/product.interface';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../services/notification.service';
+import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import { SwiperModule } from 'swiper/angular';
+import { SwiperOptions } from 'swiper/types';
+
+SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
 
 @Component({
   selector: 'app-proposals-list',
   templateUrl: './proposals-list.component.html',
   styleUrls: ['./proposals-list.component.css'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, SwiperModule]
 })
 export class ProposalsListComponent implements OnInit {
   exchangesReceived: Proposal[] = [];
   exchangesSent: Proposal[] = [];
   currentUser: any;
+
+  config: SwiperOptions = {
+    loop: true,
+    slidesPerView: 1,
+    spaceBetween: 30,
+    navigation: true,
+    pagination: { clickable: true },
+    scrollbar: { draggable: true },
+  };
 
   constructor(
     private exchangeService: ExchangeService,
