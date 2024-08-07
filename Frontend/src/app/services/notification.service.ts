@@ -21,6 +21,8 @@ export class NotificationService {
         return 'Tu intercambio ha sido exitoso, Felicidades por tu nuevo producto';
       case 'El intercambio fue rejected':
         return 'Tu intercambio ha sido rechazado, se enviará de vuelta tu producto';
+        case 'El intercambio fue pending':
+          return 'El intercambio esta pendiente del pago'
       case 'El intercambio fue completed':
         return 'El intercambio ha sido completado, envia tu producto y cuando lo revisemos te vamos a notificar';
       default:
