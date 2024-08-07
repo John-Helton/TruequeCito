@@ -5,11 +5,11 @@ import { Router } from '@angular/router';
 import { Proposal } from '../../shared/interfaces/product.interface';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../services/notification.service';
-import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import SwiperCore, { Pagination, Scrollbar, A11y } from 'swiper';
 import { SwiperModule } from 'swiper/angular';
 import { SwiperOptions } from 'swiper/types';
 
-SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
+SwiperCore.use([Pagination, Scrollbar, A11y]);
 
 @Component({
   selector: 'app-proposals-list',
@@ -27,20 +27,15 @@ export class ProposalsListComponent implements OnInit {
     loop: false,
     slidesPerView: 1,
     spaceBetween: 30,
-    navigation: false,
     pagination: { clickable: true },
     scrollbar: { draggable: true },
-    
   };
 
   configSent: SwiperOptions = {
     loop: false,
     slidesPerView: 1,
-    spaceBetween: 0,
-    navigation: false,
-    pagination: { type:
-      'custom', 
-    },
+    spaceBetween: 1,
+    pagination: { clickable: true },
     scrollbar: { draggable: true },
   };
 
@@ -110,10 +105,7 @@ export class ProposalsListComponent implements OnInit {
   }
 
   updateSwiperConfig(): void {
-    this.configReceived.navigation = this.exchangesReceived.length > 1;
     this.configReceived.loop = this.exchangesReceived.length > 1;
-
-    this.configSent.navigation = this.exchangesSent.length > 1;
     this.configSent.loop = this.exchangesSent.length > 1;
   }
 
