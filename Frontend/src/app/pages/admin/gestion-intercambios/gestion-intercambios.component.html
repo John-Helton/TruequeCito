@@ -23,6 +23,14 @@
               <p class="text-gray-600 text-base">Descripcion: {{ exchange.productOffered.description }}</p>
               <p class="text-gray-600 text-base">Estado: {{ exchange.productOffered.estado }}</p>
               <p class="text-gray-600 text-base">Preferencia: {{ exchange.productOffered.preference }}</p>
+              <h4 class="text-lg font-semibold mb-2">Comprobante:</h4>
+              <div *ngIf="exchange.receiptRequested" class="mt-4">
+                <p class="text-gray-800 text-base">Comprobante subido por el usario {{ exchange.userOffered.username }} <a (click)="viewReceipt(exchange.receiptRequested)" class="text-blue-500 hover:underline cursor-pointer">Ver Comprobante</a></p>
+              </div>
+              <div class="mt-4">
+                <h4 class="text-lg font-semibold mb-2">Enviar a:</h4>
+              </div>
+             
               <div class="mt-4 p-4 border rounded-md bg-gray-50">
                 <h5 class="font-semibold">Dirección:</h5>
                 <p class="text-gray-600">{{ exchange.addressOffered }}</p>
@@ -40,6 +48,14 @@
               <p class="text-gray-600 text-base">Descripcion: {{ exchange.productRequested.description }}</p>
               <p class="text-gray-600 text-base">Estado: {{ exchange.productRequested.estado }}</p>
               <p class="text-gray-600 text-base">Preferencia: {{ exchange.productRequested.preference }}</p>
+              <h4 class="text-lg font-semibold mb-2">Comprobante:</h4>
+              <div *ngIf="exchange.receiptOffered" class="mt-4">
+                <p class="text-gray-800 text-base">Comprobante subido por el usario {{ exchange.userRequested.username }}
+              <a (click)="viewReceipt(exchange.receiptOffered)" class="text-blue-500 hover:underline cursor-pointer">Ver Comprobante</a></p>
+              </div>
+              <div class="mt-4">
+                <h4 class="text-lg font-semibold mb-2">Enviar a:</h4>
+              </div>
               <div class="mt-4 p-4 border rounded-md bg-gray-50">
                 <h5 class="font-semibold">Dirección:</h5>
                 <p class="text-gray-600">{{ exchange.addressRequested }}</p>
@@ -62,12 +78,6 @@
           </div>
           <p class="text-gray-600 text-base">Unique Code: {{ exchange.uniqueCode }}</p>
           <p class="text-gray-600 text-base">Created At: {{ exchange.createdAt | date }}</p>
-          <div *ngIf="exchange.receiptRequested" class="mt-4">
-            <p class="text-gray-800 text-base">Receipt Requested: <a (click)="viewReceipt(exchange.receiptRequested)" class="text-blue-500 hover:underline cursor-pointer">Ver Comprobante</a></p>
-          </div>
-          <div *ngIf="exchange.receiptOffered" class="mt-4">
-            <p class="text-gray-800 text-base">Receipt Offered: <a (click)="viewReceipt(exchange.receiptOffered)" class="text-blue-500 hover:underline cursor-pointer">Ver Comprobante</a></p>
-          </div>
           <div class="flex justify-end mt-4 space-x-2">
             <button (click)="acceptExchange(exchange._id)" class="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors duration-300">
               Aceptar Intercambio
