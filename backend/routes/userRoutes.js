@@ -15,4 +15,7 @@ router.post('/:userId/unfollow', authMiddleware, userController.unfollowUser);
 // Ruta para dar like a un usuario
 router.post('/:userId/like', authMiddleware, userController.likeUser);
 
+// Ruta para actualizar el perfil del usuario autenticado
+//router.put('/profile', authMiddleware, userController.updateProfile);
+
 module.exports = router;

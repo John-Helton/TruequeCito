@@ -30,17 +30,8 @@ export class PublicProfileComponent implements OnInit, OnChanges {
     products: [],
     name: '',
     location: '',
-    address: {
-      provincia: '',
-      ciudad: '',
-      canton: '',
-      parroquia: '',
-      callePrincipal: '',
-      numeracion: '',
-      calleSecundaria: '',
-      tipo: '',
-      referencia: ''
-    }
+    address: '',
+    phone: ''
   };
   loading: boolean = true;
   error: string = '';

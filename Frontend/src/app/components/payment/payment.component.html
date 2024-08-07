@@ -25,22 +25,8 @@
 
   <div class="mt-8 p-5 border-2 rounded-lg">
     <h2 class="font-bold text-xl mb-4">Información de Dirección</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <input class="block w-full p-2 border rounded" [(ngModel)]="userAddress.provincia" placeholder="Provincia" />
-      <input class="block w-full p-2 border rounded" [(ngModel)]="userAddress.ciudad" placeholder="Ciudad" />
-      <input class="block w-full p-2 border rounded" [(ngModel)]="userAddress.canton" placeholder="Cantón" />
-      <input class="block w-full p-2 border rounded" [(ngModel)]="userAddress.parroquia" placeholder="Parroquia" />
-      <input class="block w-full p-2 border rounded" [(ngModel)]="userAddress.callePrincipal" placeholder="Calle Principal" />
-      <input class="block w-full p-2 border rounded" [(ngModel)]="userAddress.numeracion" placeholder="Numeración" />
-      <input class="block w-full p-2 border rounded" [(ngModel)]="userAddress.calleSecundaria" placeholder="Calle Secundaria" />
-      <select class="block w-full p-2 border rounded" [(ngModel)]="userAddress.tipo">
-        <option value="">Tipo de Residencia</option>
-        <option value="casa">Casa</option>
-        <option value="edificio">Edificio</option>
-        <option value="conjunto">Conjunto Residencial</option>
-      </select>
-      <input class="block w-full p-2 border rounded" [(ngModel)]="userAddress.referencia" placeholder="Referencia" />
-    </div>
+    <input class="block w-full p-2 border rounded" [(ngModel)]="userAddress" placeholder="Dirección" />
+    <p>Teléfono: <input class="block w-full p-2 border rounded" [(ngModel)]="phone" placeholder="Teléfono" maxlength="10" /> <!-- Campo de teléfono con validación de 10 dígitos --></p>
   </div>
 
   <div class="mt-8 p-5 border-2 rounded-lg">
@@ -55,7 +41,6 @@
     <p>Cuenta: <span class="font-semibold">123456789</span></p>
     <p>Correo: <span class="font-semibold">bancoejemplo.com</span></p>
     <p>Cédula: <span class="font-semibold">1234567890</span></p>
-    <p>Teléfono: <span class="font-semibold">+123456789</span></p>
     <p>Código Único: <span class="font-semibold">{{ uniqueCode }}</span> <span class="italic text-sm">(Este código debe ser puesto como descripción de transferencia para validar su pago)</span></p>
 
     <div class="mt-8">

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExchangeService } from '../../services/exchange.service';
 import { ProductService } from '../../services/product.service';
@@ -8,7 +8,6 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
-import { Address } from '../../shared/interfaces/auth.interfaces';
 
 @Component({
   selector: 'app-payment',
@@ -25,20 +24,8 @@ export class PaymentComponent implements OnInit {
   uniqueCode: string | undefined;
   selectedFile: File | null = null;
   userType: string = '';
-  userAddress: Address = {
-    provincia: '',
-    ciudad: '',
-    canton: '',
-    parroquia: '',
-    callePrincipal: '',
-    numeracion: '',
-    calleSecundaria: '',
-    tipo: '',
-    referencia: ''
-  };
-  provincias: any = {};
-  cantones: string[] = [];
-  parroquias: string[] = [];
+  userAddress: string = '';
+  phone: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -54,7 +41,6 @@ export class PaymentComponent implements OnInit {
     if (this.exchangeId) {
       this.loadExchange(this.exchangeId);
     }
-    this.loadProvincias();
   }
 
   private loadExchange(exchangeId: string): void {
@@ -66,8 +52,8 @@ export class PaymentComponent implements OnInit {
         this.loadProducts(exchange.productOffered._id, exchange.productRequested._id);
 
         const currentUser = this.authService.getUser();
-        if (currentUser && currentUser.address) {
-          this.userAddress = currentUser.address;
+        if (currentUser) {
+          this.userAddress = currentUser.address || '';
         } else {
           console.error('No authenticated user found or address not available');
         }
@@ -97,38 +83,6 @@ export class PaymentComponent implements OnInit {
     });
   }
 
-  private loadProvincias(): void {
-    this.http.get('/assets/provincias.json').subscribe({
-      next: (data: any) => {
-        this.provincias = data;
-      },
-      error: (error: any) => {
-        console.error('Error loading provincias:', error);
-      }
-    });
-  }
-
-  onProvinciaChange(event: any): void {
-    const selectedProvincia = event.target.value;
-    if (this.provincias[selectedProvincia]) {
-      this.cantones = Object.keys(this.provincias[selectedProvincia]);
-      this.parroquias = [];
-    } else {
-      this.cantones = [];
-      this.parroquias = [];
-    }
-  }
-
-  onCantonChange(event: any): void {
-    const selectedCanton = event.target.value;
-    const selectedProvincia = this.userAddress.provincia;
-    if (selectedProvincia && this.provincias[selectedProvincia][selectedCanton]) {
-      this.parroquias = this.provincias[selectedProvincia][selectedCanton];
-    } else {
-      this.parroquias = [];
-    }
-  }
-
   getImageSrc(images: string[] | undefined): string {
     return images && images.length > 0 ? images[0] : 'assets/default_image.jpg';
   }
@@ -138,36 +92,47 @@ export class PaymentComponent implements OnInit {
   }
 
   submitComprobante(): void {
-    if (!this.selectedFile || !this.exchangeId) {
+    if (!this.selectedFile || !this.exchangeId || !this.isValidPhoneNumber()) {
       Swal.fire({
         icon: 'warning',
         title: 'Error',
-        text: 'No se seleccionó ningún archivo.',
+        text: 'No se seleccionó ningún archivo o el número de teléfono es inválido.',
         timer: 1500,
         showConfirmButton: false
       });
       return;
     }
-
+  
     const formData = new FormData();
     formData.append('receipt', this.selectedFile);
     formData.append('exchangeId', this.exchangeId);
     formData.append('userType', this.userType);
-    formData.append('address', JSON.stringify(this.userAddress)); // Añadir la dirección al formData
-
+    formData.append('address', this.userAddress);
+    formData.append('phoneNumber', this.phone);
+  
     this.exchangeService.uploadReceipt(formData).subscribe({
       next: (response) => {
-        this.loadExchange(this.exchangeId!); 
-        this.verifyAndCompleteExchange();
-        Swal.fire({
-          icon: 'success',
-          title: 'Comprobante enviado',
-          text: 'Propuesta de intercambio enviada correctamente.',
-          timer: 1500,
-          showConfirmButton: false
-        }).then(() => {
-          this.router.navigate(['/']);
-        });
+        if (response.exchange.status === 'completed') {
+          Swal.fire({
+            icon: 'success',
+            title: 'Intercambio completado',
+            text: 'Ambos comprobantes han sido subidos. El intercambio está pendiente de revisión por el administrador.',
+            timer: 3500,
+            showConfirmButton: false
+          }).then(() => {
+            this.router.navigate(['/']);
+          });
+        } else {
+          Swal.fire({
+            icon: 'info',
+            title: 'Comprobante enviado',
+            text: 'Comprobante enviado exitosamente, le hemos notificado al usuario para que realice su pago.',
+            timer: 4500,
+            showConfirmButton: false
+          }).then(() => {
+            this.router.navigate(['/']);
+          });
+        }
       },
       error: (error) => {
         console.error('Error al enviar el comprobante:', error);
@@ -180,6 +145,25 @@ export class PaymentComponent implements OnInit {
         });
       }
     });
+  }
+  
+
+  isValidPhoneNumber(): boolean {
+    return this.phone.length === 10 && /^\d+$/.test(this.phone);
+  }
+
+  updateExchangeStatusToAccepted(): void {
+    if (this.exchangeId) {
+      this.exchangeService.updateExchangeStatus(this.exchangeId, 'accepted').subscribe({
+        next: (response) => {
+          console.log('Oferta aceptada:', response);
+          this.verifyAndCompleteExchange();
+        },
+        error: (error) => {
+          console.error('Error al aceptar la oferta:', error);
+        }
+      });
+    }
   }
 
   verifyAndCompleteExchange(): void {
@@ -230,6 +214,20 @@ export class PaymentComponent implements OnInit {
 
   cancelarTrueque(): void {
     console.log('Trueque cancelado');
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeUnloadHandler(event: Event): void {
+    if (this.exchangeId) {
+      this.exchangeService.setExchangeStatusPending(this.exchangeId).subscribe({
+        next: (response) => {
+          console.log('Estado del intercambio actualizado a pendiente:', response);
+        },
+        error: (error) => {
+          console.error('Error al actualizar el estado del intercambio:', error);
+        }
+      });
+    }
   }
 
   onImageError(event: Event): void {

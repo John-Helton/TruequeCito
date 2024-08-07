@@ -1,3 +1,4 @@
+// shared/interfaces/auth.interfaces.ts
 import { Product } from './product.interface';  // Importar la interfaz Product
 
 export interface interfaceLogin {
@@ -10,18 +11,6 @@ export interface interfaceRegister {
   email: string;
   password: string;
   password_confirmation: string;
-}
-
-export interface Address {  // Definir la interfaz Address
-  provincia: string;
-  ciudad: string;
-  canton: string;
-  parroquia: string;
-  callePrincipal: string;
-  numeracion: string;
-  calleSecundaria: string;
-  tipo: string;
-  referencia: string;
 }
 
 export class User {
@@ -40,7 +29,8 @@ export class User {
   products?: { title: string, images: string[], _id: string }[]; // Asegurarse de que `images` sea un array de strings
   name?: string;
   location?: string;
-  address?: Address;
+  address?: string; // Cambiar a un string simple para la dirección completa
+  phone?: string;  // Añadir campo para el teléfono
 }
 
 export interface AuthResponse {
@@ -54,6 +44,7 @@ export interface AuthResponse {
     role: string;
     exchanges?: number;
     reputation?: number;
-    address?: Address;  // Usar la interfaz Address para la dirección
+    address?: string;  // Cambiar a un string simple para la dirección completa
+    phone?: string;  // Añadir campo para el teléfono
   };
 }

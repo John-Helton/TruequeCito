@@ -10,7 +10,11 @@ const exchangeSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   receiptOffered: { type: String },
   receiptRequested: { type: String },
-  firstReceiptUploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' } // Nuevo campo
+  firstReceiptUploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  addressOffered: { type: String },
+  addressRequested: { type: String },
+  phoneOffered: { type: String },
+  phoneRequested: { type: String }
 });
 
 const Exchange = mongoose.model('Exchange', exchangeSchema);

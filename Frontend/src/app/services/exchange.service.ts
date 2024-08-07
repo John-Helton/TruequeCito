@@ -57,7 +57,7 @@ export class ExchangeService {
   updateExchangeStatus(exchangeId: string, status: string): Observable<any> {
     const headers = this.getHeaders();
     return this.http.put(`${this.apiUrl}/status`, { exchangeId, status }, { headers });
-  }  
+  }
 
   getExchangeById(exchangeId: string): Observable<Proposal> {
     const headers = this.getHeaders();
@@ -84,5 +84,10 @@ export class ExchangeService {
     const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
     console.log('Rejecting exchange with headers:', headers);
     return this.http.put(`${this.apiUrl}/reject/${exchangeId}`, {}, { headers });
+  }
+  
+  setExchangeStatusPending(exchangeId: string): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.put(`${this.apiUrl}/status`, { exchangeId, status: 'pending' }, { headers });
   }
 }
