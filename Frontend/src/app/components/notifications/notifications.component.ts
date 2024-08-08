@@ -23,7 +23,6 @@ export class NotificationsComponent implements OnInit {
   }
 
   markAsRead(notificationId: string): void {
-    console.log('Marcando como leído el ID:', notificationId);
     this.notificationService.markAsRead(notificationId).subscribe(() => {
       this.notifications = this.notifications.map(notification => {
         if (notification.id === notificationId) {
