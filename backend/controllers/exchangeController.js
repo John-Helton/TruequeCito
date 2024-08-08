@@ -159,7 +159,7 @@ exports.uploadReceipt = async (req, res) => {
       const otherUserId = userType === 'offered' ? exchange.userRequested : exchange.userOffered;
       const notification = new Notification({
         userId: otherUserId,
-        message: 'Comprobante subido, por favor sube tu comprobante para completar el intercambio',
+        message: 'Comprobante subido, te notificaremos cuando exista una actualización.',
         timestamp: new Date(),
         read: false
       });
